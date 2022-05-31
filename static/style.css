@@ -1,0 +1,75 @@
+body{
+  margin: 0;
+  padding: 0;
+  background-color: #10497E;
+}
+
+.parallax {
+  perspective: 1px;
+  perspective-origin: center;
+  overflow-y: auto;
+  overflow-x: hidden;
+  margin-top: 0;
+  height: 100vh;
+}
+.parallax .group {
+  position: relative;
+  height: 100vh;
+  transform-style: preserve-3d;
+}
+.parallax .layer {
+  position: absolute;
+  width: 101%;
+  overflow: hidden;
+}
+#city1 {
+  fill: #8A1B05;
+  transform: translateZ(0.25px) scale(0.75) translateY(-1vh);
+}
+#mountain1 {
+  fill: #8A1B05;
+  transform: translateZ(-2.25px) scale(3.25) translateY(-1vh);
+}
+#mountain2 {
+  fill: #F4D35E;
+  transform: translateZ(-2.5px) scale(3.5) translateY(-1vh);
+}
+#mountain3 {
+  fill: #F4D35E;
+  transform: translateZ(-3px) scale(4) translateY(-10vh);
+  height: 50vh;
+}
+#mountain4 {
+  fill: #FAF0CA;
+  transform: translateZ(-3.5px) scale(4.5) translateY(-20vh);
+  height: 30vh;
+}
+#sun {
+  fill: #ee964b;
+  transform: translateZ(-6px) scale(7) translateY(-25vh);
+  height: 25vh;
+}
+.city-front {
+  position: relative;
+  margin-top: -5px;
+  background-color: #8A1B05;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+}
+.site_name {
+  color: #FAF0CA;
+  width: 50%;
+  height: 50%;
+  text-align: center;
+  margin-top: 10%;
+  font-family: "Open Sans"; 
+}
+
+@media screen and (max-width: 900px) {
+  .site_name{
+    width: 70%;
+    font-size: 4vw;
+  }
+}
