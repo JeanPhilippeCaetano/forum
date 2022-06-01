@@ -23,6 +23,7 @@ type PostComments struct {
 	SenderID  int
 	PostID    int
 	Likes     int
+	Date      string
 }
 
 type Comments struct {
@@ -31,6 +32,7 @@ type Comments struct {
 	SenderID   int
 	ReceiverID int
 	Likes      int
+	Date       string
 }
 
 type Posts struct {
@@ -39,6 +41,7 @@ type Posts struct {
 	Title    string
 	Content  string
 	Likes    int
+	Date     string
 }
 
 func InitDatabase() *sql.DB {
@@ -59,6 +62,7 @@ func InitDatabase() *sql.DB {
 		SenderID INTEGER NOT NULL,
 		PostID INTEGER NOT NULL,
 		Likes INTEGER NOT NULL,
+		Date DATE NOT NULL,
 		FOREIGN KEY(SenderID) REFERENCES users(UserID),
 		FOREIGN KEY(PostID) REFERENCES posts(PostID)
 	);
@@ -69,6 +73,7 @@ func InitDatabase() *sql.DB {
 		Title TEXT NOT NULL,
 		Content TEXT NOT NULL,
 		Likes INTEGER NOT NULL,
+		Date DATE NOT NULL,
 		FOREIGN KEY(SenderID) REFERENCES users(UserID)
 	);
 	CREATE TABLE IF NOT EXISTS comments
@@ -78,6 +83,7 @@ func InitDatabase() *sql.DB {
 		SenderID INTEGER NOT NULL,
 		ReceiverID INTEGER NOT NULL,
 		Likes INTEGER NOT NULL,
+		Date DATE NOT NULL,
 		FOREIGN KEY(SenderID) REFERENCES users(UserID),
 		FOREIGN KEY(ReceiverID) REFERENCES users(UserID)
 	);
@@ -141,6 +147,7 @@ func GetDataFromTableWithID(structure interface{}, db *sql.DB, table string, id 
 }
 
 func DisplayRows(rows *sql.Rows, structure interface{}) {
+
 	// fmt.Println(reflect.TypeOf(structure))
 	// data := reflect.TypeOf(structure)
 	// for rows.Next() {
