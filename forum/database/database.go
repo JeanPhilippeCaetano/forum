@@ -147,15 +147,32 @@ func GetDataFromTableWithID(structure interface{}, db *sql.DB, table string, id 
 }
 
 func DisplayRows(rows *sql.Rows, structure interface{}) {
-
-	// fmt.Println(reflect.TypeOf(structure))
-	// data := reflect.TypeOf(structure)
-	// for rows.Next() {
-	// 	var u data
-	// 	err := rows.Scan(&u)
-	// 	if err != nil {
-	// 		log.Fatal(err)
-	// 	}
-	// 	fmt.Println(structure)
-	// }
+	data := reflect.TypeOf(structure).Name()
+	for rows.Next() {
+		if data == "Users" {
+			var u Users
+			err := rows.Scan(&u.UserID, &u.Pseudonyme, &u.Email, &u.Password, &u.Image)
+			if err != nil {
+				log.Panic(err)
+			}
+		} else if data == "PostComments" {
+			var pc PostComments
+			err := rows.Scan(&pc.CommentID, &pc.Content, &pc.SenderID, &pc.PostID, &pc.Likes, &pc.Date)
+			if err != nil {
+				log.Panic(err)
+			}
+		} else if data == "Comments" {
+			var c Comments
+			err := rows.Scan(&c.CommentID, &c.Content, &c.SenderID, &c.ReceiverID, &c.Likes, &c.Date)
+			if err != nil {
+				log.Panic(err)
+			}
+		} else if data == "Posts" {
+			var p Posts
+			err := rows.Scan(&p.PostID, &p.SenderID, &p.Title, &p.Content, &p.Likes, &p.Date)
+			if err != nil {
+				log.Panic(err)
+			}
+		}
+	}
 }
