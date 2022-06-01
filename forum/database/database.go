@@ -2,6 +2,7 @@ package database
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
 	"reflect"
 	"strconv"
@@ -148,6 +149,7 @@ func GetDataFromTableWithID(structure interface{}, db *sql.DB, table string, id 
 
 func DisplayRows(rows *sql.Rows, structure interface{}) {
 	data := reflect.TypeOf(structure).Name()
+	var allUsers []Users
 	for rows.Next() {
 		if data == "Users" {
 			var u Users
@@ -155,6 +157,7 @@ func DisplayRows(rows *sql.Rows, structure interface{}) {
 			if err != nil {
 				log.Panic(err)
 			}
+			allUsers = append(allUsers, u)
 		} else if data == "PostComments" {
 			var pc PostComments
 			err := rows.Scan(&pc.CommentID, &pc.Content, &pc.SenderID, &pc.PostID, &pc.Likes, &pc.Date)
@@ -175,4 +178,6 @@ func DisplayRows(rows *sql.Rows, structure interface{}) {
 			}
 		}
 	}
+
+	fmt.Println(allUsers)
 }
