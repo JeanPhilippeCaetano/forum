@@ -2,7 +2,6 @@ package database
 
 import (
 	"database/sql"
-	"fmt"
 	"log"
 	"reflect"
 	"strconv"
@@ -23,6 +22,7 @@ type PostComments struct {
 	Content   string
 	SenderID  int
 	PostID    int
+	Likes     int
 }
 
 type Comments struct {
@@ -30,6 +30,7 @@ type Comments struct {
 	Content    string
 	SenderID   int
 	ReceiverID int
+	Likes      int
 }
 
 type Posts struct {
@@ -37,6 +38,7 @@ type Posts struct {
 	SenderID int
 	Title    string
 	Content  string
+	Likes    int
 }
 
 func InitDatabase() *sql.DB {
@@ -56,6 +58,7 @@ func InitDatabase() *sql.DB {
 		Content TEXT NOT NULL,
 		SenderID INTEGER NOT NULL,
 		PostID INTEGER NOT NULL,
+		Likes INTEGER NOT NULL,
 		FOREIGN KEY(SenderID) REFERENCES users(UserID),
 		FOREIGN KEY(PostID) REFERENCES posts(PostID)
 	);
@@ -65,6 +68,7 @@ func InitDatabase() *sql.DB {
 		SenderID INTEGER NOT NULL,
 		Title TEXT NOT NULL,
 		Content TEXT NOT NULL,
+		Likes INTEGER NOT NULL,
 		FOREIGN KEY(SenderID) REFERENCES users(UserID)
 	);
 	CREATE TABLE IF NOT EXISTS comments
@@ -73,6 +77,7 @@ func InitDatabase() *sql.DB {
 		Content TEXT NOT NULL,
 		SenderID INTEGER NOT NULL,
 		ReceiverID INTEGER NOT NULL,
+		Likes INTEGER NOT NULL,
 		FOREIGN KEY(SenderID) REFERENCES users(UserID),
 		FOREIGN KEY(ReceiverID) REFERENCES users(UserID)
 	);
@@ -104,7 +109,6 @@ func parseParams(structure interface{}, table string, parameters ...string) stri
 
 func InsertData(structure interface{}, db *sql.DB, table string, parameters ...string) sql.Result {
 	statement := parseParams(structure, table, parameters...)
-	fmt.Println(statement)
 	result, err := db.Exec(statement)
 	if err != nil {
 		log.Panic(err)
@@ -128,10 +132,23 @@ func GetIDNameFromStruct(structure interface{}) string {
 
 func GetDataFromTableWithID(structure interface{}, db *sql.DB, table string, id int) *sql.Rows {
 	idName := GetIDNameFromStruct(structure)
-	statement := "SELECT * FROM " + table + "WHERE " + idName + "=" + strconv.Itoa(id)
+	statement := "SELECT * FROM " + table + " WHERE " + idName + "='" + strconv.Itoa(id) + "'"
 	query, err := db.Query(statement)
 	if err != nil {
 		log.Panic(err)
 	}
 	return query
+}
+
+func DisplayRows(rows *sql.Rows, structure interface{}) {
+	// fmt.Println(reflect.TypeOf(structure))
+	// data := reflect.TypeOf(structure)
+	// for rows.Next() {
+	// 	var u data
+	// 	err := rows.Scan(&u)
+	// 	if err != nil {
+	// 		log.Fatal(err)
+	// 	}
+	// 	fmt.Println(structure)
+	// }
 }
