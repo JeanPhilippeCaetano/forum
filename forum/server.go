@@ -29,7 +29,7 @@ func Server() {
 	fp := http.FileServer(http.Dir("./pages/"))
 	http.Handle("/pages/", http.StripPrefix("/pages/", fp))
 
-	loadAllRoutes()
+	loadAllRoutes(global)
 
 	http.ListenAndServe(":8080", nil)
 }

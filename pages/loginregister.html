@@ -57,17 +57,17 @@
                         </div>
                         <fieldset class="forms_fieldset">
                             <div class="forms_field">
-                                <input type="text" placeholder="Pseudo" class="forms_field-input" required />
+                                <input id="pseudoregister" type="text" placeholder="Pseudo" class="forms_field-input" required />
                             </div>
                             <div class="forms_field">
-                                <input type="email" placeholder="Email" class="forms_field-input" required />
+                                <input id="emailregister" type="email" placeholder="Email" class="forms_field-input" required />
                             </div>
                             <div class="forms_field">
-                                <input type="password" placeholder="Password" class="forms_field-input" required />
+                                <input id="passwordregister" type="password" placeholder="Password" class="forms_field-input" required />
                             </div>
                         </fieldset>
                         <div class="forms_buttons">
-                            <input type="submit" value="Sign up" class="forms_buttons-action">
+                            <input type="submit" value="Sign up" class="forms_buttons-action" onclick="onRegisterClick()">
                         </div>
                     </form>
                 </div>
