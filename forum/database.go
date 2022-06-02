@@ -54,7 +54,7 @@ func InitDatabase() *sql.DB {
     	Pseudonyme TEXT NOT NULL UNIQUE,
     	Email TEXT NOT NULL UNIQUE,
     	Password TEXT NOT NULL,
-    	Image TEXT NOT NULL
+    	Image TEXT NOT NULL 
 	);
 	CREATE TABLE IF NOT EXISTS postcomments
 	(
@@ -115,13 +115,13 @@ func parseParams(structure interface{}, table string, parameters ...string) stri
 	return statement + attributes + values
 }
 
-func InsertData(structure interface{}, db *sql.DB, table string, parameters ...string) sql.Result {
+func InsertData(structure interface{}, db *sql.DB, table string, parameters ...string) error {
 	statement := parseParams(structure, table, parameters...)
-	result, err := db.Exec(statement)
+	_, err := db.Exec(statement)
 	if err != nil {
 		log.Panic(err)
 	}
-	return result
+	return err
 }
 
 func GetAllDataFromTable(db *sql.DB, table string) *sql.Rows {
@@ -148,9 +148,22 @@ func GetDataFromTableWithID(structure interface{}, db *sql.DB, table string, id 
 	return query
 }
 
-func DisplayRows(rows *sql.Rows, structure interface{}) *Global {
+func resetGlobal(global *Global, data string) *Global {
+	if data == "Users" {
+		global.AllUsers = []Users{}
+	} else if data == "Comments" {
+		global.AllComments = []Comments{}
+	} else if data == "PostComments" {
+		global.AllPostsComments = []PostComments{}
+	} else if data == "Posts" {
+		global.AllPosts = []Posts{}
+	}
+	return global
+}
+
+func DisplayRows(global *Global, rows *sql.Rows, structure interface{}) *Global {
 	data := reflect.TypeOf(structure).Name()
-	global := &Global{}
+	global = resetGlobal(global, data)
 	for rows.Next() {
 		if data == "Users" {
 			var u Users
