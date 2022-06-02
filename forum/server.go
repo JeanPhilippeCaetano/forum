@@ -1,6 +1,7 @@
 package forum
 
 import (
+	"database/sql"
 	"fmt"
 	"net/http"
 )
@@ -10,10 +11,15 @@ type Global struct {
 	AllPosts         []Posts
 	AllPostsComments []PostComments
 	AllComments      []Comments
+	Db               *sql.DB
 }
 
 func Server() {
 	fmt.Println("Le serveur est lancé : http://localhost:8080")
+
+	global := &Global{}
+	global.Db = InitDatabase()
+
 	fs := http.FileServer(http.Dir("./static/"))
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
 
