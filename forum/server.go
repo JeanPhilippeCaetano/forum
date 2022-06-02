@@ -5,6 +5,13 @@ import (
 	"net/http"
 )
 
+type Global struct {
+	AllUsers         []Users
+	AllPosts         []Posts
+	AllPostsComments []PostComments
+	AllComments      []Comments
+}
+
 func Server() {
 	fmt.Println("Le serveur est lancé : http://localhost:8080")
 	fs := http.FileServer(http.Dir("./static/"))
