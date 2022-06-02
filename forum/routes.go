@@ -5,8 +5,16 @@ import (
 	"text/template"
 )
 
-func Index(w http.ResponseWriter, r *http.Request) {
-	tmpl := template.Must(template.ParseFiles("./pages/index.html"))
+func Pageprofil(w http.ResponseWriter, r *http.Request) {
+	tmpl := template.Must(template.ParseFiles("./pages/pageProfil.html"))
+	if r.Method != http.MethodPost {
+		tmpl.Execute(w, r)
+		return
+	}
+}
+
+func Pagemodifprofil(w http.ResponseWriter, r *http.Request) {
+	tmpl := template.Must(template.ParseFiles("./pages/pageModifProfil.html"))
 	if r.Method != http.MethodPost {
 		tmpl.Execute(w, r)
 		return
@@ -14,7 +22,10 @@ func Index(w http.ResponseWriter, r *http.Request) {
 }
 
 func loadAllRoutes() {
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		Index(w, r)
+	http.HandleFunc("/profil", func(w http.ResponseWriter, r *http.Request) {
+		Pageprofil(w, r)
+	})
+	http.HandleFunc("/modifprofil", func(w http.ResponseWriter, r *http.Request) {
+		Pagemodifprofil(w, r)
 	})
 }
