@@ -7,7 +7,7 @@ body {
   font-family: "Montserrat", sans-serif;
   font-size: 12px;
   line-height: 1em;
-  background-color: #10497e;
+  background-color: #faf0ca;
 }
 
 button {
@@ -167,7 +167,7 @@ input::placeholder {
   -webkit-box-pack: justify;
           justify-content: space-between;
   width: 100%;
-  background-color: #ee964b;
+  background-color: #10497e;
   border-radius: 3px;
 }
 
@@ -201,8 +201,9 @@ input::placeholder {
   margin-top: 30px;
   border: 1px solid #faf0ca;
   border-radius: 3px;
+  font-weight: 600;
   padding: 10px 30px;
-  color: #8a1b05;
+  color: #faf0ca;
   text-transform: uppercase;
   line-height: 1em;
   letter-spacing: 0.2rem;
@@ -212,7 +213,7 @@ input::placeholder {
 .user_registered-login:hover,
 .user_unregistered-signup:hover {
   color: #faf0ca;
-  background-color: #10497e;
+  background-color: #2f5f8d;
 }
 
 /**
@@ -224,9 +225,9 @@ input::placeholder {
   left: 30px;
   width: calc(50% - 30px);
   min-height: 420px;
-  background-color: #8a1b05;
+  background-color: #f4d35e;
   border-radius: 3px;
-  box-shadow: 2px 0 15px #f4d35e;
+  box-shadow: 2px 0 15px black;
   overflow: hidden;
   -webkit-transform: translate3d(100%, -50%, 0);
           transform: translate3d(100%, -50%, 0);
@@ -234,6 +235,7 @@ input::placeholder {
   transition: -webkit-transform 0.4s ease-in-out;
   transition: transform 0.4s ease-in-out;
   transition: transform 0.4s ease-in-out, -webkit-transform 0.4s ease-in-out;
+  transition: .2s linear;
 }
 .user_options-forms .user_forms-login {
   -webkit-transition: opacity 0.4s ease-in-out, visibility 0.4s ease-in-out;
@@ -250,7 +252,7 @@ input::placeholder {
   font-weight: 500;
   line-height: 1em;
   text-transform: uppercase;
-  color: #ee964b;
+  color: #10497e;
   letter-spacing: 0.1rem;
 }
 .user_options-forms .forms_field:not(:last-of-type) {
@@ -258,18 +260,21 @@ input::placeholder {
 }
 .user_options-forms .forms_field-input {
   width: 100%;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid #10497e;
   padding: 6px 20px 6px 6px;
   font-family: "Montserrat", sans-serif;
   font-size: 1rem;
   font-weight: 300;
-  color: #faf0ca;
+  color: #8a1b05;
   letter-spacing: 0.1rem;
   -webkit-transition: border-color 0.2s ease-in-out;
   transition: border-color 0.2s ease-in-out;
 }
+.user_options-forms .forms_field-input::placeholder{
+  color: #8a1b05;
+}
 .user_options-forms .forms_field-input:focus {
-  border-color: #f4d35e;
+  border-color: #8a1b05;
 }
 .user_options-forms .forms_buttons {
   display: -webkit-box;
@@ -283,30 +288,42 @@ input::placeholder {
 .user_options-forms .forms_buttons-forgot {
   font-family: "Montserrat", sans-serif;
   letter-spacing: 0.1rem;
-  color: #faf0ca;
+  color: #8a1b05;
   /* text-decoration: underline; */
   -webkit-transition: color 0.2s ease-in-out;
   transition: color 0.2s ease-in-out;
 }
 .user_options-forms .forms_buttons-forgot:hover {
-  color: #10497e;
+  color: red; 
 }
+
+.user_options-forms .forms_buttons-signup button{
+  cursor:pointer;
+  font-size: large;
+  color: #8a1b05;
+}
+
+.user_options-forms .forms_buttons-signup button:hover{
+  color: #faf0ca;
+}
+
 .user_options-forms .forms_buttons-action {
-  background-color: #ee964b;
+  background-color: #f4d35e;
   border-radius: 3px;
+  border: 1px solid #10497e;
   padding: 10px 35px;
   font-size: 1rem;
   font-family: "Montserrat", sans-serif;
-  font-weight: 300;
-  color: #8a1b05;
+  font-weight: 600;
+  color: #10497e;
   text-transform: uppercase;
   letter-spacing: 0.1rem;
   -webkit-transition: background-color 0.2s ease-in-out;
   transition: background-color 0.2s ease-in-out;
 }
 .user_options-forms .forms_buttons-action:hover {
-  color: #faf0ca;
-  background-color: #10497e;
+  color: #10497e;
+  background-color: #f3d877;
 }
 .user_options-forms .user_forms-signup,
 .user_options-forms .user_forms-login {
