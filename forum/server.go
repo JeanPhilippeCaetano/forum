@@ -2,15 +2,14 @@ package forum
 
 import (
 	"fmt"
-	db "forum/forum/database"
 	"net/http"
 )
 
 type Global struct {
-	AllUsers         []db.Users
-	AllPosts         []db.Posts
-	AllPostsComments []db.PostComments
-	AllComments      []db.Comments
+	AllUsers         []Users
+	AllPosts         []Posts
+	AllPostsComments []PostComments
+	AllComments      []Comments
 }
 
 func Server() {

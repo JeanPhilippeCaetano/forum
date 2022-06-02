@@ -1,8 +1,7 @@
-package database
+package forum
 
 import (
 	"database/sql"
-	"fmt"
 	"log"
 	"reflect"
 	"strconv"
@@ -41,6 +40,7 @@ type Posts struct {
 	SenderID int
 	Title    string
 	Content  string
+	Tags     string
 	Likes    int
 	Date     string
 }
@@ -73,6 +73,7 @@ func InitDatabase() *sql.DB {
 		SenderID INTEGER NOT NULL,
 		Title TEXT NOT NULL,
 		Content TEXT NOT NULL,
+		Tags TEXT NOT NULL,
 		Likes INTEGER NOT NULL,
 		Date DATE NOT NULL,
 		FOREIGN KEY(SenderID) REFERENCES users(UserID)
@@ -147,9 +148,9 @@ func GetDataFromTableWithID(structure interface{}, db *sql.DB, table string, id 
 	return query
 }
 
-func DisplayRows(rows *sql.Rows, structure interface{}) {
+func DisplayRows(rows *sql.Rows, structure interface{}) *Global {
 	data := reflect.TypeOf(structure).Name()
-	var allUsers []Users
+	global := &Global{}
 	for rows.Next() {
 		if data == "Users" {
 			var u Users
@@ -157,27 +158,29 @@ func DisplayRows(rows *sql.Rows, structure interface{}) {
 			if err != nil {
 				log.Panic(err)
 			}
-			allUsers = append(allUsers, u)
+			global.AllUsers = append(global.AllUsers, u)
 		} else if data == "PostComments" {
 			var pc PostComments
 			err := rows.Scan(&pc.CommentID, &pc.Content, &pc.SenderID, &pc.PostID, &pc.Likes, &pc.Date)
 			if err != nil {
 				log.Panic(err)
 			}
+			global.AllPostsComments = append(global.AllPostsComments, pc)
 		} else if data == "Comments" {
 			var c Comments
 			err := rows.Scan(&c.CommentID, &c.Content, &c.SenderID, &c.ReceiverID, &c.Likes, &c.Date)
 			if err != nil {
 				log.Panic(err)
 			}
+			global.AllComments = append(global.AllComments, c)
 		} else if data == "Posts" {
 			var p Posts
 			err := rows.Scan(&p.PostID, &p.SenderID, &p.Title, &p.Content, &p.Likes, &p.Date)
 			if err != nil {
 				log.Panic(err)
 			}
+			global.AllPosts = append(global.AllPosts, p)
 		}
 	}
-
-	fmt.Println(allUsers)
+	return global
 }
