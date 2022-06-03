@@ -8,18 +8,21 @@ import (
 )
 
 type Account struct {
-	Pseudo   string `json:"pseudo"`
-	Email    string `json:"email"`
-	Password string `json:"password"`
+	Pseudo   string
+	Email    string
+	Password string
 }
 
-func Register(w http.ResponseWriter, r *http.Request, global *Global) error {
+func Register(w http.ResponseWriter, r *http.Request, global *Global) {
 	var account Account
 	body, _ := ioutil.ReadAll(r.Body)
-	fmt.Println(body)
-	test := json.Unmarshal(body, &account)
-	fmt.Println(test)
-	err := InsertData(Users{}, global.Db, "users", account.Pseudo, account.Email, account.Password, "")
-	// fmt.Println(err)
-	return err
+	json.Unmarshal(body, &account)
+	var err error
+	if account != nil {
+		err = InsertData(Users{}, global.Db, "users", account.Pseudo, account.Email, account.Password, "")
+	}
+	fmt.Println(err)
+	if err != nil {
+		w.Write([]byte("{\"error\": \"Pseudo ou Mail déjà utilisé !\"}"))
+	}
 }

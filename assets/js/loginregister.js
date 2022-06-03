@@ -22,20 +22,29 @@ loginButton.addEventListener('click', () => {
 }, false)
 
 const onRegisterClick = () => {
-    console.log("test")
+    const errorlog = document.querySelector(".error_message p")
+    console.log(errorlog)
     fetch("/register", {
             method: "POST",
             headers: {
                 "content-type": "application/json"
             },
             body: JSON.stringify({
-                Pseudo: document.getElementById("pseudoregister"),
-                Email: document.getElementById("emailregister"),
-                Password: document.getElementById("passwordregister")
+                pseudo: document.getElementById("pseudoregister").value,
+                email: document.getElementById("emailregister").value,
+                password: document.getElementById("passwordregister").value
             })
         })
         .then(res => res.json())
         .then(data => {
-            debuglog.innerText = data
+            if (!!data.error) {
+                alert(data.error)
+                errorlog.innerText = data.error
+            }
+
         })
+}
+
+const onLoginClick = () => {
+
 }

@@ -118,9 +118,9 @@ func parseParams(structure interface{}, table string, parameters ...string) stri
 func InsertData(structure interface{}, db *sql.DB, table string, parameters ...string) error {
 	statement := parseParams(structure, table, parameters...)
 	_, err := db.Exec(statement)
-	if err != nil {
-		log.Panic(err)
-	}
+	// if err != nil {
+	// 	log.Panic(err)
+	// }
 	return err
 }
 
