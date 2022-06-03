@@ -95,7 +95,7 @@ input::placeholder {
   }
 }
 /**
- * Bounce to the left side
+ * Bounce to the right side
  */
 @-webkit-keyframes bounceRight {
   0% {
