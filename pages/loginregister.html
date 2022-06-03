@@ -32,7 +32,7 @@
                     <p class="user_unregistered-text">Enter your informations to Log In.</p>
                     <form class="forms_form">
                         <div class="error_message">
-                            <p>*This Email is not associated to an account.</p>
+                            <p></p>
                         </div>
                         <fieldset class="forms_fieldset">
                             <div class="forms_field">
@@ -44,7 +44,7 @@
                         </fieldset>
                         <div class="forms_buttons">
                             <button type="button" class="forms_buttons-forgot">Forgot password?</button>
-                            <input type="submit" value="Log In" class="forms_buttons-action">
+                            <input id="signinBtn" type="submit" value="Log In" class="forms_buttons-action">
                         </div>
                     </form>
                 </div>
@@ -53,21 +53,21 @@
                     <p class="user_unregistered-text">Enter new account informations.</p>
                     <form class="forms_form">
                         <div class="error_message">
-                            <p>*This Pseudo is already used. *This Email is already used.</p>
+                            <p></p>
                         </div>
                         <fieldset class="forms_fieldset">
                             <div class="forms_field">
-                                <input id="pseudoregister" type="text" placeholder="Pseudo" class="forms_field-input" required />
+                                <input id="pseudoregister" type="text" placeholder="Pseudo" class="forms_field-input" onkeyup="checkEmptyInputsSignUp()" required />
                             </div>
                             <div class="forms_field">
-                                <input id="emailregister" type="email" placeholder="Email" class="forms_field-input" required />
+                                <input id="emailregister" type="email" placeholder="Email" class="forms_field-input" onkeyup="checkEmptyInputsSignUp()" required />
                             </div>
                             <div class="forms_field">
-                                <input id="passwordregister" type="password" placeholder="Password" class="forms_field-input" required />
+                                <input id="passwordregister" type="password" placeholder="Password" class="forms_field-input" onkeyup="checkEmptyInputsSignUp()" required />
                             </div>
                         </fieldset>
                         <div class="forms_buttons">
-                            <input type="button" value="Sign up" class="forms_buttons-action" onclick="onRegisterClick()">
+                            <input id="signupBtn" type="button" value="Sign up" class="forms_buttons-action" disabled="true" onclick="onRegisterClick()">
                         </div>
                     </form>
                 </div>

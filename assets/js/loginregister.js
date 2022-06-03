@@ -21,8 +21,18 @@ loginButton.addEventListener('click', () => {
     userForms.classList.add('bounceRight')
 }, false)
 
+const checkEmptyInputsSignUp = () => {
+    const submitBtn = document.querySelector("#signupBtn")
+    const pseudoDiv = document.getElementById("pseudoregister").value
+    const emailDiv = document.getElementById("emailregister").value
+    const passwordDiv = document.getElementById("passwordregister").value
+    if (pseudoDiv.length > 0 && emailDiv.length > 0 && passwordDiv.length > 0) {
+        submitBtn.disabled = false
+    }
+}
+
 const onRegisterClick = () => {
-    const errorlog = document.querySelector(".error_message p")
+    const errorlog = document.querySelector(".user_forms-signup .forms_form .error_message p")
     console.log(errorlog)
     fetch("/register", {
             method: "POST",
@@ -38,10 +48,9 @@ const onRegisterClick = () => {
         .then(res => res.json())
         .then(data => {
             if (!!data.error) {
-                alert(data.error)
-                errorlog.innerText = data.error
+                errorlog.innerHTML = data.error
+                return;
             }
-
         })
 }
 
