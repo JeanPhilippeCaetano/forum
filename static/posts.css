@@ -19,6 +19,13 @@
     z-index: 1;
 }
 
+.space-between {
+    margin-left: 2%;
+    width: 96%;
+    display: flex;
+    justify-content: space-between;
+}
+
 .filter-toggler {
     padding: 5px 10px 5px 10px;
     background-color: #f4e5ac;
