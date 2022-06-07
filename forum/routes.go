@@ -37,6 +37,9 @@ func loadAllRoutes(global *Global) {
 	http.HandleFunc("/profil", func(w http.ResponseWriter, r *http.Request) {
 		Pageprofil(w, r)
 	})
+	http.HandleFunc("/getinfos", func(w http.ResponseWriter, r *http.Request) {
+		GetInfos(w, r, global)
+	})
 	http.HandleFunc("/modifprofil", func(w http.ResponseWriter, r *http.Request) {
 		Pagemodifprofil(w, r)
 	})

@@ -14,6 +14,7 @@ type Users struct {
 	Pseudonyme string
 	Email      string
 	Password   string
+	Biography  string
 	Image      string
 }
 
@@ -54,6 +55,7 @@ func InitDatabase() *sql.DB {
     	Pseudonyme TEXT NOT NULL UNIQUE,
     	Email TEXT NOT NULL UNIQUE,
     	Password TEXT NOT NULL,
+		Biography TEXT NOT NULL,
     	Image TEXT NOT NULL 
 	);
 	CREATE TABLE IF NOT EXISTS postcomments
@@ -115,13 +117,13 @@ func parseParams(structure interface{}, table string, parameters ...string) stri
 	return statement + attributes + values
 }
 
-func InsertData(structure interface{}, db *sql.DB, table string, parameters ...string) error {
+func InsertData(structure interface{}, db *sql.DB, table string, parameters ...string) (sql.Result, error) {
 	statement := parseParams(structure, table, parameters...)
-	_, err := db.Exec(statement)
+	result, err := db.Exec(statement)
 	// if err != nil {
 	// 	log.Panic(err)
 	// }
-	return err
+	return result, err
 }
 
 func GetAllDataFromTable(db *sql.DB, table string) *sql.Rows {
@@ -156,7 +158,7 @@ func GetUser(db *sql.DB, table string, pseudo string) Users {
 		log.Panic(err)
 	}
 	for rows.Next() {
-		err := rows.Scan(&u.UserID, &u.Pseudonyme, &u.Email, &u.Password, &u.Image)
+		err := rows.Scan(&u.UserID, &u.Pseudonyme, &u.Email, &u.Password, &u.Biography, &u.Image)
 		if err != nil {
 			log.Panic(err)
 		}
@@ -183,7 +185,7 @@ func DisplayRows(global *Global, rows *sql.Rows, structure interface{}) *Global 
 	for rows.Next() {
 		if data == "Users" {
 			var u Users
-			err := rows.Scan(&u.UserID, &u.Pseudonyme, &u.Email, &u.Password, &u.Image)
+			err := rows.Scan(&u.UserID, &u.Pseudonyme, &u.Email, &u.Password, &u.Biography, &u.Image)
 			if err != nil {
 				log.Panic(err)
 			}

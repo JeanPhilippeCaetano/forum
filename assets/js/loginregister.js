@@ -52,19 +52,10 @@ const onRegisterClick = () => {
             return res.json()
         })
         .then(data => {
-            location.href = "/profil"
-            console.log({ data })
+            location.href = "/profil?pseudo=" + data.pseudo
         })
         .catch(err => {
-            console.log({ err })
             errorlog.innerHTML = err.err
-                // if (err == "Mail déjà utilisé") {
-                //     errorlog.innerHTML = err
-                //     return;
-                // } else if (err == "Pseudo déjà utilisé") {
-                //     errorlog.innerHTML = err
-                //     return;
-                // }
         })
 
 }
