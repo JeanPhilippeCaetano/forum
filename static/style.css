@@ -1,4 +1,4 @@
-body{
+body {
   margin: 0;
   padding: 0;
   background-color: #10497E;
@@ -12,43 +12,52 @@ body{
   margin-top: 0;
   height: 100vh;
 }
+
 .parallax .group {
   position: relative;
   height: 100vh;
   transform-style: preserve-3d;
 }
+
 .parallax .layer {
   position: absolute;
   width: 101%;
   overflow: hidden;
 }
+
 #city1 {
   fill: #8A1B05;
   transform: translateZ(0.25px) scale(0.75) translateY(-1vh);
 }
+
 #mountain1 {
   fill: #8A1B05;
   transform: translateZ(-2.25px) scale(3.25) translateY(-1vh);
 }
+
 #mountain2 {
   fill: #F4D35E;
   transform: translateZ(-2.5px) scale(3.5) translateY(-1vh);
 }
+
 #mountain3 {
   fill: #F4D35E;
   transform: translateZ(-3px) scale(4) translateY(-10vh);
   height: 50vh;
 }
+
 #mountain4 {
   fill: #FAF0CA;
   transform: translateZ(-3.5px) scale(4.5) translateY(-20vh);
   height: 30vh;
 }
+
 #sun {
   fill: #ee964b;
   transform: translateZ(-6px) scale(7) translateY(-25vh);
   height: 25vh;
 }
+
 .city-front {
   position: relative;
   margin-top: -5px;
@@ -56,35 +65,36 @@ body{
   width: 100vw;
   height: 130vh;
 }
+
 .site_name {
   color: #FAF0CA;
   width: 50%;
   height: 50%;
   text-align: center;
   margin-top: 10%;
-  font-family: "Open Sans"; 
+  font-family: "Open Sans";
 }
 
-.textExplain{
+.textExplain {
   display: flex;
   justify-content: center;
   margin-bottom: 5vh;
 }
 
-.doubleCard{
-  display:flex;
+.doubleCard {
+  display: flex;
   /* flex-direction: row; */
   width: 80%;
   margin-left: 10%;
 }
 
 @media screen and (max-width: 900px) {
-  .site_name{
+  .site_name {
     width: 70%;
     font-size: 4vw;
   }
 
-  .doubleCard{
+  .doubleCard {
     flex-direction: column;
   }
 }
@@ -94,108 +104,128 @@ body{
 
 
 a {
-	 text-decoration: none;
+  text-decoration: none;
 }
- h1 {
-	 font-family: 'Open Sans', sans-serif;
-	 font-weight: 300;
+
+h1 {
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 300;
 }
- .row {
-   width: 50%;
-   display: flex;
-   justify-content: center;
+
+.row {
+  width: 50%;
+  display: flex;
+  justify-content: center;
 }
- .card {
-	 padding: 0 1.7rem;
-	 width: 50%;
+
+.card {
+  padding: 0 1.7rem;
+  width: 50%;
 }
- .card .wrapper {
-	 background-color: #fff;
-	 min-height: 540px;
-	 position: relative;
-	 overflow: hidden;
-	 box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.2);
+
+.card .wrapper {
+  background-color: #fff;
+  min-height: 540px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.2);
 }
- .card .wrapper:hover .data {
-	 transform: translateY(0);
+
+.card .wrapper:hover .data {
+  transform: translateY(0);
 }
- .card .data {
-	 position: absolute;
-	 bottom: 0;
-	 width: 100%;
-	 transform: translateY(calc(70px + 1em));
-	 transition: transform 0.3s;
+
+.card .data {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  transform: translateY(calc(70px + 1em));
+  transition: transform 0.3s;
 }
- .card .data .content {
-	 padding: 1em;
-	 position: relative;
-	 z-index: 1;
+
+.card .data .content {
+  padding: 1em;
+  position: relative;
+  z-index: 1;
 }
- .card .title {
-   color: #f4d35e;
-	 margin-top: 10px;
-   font-family: "Vollkorn";
+
+.card .title {
+  color: #f4d35e;
+  margin-top: 10px;
+  font-family: "Vollkorn";
 }
- .card .text {
-   color: #FAF0CA;
-   font-family: "Open Sans";
-	 height: 70px;
-	 margin: 0;
+
+.card .text {
+  color: #FAF0CA;
+  font-family: "Open Sans";
+  height: 70px;
+  margin: 0;
 }
- .card input[type='checkbox'] {
-	 display: none;
+
+.card input[type='checkbox'] {
+  display: none;
 }
- .card input[type='checkbox']:checked + .menu-content {
-	 transform: translateY(-60px);
+
+.card input[type='checkbox']:checked+.menu-content {
+  transform: translateY(-60px);
 }
- .example-2 .wrapper {
-	 background-image: url(../assets/images/code.jpg);
-   background-size: cover;
+
+.example-2 .wrapper {
+  background-image: url(../assets/images/code.jpg);
+  background-size: cover;
 }
- .example-2 .wrapper:hover .menu-content span {
-	 transform: translate(-50%, -10px);
-	 opacity: 1;
+
+.example-2 .wrapper:hover .menu-content span {
+  transform: translate(-50%, -10px);
+  opacity: 1;
 }
- .example-2 .menu-content {
-	 float: right;
+
+.example-2 .menu-content {
+  float: right;
 }
- .example-2 .menu-content li {
-	 margin: 0 5px;
-	 position: relative;
+
+.example-2 .menu-content li {
+  margin: 0 5px;
+  position: relative;
 }
- .example-2 .menu-content span {
-	 transition: all 0.3s;
-	 opacity: 0;
+
+.example-2 .menu-content span {
+  transition: all 0.3s;
+  opacity: 0;
 }
- .example-2 .data {
-	 color: #fff;
-	 transform: translateY(calc(70px + 4em));
+
+.example-2 .data {
+  color: #fff;
+  transform: translateY(calc(70px + 4em));
 }
- .example-2 .title a {
-	 color: #fff;
+
+.example-2 .title a {
+  color: #fff;
 }
- .example-2 .button {
-	 display: block;
-	 width: 100px;
-	 margin: 2em auto 1em;
-	 text-align: center;
-	 font-size: 12px;
-	 color: #fff;
-	 line-height: 1;
-	 position: relative;
-	 font-weight: 700;
+
+.example-2 .button {
+  display: block;
+  width: 100px;
+  margin: 2em auto 1em;
+  text-align: center;
+  font-size: 12px;
+  color: #fff;
+  line-height: 1;
+  position: relative;
+  font-weight: 700;
 }
- .example-2 .button::after {
-	 content: '\2192';
-	 opacity: 0;
-	 position: absolute;
-	 right: 0;
-	 top: 50%;
-	 transform: translate(0, -50%);
-	 transition: all 0.3s;
+
+.example-2 .button::after {
+  content: '\2192';
+  opacity: 0;
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translate(0, -50%);
+  transition: all 0.3s;
 }
- .example-2 .button:hover::after {
-	 transform: translate(5px, -50%);
-	 opacity: 1;
+
+.example-2 .button:hover::after {
+  transform: translate(5px, -50%);
+  opacity: 1;
 }
- 

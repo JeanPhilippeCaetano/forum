@@ -18,10 +18,16 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=*, initial-scale=1.0">
+    <link href="./../static/style.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css" integrity="sha512-xA6Hp6oezhjd6LiLZynuukm80f8BoZ3OpcEYaqKoCV3HKQDrYjDE1Gu8ocxgxoXmwmSzM4iqPvCsOkQNiu41GA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <title>Tuc'rack</title>
 </head>
 
 <body>
+<<<<<<< HEAD
     {{template "header"}}
 
     <div id="denver-parallax">
@@ -108,6 +114,83 @@
     </div>
 
     {{template "footer"}}
+=======
+<section class="user">
+  <div class="user_options-container">
+    <div class="user_options-text">
+      <div class="user_options-unregistered">
+        <h2 class="user_unregistered-title">Don't have an account?</h2>
+        <p class="user_unregistered-text">Click below to jump to Sign Up menu.</p>
+        <button class="user_unregistered-signup" id="signup-button" onclick="document.getElementById('Pseudo').focus()">Sign up</button>
+      </div>
+
+      <div class="user_options-registered">
+        <h2 class="user_registered-title">Have an account?</h2>
+        <p class="user_registered-text">Click below to jump to Log In menu.</p>
+        <button class="user_registered-login" id="login-button">Login</button>
+      </div>
+    </div>
+    
+    <div class="user_options-forms" id="user_options-forms">
+      <div class="user_forms-login">
+        <h2 class="forms_title">Login</h2>
+        <p class="user_unregistered-text">Enter your informations to Log In.</p>
+        <form class="forms_form">
+          <div class="error_message"><p>*This Email is not associated to an account.</p></div>
+          <fieldset class="forms_fieldset">
+            <div class="forms_field">
+              <input type="email" placeholder="Email" class="forms_field-input" required autofocus />
+            </div>
+            <div class="forms_field">
+              <input type="password" placeholder="Password" class="forms_field-input" required />
+            </div>
+          </fieldset>
+          <div class="forms_buttons">
+            <button type="button" class="forms_buttons-forgot">Forgot password?</button>
+            <input type="submit" value="Log In" class="forms_buttons-action">
+          </div>
+          <div class="forms_buttons-signup">
+            <button type="button"><i class="fab fa-google"></i></button>
+            <button type="button"><i class="fab fa-facebook"></i></button>
+            <button type="button"><i class="fab fa-linkedin"></i></button>
+          </div>
+        </form>
+      </div>
+      <div class="user_forms-signup">
+        <h2 class="forms_title">Sign Up</h2>
+        <p class="user_unregistered-text">Enter new account informations.</p>
+        <form class="forms_form">
+          <div class="error_message"><p>*This Pseudo is already used. *This Email is already used.</p></div>
+          <fieldset class="forms_fieldset">
+            <div class="forms_field">
+              <input type="text" placeholder="Pseudo" class="forms_field-input" id="Pseudo" required />
+            </div>
+            <div class="forms_field">
+              <input type="email" placeholder="Email" class="forms_field-input" required />
+            </div>
+            <div class="forms_field">
+              <input type="password" placeholder="Password" class="forms_field-input" required />
+            </div>
+          </fieldset>          
+          <div class="forms_buttons" style="justify-content: space-between;">
+            <div class="forms_buttons-signup">
+              <button type="button"><i class="fab fa-google"></i></button>
+              <button type="button"><i class="fab fa-facebook"></i></button>
+              <button type="button"><i class="fab fa-linkedin"></i></button>
+            </div>
+            <input type="submit" value="Sign up" class="forms_buttons-action">
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!----------Designed By Pradeep Singh Tomar------------>
+
+<script type="text/javascript" src="./../assets/js/loginRegister.js"></script>
+>>>>>>> 4cf673d374cf4d275cf839a59084422886314735
 </body>
 <script src="../assets/js/headFoot.js"></script>
 
