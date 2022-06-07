@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <link rel="stylesheet" href="../static/posts.css">
+    <link rel="stylesheet" href="../static/headFoot.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css" integrity="sha512-xA6Hp6oezhjd6LiLZynuukm80f8BoZ3OpcEYaqKoCV3HKQDrYjDE1Gu8ocxgxoXmwmSzM4iqPvCsOkQNiu41GA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Posts</title>
+</head>
+<body>
+    {{template "header"}}
+    <section class="container-page-posts">
+        <div class="select-filters">
+            <div class="hide-title"></div>
+            <div class="space-between">
+                <button class="filter-toggler" onclick="openFilters()">Trier par</button>
+                <button class="filter-toggler" onclick="createPost()">Create Post</button>
+            </div>
+        </div>
+        <div class="filters-container">
+            <div class="trier">
+                <div class="nbr-coms">
+                    <h3>Nombre de Likes</h3>
+                        <input type="radio" id="sort-likes" name="likes" value="croissant-likes" checked>
+                        <label for="croissant-likes"><i class="fas fa-sort-amount-down-alt"> Croissant</i></label><br>
+                        <input type="radio" id="sort-likes" name="likes" value="decroissant-likes">
+                        <label for="decroissant-likes"><i class="fas fa-sort-amount-down"> Décroissant</i></label><br>
+                </div>
+                <div class="nbr-likes">
+                    <h3>Nombre de Commentaires</h3>
+                        <input type="radio" id="sort-comments" name="comments" value="croissant-comments" checked>
+                        <label for="croissant-comments"><span class="coms-input"></span><i class="fas fa-sort-amount-down-alt"> Croissant</i></label><br>
+                        <input type="radio" id="sort-comments" name="comments" value="decroissant-comments">
+                        <label for="decroissant-comments"><span class="coms-input"></span><i class="fas fa-sort-amount-down"> Décroissant</i></label><br>
+                </div>
+                <div class="date-creation">
+                    <h3>Par date de post</h3>
+                        <input type="radio" id="sort-dates" name="dates" value="croissant-dates" checked>
+                        <label for="croissant-dates"><span class="dates-input"></span><i class="fas fa-sort-amount-down-alt"> Plus récent</i></label><br>
+                        <input type="radio" id="sort-dates" name="dates" value="decroissant-dates">
+                        <label for="decroissant-dates"><span class="dates-input"></span><i class="fas fa-sort-amount-down"> Plus ancien</i></label><br>
+                </div>
+                <div class="category tags-filters">
+                    <h3>Par Tags</h3>
+                    <button value="javascript" class="tag tag-lg" onclick="addChoosed(this.value)">javascript</button>
+                    <button value="html/css" onclick="addChoosed(this.value)" class="tag tag-lg">html/CSS</button>
+                    <button value="golang" onclick="addChoosed(this.value)" class="tag tag-lg">Golang</button>
+                    <button value="java" onclick="addChoosed(this.value)" class="tag tag-lg">Java</button>
+                    <button value="python" onclick="addChoosed(this.value)" class="tag tag-lg">Python</button>
+                    <button value="mobile" onclick="addChoosed(this.value)" class="tag tag-lg">Mobile</button>
+                    <button value="appli/logiciel" onclick="addChoosed(this.value)" class="tag tag-lg">Appli/Logiciel</button>
+                    <!-- <a href="/tags/firebase/"><span class="tag tag-lg"></span></a> -->
+                </div>
+            </div>
+        </div>
+        <div class="posts-container"></div>
+    </section>
+
+    </div>
+    {{template "footer"}}
+</body>
+<script src="../assets/js/headFoot.js"></script>
+<script src="../assets/js/posts.js"></script>
+
+</html>
