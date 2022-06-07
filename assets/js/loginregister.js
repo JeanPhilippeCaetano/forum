@@ -45,13 +45,28 @@ const onRegisterClick = () => {
                 password: document.getElementById("passwordregister").value
             })
         })
-        .then(res => res.json())
-        .then(data => {
-            if (!!data.error) {
-                errorlog.innerHTML = data.error
-                return;
+        .then(async(res) => {
+            if (!res.ok) {
+                throw await res.json()
             }
+            return res.json()
         })
+        .then(data => {
+            location.href = "/profil"
+            console.log({ data })
+        })
+        .catch(err => {
+            console.log({ err })
+            errorlog.innerHTML = err.err
+                // if (err == "Mail déjà utilisé") {
+                //     errorlog.innerHTML = err
+                //     return;
+                // } else if (err == "Pseudo déjà utilisé") {
+                //     errorlog.innerHTML = err
+                //     return;
+                // }
+        })
+
 }
 
 const onLoginClick = () => {

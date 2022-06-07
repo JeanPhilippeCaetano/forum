@@ -19,9 +19,21 @@ func Register(w http.ResponseWriter, r *http.Request, global *Global) {
 	err := InsertData(Users{}, global.Db, "users", account.Pseudo, account.Email, account.Password, "")
 	if err != nil {
 		if err.Error() == "UNIQUE constraint failed: users.Email" {
-			w.Write([]byte("{\"error\": \"Mail déjà utilisé !\"}"))
+			// w.Write([]byte("{\"error\": \"Mail déjà utilisé !\"}"))
+			http.Error(w, `{"err": "Mail déjà utilisé"}`, http.StatusBadRequest)
+			return
 		} else if err.Error() == "UNIQUE constraint failed: users.Pseudonyme" {
-			w.Write([]byte("{\"error\": \"Pseudo déjà utilisé !\"}"))
+			http.Error(w, `{"err": "Pseudo déjà utilisé"}`, http.StatusBadRequest)
+			// w.Write([]byte("{\"error\": \"Pseudo déjà utilisé !\"}"))
+			return
 		}
 	}
+	w.Write([]byte("{\"msg\": \"\"}"))
+	//	http.Redirect(w, r, "/profil?user="+account.Pseudo, http.StatusFound)
+}
+
+func GetInfos(w http.ResponseWriter, r *http.Request, global *Global, pseudo string) {
+	user := GetUser(global.Db, "users", pseudo)
+	body, _ := json.MarshalIndent(user, "", "")
+	w.Write(body)
 }

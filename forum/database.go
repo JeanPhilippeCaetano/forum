@@ -148,6 +148,22 @@ func GetDataFromTableWithID(structure interface{}, db *sql.DB, table string, id 
 	return query
 }
 
+func GetUser(db *sql.DB, table string, pseudo string) Users {
+	var u Users
+	statement := "SELECT * FROM " + table + " WHERE Pseudonyme='" + pseudo + "'"
+	rows, err := db.Query(statement)
+	if err != nil {
+		log.Panic(err)
+	}
+	for rows.Next() {
+		err := rows.Scan(&u.UserID, &u.Pseudonyme, &u.Email, &u.Password, &u.Image)
+		if err != nil {
+			log.Panic(err)
+		}
+	}
+	return u
+}
+
 func resetGlobal(global *Global, data string) *Global {
 	if data == "Users" {
 		global.AllUsers = []Users{}
