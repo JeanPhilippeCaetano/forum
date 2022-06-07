@@ -1,15 +1,3 @@
-
-* {
-box-sizing: border-box;
-}
-
-body {
-font-family: "Montserrat", sans-serif;
-font-size: 12px;
-line-height: 1em;
-background-color: #faf0ca;
-}
-
 button {
 background-color: transparent;
 padding: 0;
@@ -133,7 +121,7 @@ color: #ccc;
     opacity: 1;
     visibility: visible;
     -webkit-transform: translate3d(0, 0, 0);
-            transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
 }
 }
 @keyframes showSignUp {
@@ -141,21 +129,22 @@ color: #ccc;
     opacity: 1;
     visibility: visible;
     -webkit-transform: translate3d(0, 0, 0);
-            transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
 }
 }
 /**
 * Page background
 */
 .user {
+    background-color: #faf0ca;
 display: -webkit-box;
 display: flex;
 -webkit-box-pack: center;
-        justify-content: center;
+justify-content: center;
 -webkit-box-align: center;
-        align-items: center;
+align-items: center;
 width: 100%;
-height: 100vh;
+height: 70vh;
 }
 .user_options-container {
 position: relative;
@@ -265,16 +254,16 @@ padding: 6px 20px 6px 6px;
 font-family: "Montserrat", sans-serif;
 font-size: 1rem;
 font-weight: 300;
-color: #8a1b05;
+color: #faf0ca;
 letter-spacing: 0.1rem;
 -webkit-transition: border-color 0.2s ease-in-out;
 transition: border-color 0.2s ease-in-out;
 }
 .user_options-forms .forms_field-input::placeholder{
-color: #8a1b05;
+color: #faf0ca;
 }
 .user_options-forms .forms_field-input:focus {
-border-color: #8a1b05;
+border-color: #faf0ca;
 }
 .user_options-forms .forms_buttons {
 display: -webkit-box;
@@ -288,7 +277,7 @@ margin-top: 35px;
 .user_options-forms .forms_buttons-forgot {
 font-family: "Montserrat", sans-serif;
 letter-spacing: 0.1rem;
-color: #8a1b05;
+color: #faf0ca;
 /* text-decoration: underline; */
 -webkit-transition: color 0.2s ease-in-out;
 transition: color 0.2s ease-in-out;
@@ -300,7 +289,7 @@ color: red;
 .user_options-forms .forms_buttons-signup button{
 cursor:pointer;
 font-size: large;
-color: #8a1b05;
+color: #faf0ca;
 }
 
 .user_options-forms .forms_buttons-signup button:hover{

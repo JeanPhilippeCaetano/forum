@@ -144,7 +144,6 @@
 }
 
 .sticky{
-    background-color: rgba(3, 52, 27, 0.74);
     padding: 10px 0;
 }
 
@@ -218,16 +217,12 @@
     .navbar-menu a:hover{
         color: #fff;
         background-color: #265580;
-        /* text-underline-position: below;
-        text-decoration: underline !important; */
-    }
-
-    .sticky .navbar-menu{
-        background-color: rgba(17, 54, 30, 1);
+        text-decoration: none !important;
     }
 
     .sticky .navbar-menu a:hover{
         color: #fff;
+        text-decoration: none !important;
     }
 
     .navbar-menu.active{
