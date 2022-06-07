@@ -1,3 +1,11 @@
+:root {
+    --blue: #10497e;
+    --beige: #faf0ca;
+    --yellow: #f4d35e;
+    --orange: #ee964b;
+    --brown: #8a1b05;
+}
+
 body {
     margin: 0;
     padding: 0;
@@ -6,8 +14,8 @@ body {
 .globale {
     display: flex;
     flex-direction: column;
-    background-color: #10497e;
-    height: 100vh;
+    background-color: var(--beige);
+    min-height: 100vh;
 }
 
 .header {
@@ -34,9 +42,9 @@ body {
 }
 
 .PP {
-    border: 2px red solid;
+    border: 2px var(--blue) solid;
     border-radius: 100%;
-    background-color: red;
+    background-color: var(--blue);
 }
 
 .post {
@@ -44,25 +52,26 @@ body {
     margin: .5%;
     display: flex;
     flex-direction: column;
-    border: 2px solid #f4d35e;
+    border: 2px solid var(--yellow);
     border-radius: 10px;
 }
 
 .userInfo {
     display: flex;
     flex-direction: row;
-    height: 25%;
 }
 
 .userInfo .PP {
     margin: 1.75%;
-    height: 70px;
-    width: 70px;
+    min-height: 70px;
+    max-height: 70px;
+    min-width: 70px;
+    max-width: 70px;
 }
 
 .username {
     margin: 3%;
-    color: white;
+    color: var(--brown);
     width: fit-content;
     font-size: 2em;
     font-weight: bold;
@@ -70,24 +79,28 @@ body {
 
 .postInfo {
     margin-top: 3%;
-    margin-left: 65%;
+    margin-left: auto;
+    margin-right: 2%;
     width:fit-content;
+    text-align: right;
     font-size: 1.5em;
     font-weight: bold;
-    color: white;
+    color: var(--brown);
 }
 
 .postText {
-    height: 75%;
+    /* min-height: 68%;
+    max-height: 68%; */
     margin: 1.5%;
-    border: 2px solid #f4d35e;
+    padding: 10px;
+    border: 2px solid var(--yellow);
     border-radius: 10px;
+    font-size: larger;
 }
 
 .writeCom {
-    height: 10%;
     margin: 10px;
-    border: 2px solid #f4d35e;
+    border: 2px solid var(--yellow);
     border-radius: 10px;
     display: flex;
     flex-direction: row;
@@ -96,33 +109,49 @@ body {
 .writeCom .PP {
     margin-top: .5%;
     margin-left: 1%;
-    height: 55px;
-    width: 55px;
+    margin-bottom: .5%;
+    min-height: 55px;
+    max-height: 55px;
+    min-width: 55px;
+    max-height: 55px;
 }
 
 .commentInput {
     margin: 1.5%;
     width: 80%;
+    background-color: var(--orange);
 }
 
 .subitComment {
     margin: 1.5%;
     width: 10%;
-    background-color: #ee964b;
-    border: 2px solid #ee964b;
+    background-color: var(--orange);
+    border: 2px solid var(--orange);
     border-radius: 10px;
 }
 
 .comments {
-    height: 25%;
     margin: 10px;
-    border: 2px solid #ee964b;
+    border: 2px solid var(--yellow);
     border-radius: 10px;
+    /* min-height: 25%;
+    max-height: fit-content; */
+}
+
+.noComYet {
+    margin: .5%;
+    padding: 1%;
+    border: 2px solid var(--yellow);
+    border-radius: 10px;
+    color: var(--brown);
+    text-align: center;
+    font-size: large;
 }
 
 .oneComment {
     margin: .5%;
-    border: 2px solid #ee964b;
+    padding: 1%;
+    border: 2px solid var(--yellow);
     border-radius: 10px;
     display: flex;
     flex-direction: row;
@@ -139,7 +168,7 @@ body {
 
 .oneComment .username {
     margin: 2%;
-    color: white;
+    color: var(--brown);
     width: fit-content;
     font-size: 1.5em;
     font-weight: bold;
@@ -147,9 +176,16 @@ body {
 
 .commentText {
     margin: .5%;
-    color: white;
+    color: var(--brown);
     width: fit-content;
     align-items: center;
+    font-size: large;
+}
+
+.trashcan {
+    margin-left: auto;
+    margin-right: 0;
+    color: var(--brown)
 }
 
 .rightSpace {

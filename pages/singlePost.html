@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 
 <head>
     <meta charset="UTF-8">
@@ -12,44 +12,48 @@
 
 <body>
     <div class="globale">
-        <div class="header"> Header by Emile </div>
+        <div class="header"><!-- Header by Emile --></div> 
         <div class="center">
             <div class="leftSpace"></div>
             <div class="displayPost">
                 <div class="post">
                     <div class="userInfo">
                         <div class="PP"></div>
-                        <div class="username">  </div>
+                        <div class="username"> pseudal </div>
                         <div class="postInfo">
-                            1520<i class="fa fa-heart" aria-hidden="true"></i> <br>
-                            456<i class="fa fa-comments" aria-hidden="true"></i>
+                            <div class="displayLikesValue" id="like" data-like='true'> 1520 <i onclick="likePost()" class="fa fa-heart-o" aria-hidden="true"></i></div>
+                            <div class="displayCommentsValue" id="com"> 212 <i onclick="document.getElementById('comInput').focus()"  class="fa fa-comments" aria-hidden="true"></i></div>
                         </div>
                     </div>
-                    <div class="postText"></div>
+                    <div class="postText">
+                        Oui bonjour je suis du texte en guise de test. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    </div>
                 </div>
                 <div class="writeCom">
                     <div class="PP"></div>
-                    <input type="text" name="comment" class="commentInput" placeholder="Écrivez votre réponse">
-                    <button class="subitComment"> Répondre </button>
+                    <input type="text" name="comment" class="commentInput" placeholder="Écrivez votre réponse" id="comInput">
+                    <button class="subitComment" id="subCom" onclick="validTextInput()"> Répondre </button>
                 </div>
-                <div class="comments">
-                    <div class="oneComment">
+                <div class="comments" id="divCom">
+                    <!-- <div class="oneComment">
+                        <div class="PP"></div>
+                        <div class="username"> Dr_DerpSkillls </div>
+                        <div class="commentText">Je fait des tests pour le texte.</div>
+                        <div class="trashcan"><i onclick="deletePost(this.id)" class="fa fa-trash-o" aria-hidden="true"></i></div>
+                    </div> -->
+                    <!-- <div class="oneComment">
                         <div class="PP"></div>
                         <div class="username"> Dr_DerpSkillls </div>
                         <div class="commentText">Je fait des tests pour le texte</div>
-                    </div>
-                    <div class="oneComment">
-                        <div class="PP"></div>
-                        <div class="username"> Dr_DerpSkillls </div>
-                        <div class="commentText">Je fait des tests pour le texte</div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
             <div class="rightSpace"></div>
         </div>
-        <div class="footer"> Footer by Emile </div>
+        <div class="footer"><!-- Footer by Emile --></div>
     </div>
-
+    <script src="../assets/js/singlePost.js">
+    </script>
 </body>
 
 </html>
