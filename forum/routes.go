@@ -49,4 +49,7 @@ func loadAllRoutes(global *Global) {
 	http.HandleFunc("/register", func(w http.ResponseWriter, r *http.Request) {
 		Register(w, r, global)
 	})
+	http.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) {
+		Login(w, r, global)
+	})
 }

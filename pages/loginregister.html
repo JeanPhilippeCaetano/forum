@@ -36,15 +36,15 @@
                         </div>
                         <fieldset class="forms_fieldset">
                             <div class="forms_field">
-                                <input type="email" placeholder="Email" class="forms_field-input" required autofocus />
+                                <input id="pseudologin" type="text" placeholder="Pseudo" class="forms_field-input" onkeyup="checkEmptyInputsSignIn()" required autofocus />
                             </div>
                             <div class="forms_field">
-                                <input type="password" placeholder="Password" class="forms_field-input" required />
+                                <input id="passwordlogin" type="password" placeholder="Password" class="forms_field-input" onkeyup="checkEmptyInputsSignIn()" required />
                             </div>
                         </fieldset>
                         <div class="forms_buttons">
                             <button type="button" class="forms_buttons-forgot">Forgot password?</button>
-                            <input id="signinBtn" type="submit" value="Log In" class="forms_buttons-action">
+                            <input id="signinBtn" type="button" value="Log In" class="forms_buttons-action" disabled="true" onclick="onLoginClick()">
                         </div>
                     </form>
                 </div>

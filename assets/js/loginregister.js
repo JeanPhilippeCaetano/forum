@@ -31,9 +31,17 @@ const checkEmptyInputsSignUp = () => {
     }
 }
 
+const checkEmptyInputsSignIn = () => {
+    const submitBtn = document.querySelector("#signinBtn")
+    const pseudoDiv = document.getElementById("pseudologin").value
+    const passwordDiv = document.getElementById("passwordlogin").value
+    if (pseudoDiv.length > 0 && passwordDiv.length > 0) {
+        submitBtn.disabled = false
+    }
+}
+
 const onRegisterClick = () => {
     const errorlog = document.querySelector(".user_forms-signup .forms_form .error_message p")
-    console.log(errorlog)
     fetch("/register", {
             method: "POST",
             headers: {
@@ -57,9 +65,30 @@ const onRegisterClick = () => {
         .catch(err => {
             errorlog.innerHTML = err.err
         })
-
 }
 
 const onLoginClick = () => {
-
+    const errorlog = document.querySelector(".user_forms-login .forms_form .error_message p")
+    fetch("/login", {
+            method: "POST",
+            headers: {
+                "content-type": "application/json"
+            },
+            body: JSON.stringify({
+                pseudo: document.getElementById("pseudologin").value,
+                password: document.getElementById("passwordlogin").value
+            })
+        })
+        .then(async(res) => {
+            if (!res.ok) {
+                throw await res.json()
+            }
+            return res.json()
+        })
+        .then(data => {
+            location.href = "/profil?pseudo=" + data.pseudo
+        })
+        .catch(err => {
+            errorlog.innerHTML = err.err
+        })
 }

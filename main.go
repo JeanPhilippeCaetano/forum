@@ -1,9 +1,11 @@
 package main
 
-import "forum/forum"
+import (
+	"forum/forum"
+)
 
 func main() {
-	// db := database.InitDatabase()
+	// db := forum.InitDatabase()
 	// global := &database.Global{}
 	// // forum.InsertData(forum.Users{}, db, "users", "ea", "esdsqs", "sdqsq", "dqsz")
 	// // forum.InsertData(forum.Users{}, db, "users", "easports", "j", "sdq", "dqz")
