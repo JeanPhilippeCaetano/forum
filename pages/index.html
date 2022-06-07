@@ -5,11 +5,49 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="./../static/popcreatepost.css">
+    <title>CreatePost</title>
 </head>
 
 <body>
+  <div id="post-popup" class="overlay">
+    <div class="popup">
+        <h2>Create a post</h2>
+        <a class="close" href="#">&times;</a>
+        <div class="content">
+            Choose tags (Up to 3):<br>
+            <div class="tags">
+              <button type="button">HTML/CSS</button>
+              <button type="button">JavaScript</button>
+              <button type="button">Java</button>
+              <button type="button">Python</button>
+              <button type="button">Mobile</button>
+              <button type="button">Appli/Logiciel</button>
+              <button type="button">GoLang</button>
+              <button type="button">SQL</button>
+            </div>
+            Choosed tags:
+            <div class="choosedTags">
+              <button type="button">HTML/CSS</button>
+              <button type="button">JavaScript</button>
+              <button type="button">Java</button>
+              <button type="button">Python</button>
+              <button type="button">Mobile</button>
+              <button type="button">Appli/Logiciel</button>
+              <button type="button">GoLang</button>
+              <button type="button">SQL</button>
+            </div>
 
+            <br>
+
+            Text:
+            <br>
+            <textarea placeholder="Tell us what you want to say." class="textZone" required autofocus></textarea>
+            <br>
+        </div>
+    </div>
+  </div>
+  <script type="text/javascript" src="/assets/js/popupPost.js"></script>
 </body>
 
 </html>
