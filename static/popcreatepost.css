@@ -51,10 +51,8 @@
     overflow: auto;
 }
 
-.textZone{
-    width: 550px;
-    height: 300px;
-    justify-content: start;
+.mytextarea{
+    resize: none;
 }
 
 .tags{
@@ -64,6 +62,34 @@
 
 .choosedTags{
     display: none;
+}
+
+.postButton{
+    display: flex;
+    width: 100%;
+    justify-content: right;
+}
+
+.buttonPost{
+    border-radius: 5px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    height: 30px;
+    width: 70px;
+    background-color: #ee964b;
+    border-color:#8a1b05 ;
+}
+
+.tagButton{
+    border-radius: 5px;
+    color: white;
+    font-size: 12px;
+    cursor: pointer;
+    height: 30px;
+    width: 70px;
+    background-color: #ee964b;
+    border-color:#8a1b05 ;
 }
 
 @media screen and (max-width: 700px) {
