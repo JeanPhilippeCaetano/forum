@@ -3,6 +3,7 @@
 <head>
     <link rel="stylesheet" href="../static/posts.css">
     <link rel="stylesheet" href="../static/headFoot.css">
+    <link rel="stylesheet" href="../static/popcreatepost.css">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,7 +23,7 @@
             <div class="hide-title"></div>
             <div class="space-between">
                 <button class="filter-toggler" onclick="openFilters()">Trier par</button>
-                <button class="filter-toggler" onclick="createPost()">Create Post</button>
+                <button class="filter-toggler" onclick="openPopup()">Create Post</button>
             </div>
         </div>
         <div class="filters-container">
@@ -64,9 +65,34 @@
         <div class="posts-container"></div>
     </section>
 
+    <div id="post-popup" class="overlay">
+        <div class="popup">
+            <h2>Create a post</h2>
+            <a class="close" onclick="closePopup()">&times;</a>
+            <form method="post">
+              <textarea id="mytextarea" style="resize: none;">Hello, World!</textarea>
+            </form>
+        <div class="content">
+            <h2>Choose tags:</h2>
+            <div class="tags tags-create-post">
+                <button value="javascript" class="tag tag-lg" onclick="addTagsPost(this.value)">javascript</button>
+                <button value="html/css" onclick="addTagsPost(this.value)" class="tag tag-lg">html/CSS</button>
+                <button value="golang" onclick="addTagsPost(this.value)" class="tag tag-lg">Golang</button>
+                <button value="java" onclick="addTagsPost(this.value)" class="tag tag-lg">Java</button>
+                <button value="python" onclick="addTagsPost(this.value)" class="tag tag-lg">Python</button>
+                <button value="mobile" onclick="addTagsPost(this.value)" class="tag tag-lg">Mobile</button>
+                <button value="appli/logiciel" onclick="addTagsPost(this.value)" class="tag tag-lg">Appli/Logiciel</button>
+            </div>
+        </div>
+        <div class="postButton">
+            <button class="buttonPost">Post</button>
+        </div>
+    </div>
     </div>
     {{template "footer"}}
 </body>
+
+<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 <script src="../assets/js/headFoot.js"></script>
 <script src="../assets/js/posts.js"></script>
 

@@ -93,6 +93,10 @@
     background: #09c372;
 }
 
+.tags-create-post.choosed {
+    background: #09c372;
+}
+
 .tag-sm {
     font-size: .7em;
     display: inline-block;
