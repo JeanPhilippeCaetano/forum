@@ -15,7 +15,7 @@ func Index(w http.ResponseWriter, r *http.Request) {
 }
 
 func PostsRoute(w http.ResponseWriter, r *http.Request) {
-	tmpl := template.Must(template.ParseFiles("./pages/posts.html", "./templates/header.html", "./templates/footer.html"))
+	tmpl := template.Must(template.ParseFiles("./pages/posts.html", "./templates/header.html", "./templates/footer.html", "./templates/previewPost.html"))
 	if r.Method != http.MethodPost {
 		tmpl.Execute(w, r)
 		return
