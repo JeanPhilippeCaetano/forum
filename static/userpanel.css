@@ -1,0 +1,15 @@
+body{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.searchbar .inputZone {
+    width: 900px;
+    display: block;
+}
+
+.suggestedUsers {
+    display: block;
+    width: 900px;
+}

@@ -6,7 +6,7 @@ import (
 )
 
 func Index(w http.ResponseWriter, r *http.Request) {
-	tmpl := template.Must(template.ParseFiles("./pages/index.html"))
+	tmpl := template.Must(template.ParseFiles("./pages/userpanel.html"))
 	if r.Method != http.MethodPost {
 		tmpl.Execute(w, r)
 		return
