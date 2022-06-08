@@ -7,15 +7,15 @@ body{
 #profile{
     display: flex;
     flex-direction: row;
+    width: 90%;
     justify-content: space-between;
     margin-left: 10%;
-    width: fit-content;
     align-items: center;
 }
 
 .imgContent{
-    height: 150px;
-    width: 150px;
+    height: 10em;
+    width: 10em;
 }
 
 .imgDiv{
@@ -42,6 +42,10 @@ body{
     flex-direction: column;
     margin-right: 10%;
     width: 70%;
+}
+
+.usersName{
+    color: #8a1b05;
 }
 
 .biography{
@@ -77,6 +81,48 @@ body{
     justify-content: center;
     background-color: red;
     margin-top: 1%;
-    width:100%;
+    width:75%;
+    margin-left: 12.5%;
     align-items: center;
+}
+
+@media screen and (max-width: 900px) {
+    
+    #profile{
+        flex-direction: column;
+        margin-top: 10%;
+        margin-left: 10%;
+    }
+
+    .conteneur{
+        width: 90%;
+    }
+
+    .imgContent{
+        margin-left: -10%;
+        width: 7em;
+        height: 7em;
+    }
+
+    .usersName{
+        font-size: 2rem;
+    }
+
+    i{
+        font-size: 1.5rem;
+    }
+
+    .biography{
+        width: 100%;
+    }
+
+    .buttonProfile{
+        font-size: 14px;
+        width: 35%;
+    }
+
+    .choiceContent{
+        margin-left: 0.5%;
+        width: 99%;
+    }
 }
