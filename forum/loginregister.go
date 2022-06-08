@@ -32,7 +32,7 @@ func Register(w http.ResponseWriter, r *http.Request, global *Global) {
 	var account RegParams
 	body, _ := ioutil.ReadAll(r.Body)
 	json.Unmarshal(body, &account)
-	_, err := InsertData(Users{}, global.Db, "users", account.Pseudo, account.Email, account.Password, "", "../assets/images/defaultProfil.jpg")
+	_, err := InsertData(Users{}, global.Db, "users", account.Pseudo, "Utilisateur", account.Email, account.Password, "", "../assets/images/defaultProfil.jpg")
 	if err != nil {
 		if err.Error() == "UNIQUE constraint failed: users.Email" {
 			http.Error(w, `{"err": "Mail déjà utilisé"}`, http.StatusBadRequest)

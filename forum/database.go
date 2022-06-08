@@ -12,6 +12,7 @@ import (
 type Users struct {
 	UserID     int
 	Pseudonyme string
+	Rank       string
 	Email      string
 	Password   string
 	Biography  string
@@ -53,6 +54,7 @@ func InitDatabase() *sql.DB {
 	(
 		UserID INTEGER PRIMARY KEY AUTOINCREMENT,
     	Pseudonyme TEXT NOT NULL UNIQUE,
+		Rank TEXT NOT NULL,
     	Email TEXT NOT NULL UNIQUE,
     	Password TEXT NOT NULL,
 		Biography TEXT NOT NULL,
@@ -99,7 +101,7 @@ func InitDatabase() *sql.DB {
 	return db
 }
 
-func parseParams(structure interface{}, table string, parameters ...string) string {
+func parseInsertParams(structure interface{}, table string, parameters ...string) string {
 	data := reflect.ValueOf(structure)
 	statement := "INSERT INTO " + table
 	attributes := "("
@@ -117,12 +119,30 @@ func parseParams(structure interface{}, table string, parameters ...string) stri
 	return statement + attributes + values
 }
 
+func parseUpdateParams(structure interface{}, table string, id int, parameters ...string) string {
+	data := reflect.ValueOf(structure)
+	statement := "UPDATE " + table + " SET "
+	setters := ""
+	for i := 1; i < data.NumField(); i++ {
+		setters += data.Type().Field(i).Name + " = "
+		setters += "'" + parameters[i-1] + "'"
+		if i != data.NumField()-1 {
+			setters += ","
+		}
+	}
+	setters += "WHERE " + data.Type().Field(0).Name + "='" + strconv.Itoa(id) + "'"
+	return statement + setters
+}
+
 func InsertData(structure interface{}, db *sql.DB, table string, parameters ...string) (sql.Result, error) {
-	statement := parseParams(structure, table, parameters...)
+	statement := parseInsertParams(structure, table, parameters...)
 	result, err := db.Exec(statement)
-	// if err != nil {
-	// 	log.Panic(err)
-	// }
+	return result, err
+}
+
+func UpdateData(structure interface{}, db *sql.DB, table string, id int, parameters ...string) (sql.Result, error) {
+	statement := parseUpdateParams(structure, table, id, parameters...)
+	result, err := db.Exec(statement)
 	return result, err
 }
 
@@ -155,7 +175,7 @@ func GetUser(db *sql.DB, table string, pseudo string) (Users, error) {
 	statement := "SELECT * FROM " + table + " WHERE Pseudonyme='" + pseudo + "'"
 	rows, err := db.Query(statement)
 	for rows.Next() {
-		err := rows.Scan(&u.UserID, &u.Pseudonyme, &u.Email, &u.Password, &u.Biography, &u.Image)
+		err := rows.Scan(&u.UserID, &u.Pseudonyme, &u.Rank, &u.Email, &u.Password, &u.Biography, &u.Image)
 		if err != nil {
 			log.Panic(err)
 		}
@@ -182,7 +202,7 @@ func DisplayRows(global *Global, rows *sql.Rows, structure interface{}) *Global 
 	for rows.Next() {
 		if data == "Users" {
 			var u Users
-			err := rows.Scan(&u.UserID, &u.Pseudonyme, &u.Email, &u.Password, &u.Biography, &u.Image)
+			err := rows.Scan(&u.UserID, &u.Pseudonyme, &u.Rank, &u.Email, &u.Password, &u.Biography, &u.Image)
 			if err != nil {
 				log.Panic(err)
 			}

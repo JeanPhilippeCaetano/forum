@@ -52,6 +52,7 @@ const onRegisterClick = () => {
                 email: document.getElementById("emailregister").value,
                 password: document.getElementById("passwordregister").value
             })
+
         })
         .then(async(res) => {
             if (!res.ok) {
