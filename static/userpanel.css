@@ -1,33 +1,34 @@
-
 .searchbar {
-display: flex;
-justify-content: center;
+    display: flex;
+    justify-content: center;
 
 }
 
 .searchbar .inputZone {
-width: 900px;
-display: block;
-font-size: 18px;
+    width: 900px;
+    display: block;
+    font-size: 18px;
 }
 
 .suggestedUsers {
-display:flex;
-width: 900px;
-background-color: #f4d35e;
-display: flex;
-flex-direction: column;
-justify-content: center;
+    display: flex;
+    width: 900px;
+    background-color: #f4d35e;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .user {
-width: 700px;
-color: white;
-background-color: #10497e;
+    height: fit-content;
+    color: #f4d35e;
+    background-color: #10497e;
+    display: flex;
+    flex-direction: row;
 }
 
 
-.searchUser{
+.searchUser {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -35,4 +36,26 @@ background-color: #10497e;
 
 .search-btn {
     width: 40px;
+}
+
+.userIcon {
+    width: 80px;
+}
+
+.pseudo{
+    display: flex;
+    justify-content: start;
+    width: 80px;
+    font-size: large;
+    margin-right: 20px;
+}
+
+.regDate{
+    font-size: small;
+}
+
+.biography{
+    font-size: medium;
+    display: flex;
+    
 }

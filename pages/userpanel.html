@@ -1,46 +1,51 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 
 <head>
-<link rel="stylesheet" href="../static/style.css">
-<link rel="stylesheet" href="../static/headFoot.css">
-<link rel="stylesheet" href=" ./../../static/userpanel.css">
+    <link rel="stylesheet" href="../static/style.css">
+    <link rel="stylesheet" href="../static/headFoot.css">
+    <link rel="stylesheet" href=" ./../../static/userpanel.css">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css" integrity="sha512-xA6Hp6oezhjd6LiLZynuukm80f8BoZ3OpcEYaqKoCV3HKQDrYjDE1Gu8ocxgxoXmwmSzM4iqPvCsOkQNiu41GA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css"
+        integrity="sha512-xA6Hp6oezhjd6LiLZynuukm80f8BoZ3OpcEYaqKoCV3HKQDrYjDE1Gu8ocxgxoXmwmSzM4iqPvCsOkQNiu41GA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+        integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-<meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=*, initial-scale=1.0">
-<title>Tuc'rack</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=*, initial-scale=1.0">
+    <title>Tuc'rack</title>
 
-
-<title>Tuc'rack</title>
 </head>
 
-<body>
-{{template "header"}}
-<br>
-<section class="searchUser">
-<div class="searchbar">
-    <input type="search" placeholder="Which user do you want to search ?" class="inputZone" required autofocus>
-    <button type="submit" class="search-btn"><i class="fa fa-search"></i></button>
-</div>
-<br>
-<div class="suggestedUsers">
-    <div class="user">Pseudo regDate <br>Biography<br><br></div>
-    <div class="user">Pseudo regDate <br>Biography<br><br></div>
-    <div class="user">Pseudo regDate <br>Biography<br><br></div>
-    <div class="user">Pseudo regDate <br>Biography<br><br></div>
-    <div class="user">Pseudo regDate <br>Biography<br><br></div>
-</div>
 
-</section>
-<br>
-{{template "footer"}}
+<body>
+    {{template "header"}}
+    <br>
+    <section class="searchUser">
+        <div class="searchbar">
+            <input type="search" placeholder="Quel utilisateur cherchez-vous ?" class="inputZone" required autofocus>
+            <button type="submit" class="search-btn"><i class="fa fa-search"></i></button>
+        </div>
+        <br>
+        <div class="suggestedUsers">
+            <button class="user"><img class="userIcon" src="https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png"><div class="pseudo">Pseudo</div><div class="regDate">regDate</div><div class="biography">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Odio provident omnis porro consequatur molestiae harum quod quasi ratione? Error, aliquam. Molestiae minima minus exercitationem sed fugit. Vitae praesentium sed totam!</div></button>
+            <button class="user"><img class="userIcon" src="https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png"><div class="pseudo">Pseudo</div><div class="regDate">regDate</div><div class="biography">Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste, inventore mollitia laborum nam cumque fuga soluta corporis vero, esse a natus saepe tempore debitis voluptatum architecto doloremque distinctio veritatis excepturi!</div></button>
+            <button class="user"><img class="userIcon" src="https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png"><div class="pseudo">Pseudo</div><div class="regDate">regDate</div><div class="biography">Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem error inventore possimus delectus amet odio laboriosam magnam iusto ullam. Nihil fuga quam explicabo sint tempora cumque quos earum reiciendis quibusdam.</div></button>
+            <button class="user"><img class="userIcon" src="https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png"><div class="pseudo">Pseudo</div><div class="regDate">regDate</div><div class="biography">Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum repellendus iusto libero aliquam harum in accusantium quidem! Eum ea, quisquam illo repellendus sapiente nesciunt ad. Deleniti suscipit culpa ipsam aliquam?</div></button>
+            <button class="user"><img class="userIcon" src="https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png"><div class="pseudo">Pseudo</div><div class="regDate">regDate</div><div class="biography">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur beatae molestias, autem omnis, numquam reiciendis dolorum nemo ratione, exercitationem praesentium cum totam sapiente possimus culpa voluptates! Doloribus dolorem tenetur quas?</div></button>
+            <button class="user"><img class="userIcon" src="https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png"><div class="pseudo">Pseudo</div><div class="regDate">regDate</div><div class="biography">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Earum pariatur eaque aliquid debitis sunt quaerat, iusto at quas illum itaque suscipit dicta eius, vitae necessitatibus magni reiciendis? Sed, iusto modi?</div></button>
+        </div>
+    </section>
+    <br>
+    {{template "footer"}}
 </body>
 <script type="text/javascript" src="./../assets/js/suggestedUsers.js"></script>
 
