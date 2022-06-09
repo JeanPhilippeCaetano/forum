@@ -3,6 +3,8 @@
 
 <head>
     <link rel="stylesheet" href="../static/pageProfil.css">
+    <link rel="stylesheet" href="../static/headFoot.css">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,6 +18,8 @@
 </head>
 
 <body>
+    {{template "header"}}
+    <div class="content">
     <section id="profile">
         <div class="imgContent">
             <div class="imgDiv">
@@ -44,6 +48,8 @@
             <h1>Test</h1>
         <!-- </div> -->
     </div>
+</div>
+    {{template "footer"}}
 </body>
 
 </html>
