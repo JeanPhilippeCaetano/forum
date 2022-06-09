@@ -164,9 +164,12 @@
     background-color: #faf0ca;
 }
 
-.comment-post {
-    padding: 5px 10px 0 0;
+.icons-post {
     align-self: flex-end;
+}
+
+.comment-posts {
+    padding: 2px 2px 2px 2px;
 }
 
 /* pagination */
