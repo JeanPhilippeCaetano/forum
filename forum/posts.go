@@ -2,6 +2,7 @@ package forum
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"strconv"
@@ -11,7 +12,7 @@ import (
 type NewPostParams struct {
 	Title   string
 	Content string
-	Tags    string
+	Tags    string `json:"tags"`
 }
 
 type ModifyPostParams struct {
@@ -28,7 +29,9 @@ type PostParams struct {
 func AddPost(w http.ResponseWriter, r *http.Request, global *Global) {
 	var Post NewPostParams
 	body, _ := ioutil.ReadAll(r.Body)
+	fmt.Println(string(body))
 	json.Unmarshal(body, &Post)
+	fmt.Println(Post.Tags)
 	result, _ := InsertData(Posts{}, global.Db, "posts", "pseudo", "0", Post.Title, Post.Content, Post.Tags, "0", time.Now().Format("2006.01.02 15:04:05"))
 	postId, _ := result.LastInsertId()
 	w.Write([]byte("{\"postID\": \"" + strconv.FormatInt(postId, 10) + "\"}"))
