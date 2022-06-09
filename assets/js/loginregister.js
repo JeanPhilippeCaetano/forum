@@ -26,7 +26,10 @@ const checkEmptyInputsSignUp = () => {
     const pseudoDiv = document.getElementById("pseudoregister").value
     const emailDiv = document.getElementById("emailregister").value
     const passwordDiv = document.getElementById("passwordregister").value
-    if (pseudoDiv.length > 0 && emailDiv.length > 0 && passwordDiv.length > 0) {
+    if (pseudoDiv.length > 0 && emailDiv.length > 0 && passwordDiv.length > 0 && emailDiv.toLowerCase()
+        .match(
+            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        )) {
         submitBtn.disabled = false
     }
 }

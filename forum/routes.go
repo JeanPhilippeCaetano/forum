@@ -13,9 +13,23 @@ func Pageprofil(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 }
+func Index(w http.ResponseWriter, r *http.Request) {
+	tmpl := template.Must(template.ParseFiles("./pages/index.html", "./templates/header.html", "./templates/footer.html"))
+	if r.Method != http.MethodPost {
+		tmpl.Execute(w, r)
+		return
+	}
+}
 
 func Pagemodifprofil(w http.ResponseWriter, r *http.Request) {
 	tmpl := template.Must(template.ParseFiles("./pages/pageModifProfil.html"))
+	if r.Method != http.MethodPost {
+		tmpl.Execute(w, r)
+		return
+	}
+}
+func PostsRoute(w http.ResponseWriter, r *http.Request) {
+	tmpl := template.Must(template.ParseFiles("./pages/posts.html", "./templates/header.html", "./templates/footer.html", "./templates/previewPost.html"))
 	if r.Method != http.MethodPost {
 		tmpl.Execute(w, r)
 		return
@@ -42,6 +56,9 @@ func loadAllRoutes(global *Global) {
 	})
 	http.HandleFunc("/modifprofil", func(w http.ResponseWriter, r *http.Request) {
 		Pagemodifprofil(w, r)
+	})
+	http.HandleFunc("/posts", func(w http.ResponseWriter, r *http.Request) {
+		PostsRoute(w, r)
 	})
 	http.HandleFunc("/loginregister", func(w http.ResponseWriter, r *http.Request) {
 		LoginRegister(w, r)
