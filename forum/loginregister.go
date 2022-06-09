@@ -53,6 +53,9 @@ func Login(w http.ResponseWriter, r *http.Request, global *Global) {
 	if u.Pseudonyme == "" {
 		http.Error(w, `{"err": "Compte inexistant."}`, http.StatusBadRequest)
 		return
+	} else if u.Pseudonyme == account.Pseudo && u.Password != account.Password {
+		http.Error(w, `{"err": "Mauvais mot de passe."}`, http.StatusBadRequest)
+		return
 	}
 	session, _ := store.Get(r, "cookie-name")
 	session.Values["authenticated"] = account.Pseudo

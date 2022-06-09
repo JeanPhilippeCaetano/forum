@@ -7,11 +7,11 @@ import (
 )
 
 type Global struct {
-	AllUsers         []Users
-	AllPosts         []Posts
-	AllPostsComments []PostComments
-	AllComments      []Comments
-	Db               *sql.DB
+	AllUsers []Users
+	AllPosts []Posts
+	// AllPostsComments []PostComments
+	// AllComments      []Comments
+	Db *sql.DB
 }
 
 func Server() {

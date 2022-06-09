@@ -19,27 +19,28 @@ type Users struct {
 	Image      string
 }
 
-type PostComments struct {
-	CommentID int
-	Content   string
-	SenderID  int
-	PostID    int
-	Likes     int
-	Date      string
-}
+// type PostComments struct {
+// 	CommentID int
+// 	Content   string
+// 	SenderID  int
+// 	PostID    int
+// 	Likes     int
+// 	Date      string
+// }
 
-type Comments struct {
-	CommentID  int
-	Content    string
-	SenderID   int
-	ReceiverID int
-	Likes      int
-	Date       string
-}
+// type Comments struct {
+// 	CommentID  int
+// 	Content    string
+// 	SenderID   int
+// 	ReceiverID int
+// 	Likes      int
+// 	Date       string
+// }
 
 type Posts struct {
 	PostID   int
 	SenderID int
+	ParentID int
 	Title    string
 	Content  string
 	Tags     string
@@ -60,40 +61,44 @@ func InitDatabase() *sql.DB {
 		Biography TEXT NOT NULL,
     	Image TEXT NOT NULL 
 	);
-	CREATE TABLE IF NOT EXISTS postcomments
-	(
-		CommentID INTEGER PRIMARY KEY AUTOINCREMENT,
-		Content TEXT NOT NULL,
-		SenderID INTEGER NOT NULL,
-		PostID INTEGER NOT NULL,
-		Likes INTEGER NOT NULL,
-		Date DATE NOT NULL,
-		FOREIGN KEY(SenderID) REFERENCES users(UserID),
-		FOREIGN KEY(PostID) REFERENCES posts(PostID)
-	);
+	
 	CREATE TABLE IF NOT EXISTS posts
 	(
 		PostID INTEGER PRIMARY KEY AUTOINCREMENT,
 		SenderID INTEGER NOT NULL,
-		Title TEXT NOT NULL,
+		ParentID INTEGER NOT NULL,
+		Title TEXT,
 		Content TEXT NOT NULL,
-		Tags TEXT NOT NULL,
-		Likes INTEGER NOT NULL,
-		Date DATE NOT NULL,
-		FOREIGN KEY(SenderID) REFERENCES users(UserID)
-	);
-	CREATE TABLE IF NOT EXISTS comments
-	(
-		CommentID INTEGER PRIMARY KEY AUTOINCREMENT,
-		Content TEXT NOT NULL,
-		SenderID INTEGER NOT NULL,
-		ReceiverID INTEGER NOT NULL,
+		Tags TEXT,
 		Likes INTEGER NOT NULL,
 		Date DATE NOT NULL,
 		FOREIGN KEY(SenderID) REFERENCES users(UserID),
-		FOREIGN KEY(ReceiverID) REFERENCES users(UserID)
+		FOREIGN Key(ParentID) REFERENCES posts(PostID)
 	);
+
 	`
+	// CREATE TABLE IF NOT EXISTS postcomments
+	// (
+	// 	CommentID INTEGER PRIMARY KEY AUTOINCREMENT,
+	// 	Content TEXT NOT NULL,
+	// 	SenderID INTEGER NOT NULL,
+	// 	PostID INTEGER NOT NULL,
+	// 	Likes INTEGER NOT NULL,
+	// 	Date DATE NOT NULL,
+	// 	FOREIGN KEY(SenderID) REFERENCES users(UserID),
+	// 	FOREIGN KEY(PostID) REFERENCES posts(PostID)
+	// );
+	// CREATE TABLE IF NOT EXISTS comments
+	// (
+	// 	CommentID INTEGER PRIMARY KEY AUTOINCREMENT,
+	// 	Content TEXT NOT NULL,
+	// 	SenderID INTEGER NOT NULL,
+	// 	ReceiverID INTEGER NOT NULL,
+	// 	Likes INTEGER NOT NULL,
+	// 	Date DATE NOT NULL,
+	// 	FOREIGN KEY(SenderID) REFERENCES users(UserID),
+	// 	FOREIGN KEY(ReceiverID) REFERENCES users(UserID)
+	// );
 	db.Exec(statement)
 	if err != nil {
 		log.Panic(err)
@@ -186,14 +191,26 @@ func GetUser(db *sql.DB, table string, pseudo string) (Users, error) {
 func resetGlobal(global *Global, data string) *Global {
 	if data == "Users" {
 		global.AllUsers = []Users{}
-	} else if data == "Comments" {
-		global.AllComments = []Comments{}
-	} else if data == "PostComments" {
-		global.AllPostsComments = []PostComments{}
+		// } else if data == "Comments" {
+		// 	global.AllComments = []Comments{}
+		// } else if data == "PostComments" {
+		// 	global.AllPostsComments = []PostComments{}
 	} else if data == "Posts" {
 		global.AllPosts = []Posts{}
 	}
 	return global
+}
+
+func DisplayOnePost(rows *sql.Rows) Posts {
+	for rows.Next() {
+		var p Posts
+		err := rows.Scan(&p.PostID, &p.SenderID, &p.ParentID, &p.Title, &p.Content, &p.Likes, &p.Date)
+		if err != nil {
+			log.Panic(err)
+		}
+		return p
+	}
+	return Posts{}
 }
 
 func DisplayRows(global *Global, rows *sql.Rows, structure interface{}) *Global {
@@ -207,23 +224,23 @@ func DisplayRows(global *Global, rows *sql.Rows, structure interface{}) *Global 
 				log.Panic(err)
 			}
 			global.AllUsers = append(global.AllUsers, u)
-		} else if data == "PostComments" {
-			var pc PostComments
-			err := rows.Scan(&pc.CommentID, &pc.Content, &pc.SenderID, &pc.PostID, &pc.Likes, &pc.Date)
-			if err != nil {
-				log.Panic(err)
-			}
-			global.AllPostsComments = append(global.AllPostsComments, pc)
-		} else if data == "Comments" {
-			var c Comments
-			err := rows.Scan(&c.CommentID, &c.Content, &c.SenderID, &c.ReceiverID, &c.Likes, &c.Date)
-			if err != nil {
-				log.Panic(err)
-			}
-			global.AllComments = append(global.AllComments, c)
+			// } else if data == "PostComments" {
+			// 	var pc PostComments
+			// 	err := rows.Scan(&pc.CommentID, &pc.Content, &pc.SenderID, &pc.PostID, &pc.Likes, &pc.Date)
+			// 	if err != nil {
+			// 		log.Panic(err)
+			// 	}
+			// 	global.AllPostsComments = append(global.AllPostsComments, pc)
+			// } else if data == "Comments" {
+			// 	var c Comments
+			// 	err := rows.Scan(&c.CommentID, &c.Content, &c.SenderID, &c.ReceiverID, &c.Likes, &c.Date)
+			// 	if err != nil {
+			// 		log.Panic(err)
+			// 	}
+			// 	global.AllComments = append(global.AllComments, c)
 		} else if data == "Posts" {
 			var p Posts
-			err := rows.Scan(&p.PostID, &p.SenderID, &p.Title, &p.Content, &p.Likes, &p.Date)
+			err := rows.Scan(&p.PostID, &p.SenderID, &p.ParentID, &p.Title, &p.Content, &p.Likes, &p.Date)
 			if err != nil {
 				log.Panic(err)
 			}
