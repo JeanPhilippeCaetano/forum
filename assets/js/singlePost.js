@@ -1,3 +1,4 @@
+const body = document.querySelector('body')
 const commentsDiv = document.getElementById('divCom')
 const commentInput = document.getElementById('comInput')
 const commentButton = document.getElementById('subCom')
@@ -18,17 +19,18 @@ const noComYet = () => {
     }
 }
 
-const likePost = () => {
-    const displayLike = document.getElementById('like')
+const likePost = (id) => {
+    let displayLike = document.getElementById(id)
+    console.log(displayLike, id)
     let likesNbr = parseInt(displayLike.innerHTML.split('<')[0])
     if (displayLike.hasAttribute("data-like") == true) {
         likesNbr += 1
         displayLike.removeAttribute('data-like')
-        displayLike.innerHTML = likesNbr.toString() + ' <i onclick="likePost()" class="fa fa-heart" aria-hidden="true">'
+        displayLike.innerHTML = likesNbr.toString() + ` <i class="fa fa-heart"></i> <i onclick="likePost('` + id + `')" class="fas fa-heart-broken"></i>`
     } else if (displayLike.hasAttribute("data-like") == false) {
         likesNbr -= 1
         displayLike.setAttribute('data-like', true)
-        displayLike.innerHTML =  likesNbr.toString() + ' <i onclick="likePost()" class="fa fa-heart-o" aria-hidden="true">'
+        displayLike.innerHTML =  likesNbr.toString() + ` <i class="far fa-heart"></i> <i onclick="likePost('` + id + `')" class="fa fa-heart"></i>`
     }  
 }
 
@@ -37,7 +39,7 @@ const validTextInput = () => {
     if (comInput.value.length != 0 && char == true) {
         pushCom() 
     } else {
-        alert('Input text empty')
+        createCustomAlert('Vous ne pouvez pas poster un commentaire vide !')
     }
     comInput.value = ""
 }
@@ -70,10 +72,27 @@ const pushCom = () => {
     textDiv.innerHTML = commentInput.value
     comDiv.appendChild(textDiv)
 
-    let trashcanDiv = document.createElement('div')
-    trashcanDiv.setAttribute('class', 'trashcan')
-    trashcanDiv.innerHTML = `<i onclick="deletePost(this.parentElement.parentElement.id)" class="fa fa-trash-o" aria-hidden="true"></i>`
-    comDiv.appendChild(trashcanDiv)
+    let iconDiv = document.createElement('div')
+    iconDiv.setAttribute('class', 'icons')
+
+    let likeDiv = document.createElement('div')
+    likeDiv.setAttribute('class', 'like')
+    likeDiv.setAttribute('data-like', true)
+    likeDiv.setAttribute('id', 'likeCom' + commentsIds)
+    likeDiv.innerHTML = 2 + ` <i class="far fa-heart"></i><i onclick="likePost('likeCom` + commentsIds + `')"" class="fa fa-heart"></i>`
+    iconDiv.appendChild(likeDiv)
+
+    let answerDiv = document.createElement('div')
+    answerDiv.setAttribute('class', 'com')
+    answerDiv.innerHTML = 12 + ` <i class="fa fa-comments" aria-hidden="true"></i>`
+    iconDiv.appendChild(answerDiv)
+
+    let trashcanEditDiv = document.createElement('div')
+    trashcanEditDiv.setAttribute('class', 'trashcanEdit')
+    trashcanEditDiv.innerHTML = `<i onclick="console.log('edit post')" class="fas fa-edit"></i> <i onclick="deletePost(this.parentElement.parentElement.parentElement.id)" class="fas fa-trash-alt"></i>`
+    iconDiv.appendChild(trashcanEditDiv)
+
+    comDiv.appendChild(iconDiv)
 
     commentsDiv.appendChild(comDiv)
     commentsIds += 1
@@ -103,4 +122,44 @@ const revomeComPost = () => {
     noComYet()
 }
 
+function createCustomAlert(txt) {
+    const d = document
+
+	if(d.getElementById("modalContainer")) return;
+
+	mObj = body.appendChild(d.createElement("div"));
+	mObj.id = "modalContainer";
+	mObj.style.height = d.documentElement.scrollHeight + "px";
+	
+	alertObj = mObj.appendChild(d.createElement("div"));
+	alertObj.id = "alertBox";
+	alertObj.style.left = 35 + "%";
+	alertObj.style.visiblity="visible";
+
+	h1 = alertObj.appendChild(d.createElement("h1"));
+	h1.appendChild(d.createTextNode('Oops!'));
+
+	msg = alertObj.appendChild(d.createElement("p"));
+	msg.innerHTML = txt;
+
+	btn = alertObj.appendChild(d.createElement("a"));
+	btn.id = "closeBtn";
+	btn.appendChild(d.createTextNode('OK'));
+	btn.href = "#";
+	btn.focus();
+	btn.onclick = function() { removeCustomAlert();return false; }
+
+	alertObj.style.display = "block";
+	
+}
+
+function removeCustomAlert() {
+	body.removeChild(document.getElementById("modalContainer"));
+}
+
 noComYet()
+window.addEventListener('keyup', function(event) {
+    if (event.keyCode === 13) {
+        validTextInput()
+    }
+})

@@ -80,12 +80,32 @@ body {
 .postInfo {
     margin-top: 3%;
     margin-left: auto;
-    margin-right: 2%;
+    margin-right: 3%;
     width:fit-content;
     text-align: right;
     font-size: 1.5em;
     font-weight: bold;
     color: var(--brown);
+}
+
+.displayLikesValue, .displayCommentsValue .i{
+    cursor: pointer;
+}
+
+.displayLikesValue :nth-child(1) {
+    display: inline;
+}
+
+.displayLikesValue :nth-child(2) {
+    display: none;
+}
+
+.displayLikesValue:hover :nth-child(1) {
+    display: none;
+}
+
+.displayLikesValue:hover :nth-child(2) {
+    display: inline;
 }
 
 .postText {
@@ -96,6 +116,15 @@ body {
     border: 2px solid var(--yellow);
     border-radius: 10px;
     font-size: larger;
+}
+
+.edit {
+    margin-left: auto;
+    margin-right: .5%;
+    margin-bottom: .5%;
+    text-align: right;
+    color: var(--brown);
+    cursor: pointer;
 }
 
 .writeCom {
@@ -182,10 +211,43 @@ body {
     font-size: large;
 }
 
-.trashcan {
+.icons {
     margin-left: auto;
-    margin-right: 0;
-    color: var(--brown)
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: right;
+}
+
+.icons .like {
+    color: var(--brown);
+    cursor: pointer;
+}
+
+.icons .like :nth-child(1) {
+    display: inline;
+}
+
+.icons .like :nth-child(2) {
+    display: none;
+}
+
+.icons .like:hover :nth-child(1) {
+    display: none;
+}
+
+.icons .like:hover :nth-child(2) {
+    display: inline;
+}
+
+.icons .com {
+    color: var(--brown);
+    cursor: pointer;
+}
+
+.icons .trashcanEdit {
+    color: var(--brown);
+    cursor: pointer;
 }
 
 .rightSpace {
@@ -197,4 +259,56 @@ body {
     /* border-top: 2px solid black; */
     text-align: center;
     margin-bottom: 2%;
+}
+
+/* css pour la pop up d'alerte lors d'une entrée invalide pour un commentaire */
+
+#modalContainer {
+	background-color:rgba(0, 0, 0, 0.3);
+    position: absolute;
+    top:0;
+	width:100%;
+	height:100%;
+	left:0px;
+	z-index:1;
+	background-image:url(tp.png); /* required by MSIE to prevent actions on lower z-index elements */
+}
+
+#alertBox {
+	width:30%;
+    height: fit-content;
+	border:1px solid #fff;
+	background-color:#fff;
+    top:15%;
+}
+
+#modalContainer > #alertBox {
+	position:fixed;
+}
+
+#alertBox h1 {
+	margin:0;
+	font:bold 1em;
+	background-color:var(--orange);
+	border-bottom:1px solid var(--orange);
+    color:#FFF;
+	padding:10px 0 10px 5px;
+}
+
+#alertBox p {
+	height:50px;
+    padding: 30px 0 40px 0;
+    text-align:center;
+    vertical-align:middle;
+}
+
+#alertBox #closeBtn {
+	display:block;
+	position:relative;
+	margin:10px auto 10px auto;
+	padding:7px;
+	width:70px;
+	text-align:center;
+	color:#FFF;
+	background-color:var(--orange);
 }
