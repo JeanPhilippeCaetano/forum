@@ -52,4 +52,16 @@ func loadAllRoutes(global *Global) {
 	http.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) {
 		Login(w, r, global)
 	})
+	http.HandleFunc("/getposts", func(w http.ResponseWriter, r *http.Request) {
+		GetPosts(w, r, global)
+	})
+	http.HandleFunc("/getpost", func(w http.ResponseWriter, r *http.Request) {
+		GetPost(w, r, global)
+	})
+	http.HandleFunc("/modifypost", func(w http.ResponseWriter, r *http.Request) {
+		ModifyPost(w, r, global)
+	})
+	http.HandleFunc("/addpost", func(w http.ResponseWriter, r *http.Request) {
+		AddPost(w, r, global)
+	})
 }

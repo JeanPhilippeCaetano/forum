@@ -202,15 +202,14 @@ func resetGlobal(global *Global, data string) *Global {
 }
 
 func DisplayOnePost(rows *sql.Rows) Posts {
+	var p Posts
 	for rows.Next() {
-		var p Posts
 		err := rows.Scan(&p.PostID, &p.SenderID, &p.ParentID, &p.Title, &p.Content, &p.Likes, &p.Date)
 		if err != nil {
 			log.Panic(err)
 		}
-		return p
 	}
-	return Posts{}
+	return p
 }
 
 func DisplayRows(global *Global, rows *sql.Rows, structure interface{}) *Global {
