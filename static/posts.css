@@ -18,7 +18,7 @@
     position: fixed;
     display: flex;
     align-items: center;
-    z-index: 1;
+    z-index: 3;
 }
 
 .space-between {
@@ -56,6 +56,7 @@
                 0 8px 16px rgba(0,0,0,0.07),
                 0 16px 32px rgba(0,0,0,0.07), 
                 0 32px 64px rgba(0,0,0,0.07);
+    z-index: 2;
 }
 
 .filters-container.open {
@@ -164,9 +165,12 @@
     background-color: #faf0ca;
 }
 
-.comment-post {
-    padding: 5px 10px 0 0;
+.icons-post {
     align-self: flex-end;
+}
+
+.comment-posts {
+    padding: 2px 2px 2px 2px;
 }
 
 /* pagination */
@@ -214,4 +218,5 @@
 .pagination\:active {
     background: #faf0ca;
     position: relative;
+    z-index: 1;
 }
