@@ -1,0 +1,320 @@
+.inner-the-team {
+    padding-top: 10vh;
+    background-color: #FAF0CA;
+    height: fit-content;
+    width: 100%;
+    padding-right: 10%;
+    padding-left: 10%;
+    padding-bottom: 10vh;
+}
+
+.right img {
+    align-self: flex-end;
+    width: 60px;
+    height: 60px;
+    margin-bottom: 20px;
+}
+
+.right .right-square-text {
+    align-self: flex-end;
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+.square-job {
+    height: fit-content;
+}
+
+/* debut carte emile   */
+.emile {
+    display:flex;
+    flex-direction: row;
+    width: 100%;
+    height: fit-content;
+}
+
+
+.emile .square-text {
+    font-size: 2rem;
+    font-weight: 500;
+    padding: 0px 20px 0px 20px;
+    background-color: #10497E;
+    text-align: center;
+    border-radius: 5px;
+    color: white;
+    margin-bottom: 20px;
+}
+
+.emile h2 {
+    text-transform: uppercase;
+    font-size: 2rem;
+}
+
+.emile h3 {
+    font-size: 1.5rem;
+}
+
+.emile .left {
+    width: 40%;
+}
+
+.emile .right {
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+    height: fit-content;
+}
+
+/* fin carte emile */
+
+/* debut carte JP  */
+.JP {
+    display:flex;
+    flex-direction: row;
+    width: 100%;
+    height: fit-content;
+}
+
+
+.JP .square-text {
+    font-size: 2rem;
+    font-weight: 500;
+    padding: 0px 20px 0px 20px;
+    background-color: #EE964B;
+    text-align: center;
+    border-radius: 5px;
+    color: white;
+    margin-bottom: 20px;
+}
+
+.JP h2 {
+    text-transform: uppercase;
+    font-size: 2rem;
+}
+
+.JP h3 {
+    font-size: 1.5rem;
+}
+
+.JP .left {
+    width: 40%;
+}
+
+.JP .right {
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+    height: fit-content;
+}
+
+/* fin carte JP */
+
+/* debut carte quentin  */
+.quentin {
+    display:flex;
+    flex-direction: row;
+    width: 100%;
+    height: fit-content;
+}
+
+
+.quentin .square-text {
+    font-size: 2rem;
+    font-weight: 500;
+    padding: 0px 20px 0px 20px;
+    background-color: #10497E;
+    text-align: center;
+    border-radius: 5px;
+    color: white;
+    margin-bottom: 20px;
+}
+
+.quentin h2 {
+    text-transform: uppercase;
+    font-size: 2rem;
+}
+
+.quentin h3 {
+    font-size: 1.5rem;
+}
+
+.quentin .left {
+    width: 40%;
+}
+
+.quentin .right {
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+    height: fit-content;
+}
+
+/* fin carte quentin */
+
+/* debut carte james  */
+.james {
+    display:flex;
+    flex-direction: row;
+    width: 100%;
+    height: fit-content;
+}
+
+
+.james .square-text {
+    font-size: 2rem;
+    font-weight: 500;
+    padding: 0px 20px 0px 20px;
+    background-color: #EE964B;
+    text-align: center;
+    border-radius: 5px;
+    color: white;
+    margin-bottom: 20px;
+}
+
+.james h2 {
+    text-transform: uppercase;
+    font-size: 2rem;
+}
+
+.james h3 {
+    font-size: 1.5rem;
+}
+
+.james .left {
+    width: 40%;
+}
+
+.james .right {
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+    height: fit-content;
+}
+
+/* fin carte james */
+
+/* debut carte amaury  */
+.amaury {
+    display:flex;
+    flex-direction: row;
+    width: 100%;
+    height: fit-content;
+}
+
+
+.amaury .square-text {
+    font-size: 2rem;
+    font-weight: 500;
+    padding: 0px 20px 0px 20px;
+    background-color: #10497E;
+    text-align: center;
+    border-radius: 5px;
+    color: white;
+    margin-bottom: 20px;
+}
+
+.amaury h2 {
+    text-transform: uppercase;
+    font-size: 2rem;
+}
+
+.amaury h3 {
+    font-size: 1.5rem;
+}
+
+.amaury .left {
+    width: 40%;
+}
+
+.amaury .right {
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+    height: fit-content;
+}
+
+/* fin carte amaury */
+
+@media screen and (max-width: 900px) {
+    .emile .square-text {
+        font-size: 2.5vw;
+    }
+
+    .emile h2 {
+        font-size:3vw;
+        font-weight: 500;
+    }
+
+    .emile h3 {
+        font-size:2.5vw;
+    }
+
+    .JP .square-text {
+        font-size: 2.5vw;
+    }
+
+    .JP h2 {
+        font-size:3vw;
+        font-weight: 500;
+    }
+
+    .JP h3 {
+        font-size:2.5vw;
+    }
+
+    .quentin .square-text {
+        font-size: 2.5vw;
+    }
+
+    .quentin h2 {
+        font-size:3vw;
+        font-weight: 500;
+    }
+
+    .quentin h3 {
+        font-size:2.5vw;
+    }
+
+    .james .square-text {
+        font-size: 2.5vw;
+    }
+
+    .james h2 {
+        font-size:3vw;
+        font-weight: 500;
+    }
+
+    .james h3 {
+        font-size:2.5vw;
+    }
+
+    .amaury .square-text {
+        font-size: 2.5vw;
+    }
+
+    .amaury h2 {
+        font-size:3vw;
+        font-weight: 500;
+    }
+
+    .amaury h3 {
+        font-size:2.5vw;
+    }
+
+    .right img {
+        margin-bottom: 0px;
+    }
+
+    .right .right-square-text {
+        font-size: 2.75vw;
+    }
+}
+
+.separator-team {
+    content: "";
+    height: 2px;
+    width: 100%;
+    margin-top: 10px;
+    border: 1px solid rgba(3, 52, 27, 0.6);
+    margin-bottom: 20px;
+}
