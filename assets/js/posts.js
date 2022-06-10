@@ -74,7 +74,28 @@ const createPost = () => {
 
 /* Get All Posts */
 
-const getPosts = () => {}
+const addPostDiv = (id, title, username, image, content) => {
+    const section = document.createElement("SECTION")
+    section.setAttribute("id", "post" + id)
+    const innerPost = document.createElement("div")
+    innerPost.className = "inner-post"
+    const infoUser = document.createElement("div")
+    infoUser.className = "info-user"
+    const imgCtn = document.createElement("div")
+    imgCtn.className = "img-ctn"
+    const usernameDiv = document.createElement("div")
+    usernameDiv.className = "username"
+    const titleDiv = document.createElement("div")
+    titleDiv.className = "title"
+
+
+
+    section.addElementChild()
+}
+
+const getPosts = () => {
+
+}
 
 /* End Get All Posts */
 
