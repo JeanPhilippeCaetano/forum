@@ -108,6 +108,28 @@ body {
     display: inline;
 }
 
+.titleNtags{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-left: 2%;
+    margin-right: 2%;
+}
+
+.title, .tags {
+    color: var(--brown);
+    font-weight: bold;
+}
+
+.title {
+    font-size: 2em;
+}
+
+.tags {
+    font-size: 1.3em;
+    align-self: flex-end;
+}
+
 .postText {
     /* min-height: 68%;
     max-height: 68%; */
