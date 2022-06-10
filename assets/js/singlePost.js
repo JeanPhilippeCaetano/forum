@@ -157,6 +157,22 @@ function removeCustomAlert() {
 	body.removeChild(document.getElementById("modalContainer"));
 }
 
+const loadPage = () => {
+    fetch("/singlepost", {
+        method: "POST",
+        headers: {
+            "content-type": "application/json"
+        },
+    })
+    .then(async(res) => {
+        if (!res.ok) {
+            throw await res.json()
+        }
+        return res.json()
+    })
+}
+
+loadPage()
 noComYet()
 window.addEventListener('keyup', function(event) {
     if (event.keyCode === 13) {
