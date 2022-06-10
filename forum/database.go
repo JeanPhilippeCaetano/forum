@@ -2,6 +2,7 @@ package forum
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
 	"reflect"
 	"strconv"
@@ -54,10 +55,10 @@ func InitDatabase() *sql.DB {
 	CREATE TABLE IF NOT EXISTS users
 	(
 		UserID INTEGER PRIMARY KEY AUTOINCREMENT,
-    	Pseudonyme TEXT NOT NULL UNIQUE,
+    	Pseudonyme TEXT NOT NULL UNIQUE CHECK(length(Pseudonyme) <= 16),
 		Rank TEXT NOT NULL,
     	Email TEXT NOT NULL UNIQUE,
-    	Password TEXT NOT NULL,
+    	Password TEXT NOT NULL CHECK(length(Password) <= 16),
 		Biography TEXT NOT NULL,
     	Image TEXT NOT NULL 
 	);
@@ -66,14 +67,14 @@ func InitDatabase() *sql.DB {
 	(
 		PostID INTEGER PRIMARY KEY AUTOINCREMENT,
 		SenderID INTEGER NOT NULL,
-		ParentID INTEGER NOT NULL,
+		ParentID INTEGER,
 		Title TEXT,
 		Content TEXT NOT NULL,
 		Tags TEXT,
 		Likes INTEGER NOT NULL,
 		Date DATE NOT NULL,
 		FOREIGN KEY(SenderID) REFERENCES users(UserID),
-		FOREIGN Key(ParentID) REFERENCES posts(PostID)
+		FOREIGN KEY(ParentID) REFERENCES posts(PostID)
 	);
 
 	`
@@ -106,14 +107,14 @@ func InitDatabase() *sql.DB {
 	return db
 }
 
-func parseInsertParams(structure interface{}, table string, parameters ...string) string {
+func parseInsertParams(structure interface{}, table string, parameters ...interface{}) string {
 	data := reflect.ValueOf(structure)
 	statement := "INSERT INTO " + table
 	attributes := "("
 	values := "VALUES("
 	for i := 1; i < data.NumField(); i++ {
 		attributes += data.Type().Field(i).Name
-		values += "'" + parameters[i-1] + "'"
+		values += "?"
 		if i != data.NumField()-1 {
 			attributes += ","
 			values += ","
@@ -124,13 +125,22 @@ func parseInsertParams(structure interface{}, table string, parameters ...string
 	return statement + attributes + values
 }
 
-func parseUpdateParams(structure interface{}, table string, id int, parameters ...string) string {
+func InsertData(structure interface{}, db *sql.DB, table string, parameters ...interface{}) (sql.Result, error) {
+	statement := parseInsertParams(structure, table, parameters...)
+	fmt.Println(parameters...)
+	fmt.Println(statement)
+	result, err := db.Exec(statement, parameters...)
+	fmt.Println(err)
+	return result, err
+}
+
+func parseUpdateParams(structure interface{}, table string, id int, parameters ...interface{}) string {
 	data := reflect.ValueOf(structure)
 	statement := "UPDATE " + table + " SET "
 	setters := ""
 	for i := 1; i < data.NumField(); i++ {
 		setters += data.Type().Field(i).Name + " = "
-		setters += "'" + parameters[i-1] + "'"
+		setters += "?"
 		if i != data.NumField()-1 {
 			setters += ","
 		}
@@ -139,15 +149,9 @@ func parseUpdateParams(structure interface{}, table string, id int, parameters .
 	return statement + setters
 }
 
-func InsertData(structure interface{}, db *sql.DB, table string, parameters ...string) (sql.Result, error) {
-	statement := parseInsertParams(structure, table, parameters...)
-	result, err := db.Exec(statement)
-	return result, err
-}
-
-func UpdateData(structure interface{}, db *sql.DB, table string, id int, parameters ...string) (sql.Result, error) {
-	statement := parseUpdateParams(structure, table, id, parameters...)
-	result, err := db.Exec(statement)
+func UpdateData(structure interface{}, db *sql.DB, table string, id int, parameters ...interface{}) (sql.Result, error) {
+	statement := parseUpdateParams(structure, table, id, parameters)
+	result, err := db.Exec(statement, parameters)
 	return result, err
 }
 

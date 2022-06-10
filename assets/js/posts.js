@@ -74,9 +74,7 @@ const createPost = () => {
 
 /* Get All Posts */
 
-const getPosts = () => {
-    const modelDiv =
-}
+const getPosts = () => {}
 
 /* End Get All Posts */
 

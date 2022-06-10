@@ -40,6 +40,12 @@ func Register(w http.ResponseWriter, r *http.Request, global *Global) {
 		} else if err.Error() == "UNIQUE constraint failed: users.Pseudonyme" {
 			http.Error(w, `{"err": "Pseudo déjà utilisé"}`, http.StatusBadRequest)
 			return
+		} else if err.Error() == "CHECK constraint failed: length(Pseudonyme) <= 16" {
+			http.Error(w, `{"err": "Le pseudonyme ne doit pas dépasser 16 caractères"}`, http.StatusBadRequest)
+			return
+		} else if err.Error() == "CHECK constraint failed: length(Password) <= 16" {
+			http.Error(w, `{"err": "Le mot de passe ne doit pas dépasser 16 caractères"}`, http.StatusBadRequest)
+			return
 		}
 	}
 	w.Write([]byte("{\"pseudo\": \"" + account.Pseudo + "\"}"))
