@@ -243,10 +243,12 @@ func DisplayRows(global *Global, rows *sql.Rows, structure interface{}) *Global 
 			// 	global.AllComments = append(global.AllComments, c)
 		} else if data == "Posts" {
 			var p Posts
-			err := rows.Scan(&p.PostID, &p.SenderID, &p.ParentID, &p.Title, &p.Content, &p.Likes, &p.Date)
+			var parentId sql.NullInt64
+			err := rows.Scan(&p.PostID, &p.SenderID, &parentId, &p.Title, &p.Content, &p.Tags, &p.Likes, &p.Date)
 			if err != nil {
 				log.Panic(err)
 			}
+			p.ParentID = int(parentId.Int64)
 			global.AllPosts = append(global.AllPosts, p)
 		}
 	}

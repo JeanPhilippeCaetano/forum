@@ -81,19 +81,68 @@ const addPostDiv = (id, title, username, image, content) => {
     innerPost.className = "inner-post"
     const infoUser = document.createElement("div")
     infoUser.className = "info-user"
+
     const imgCtn = document.createElement("div")
     imgCtn.className = "img-ctn"
+    const img = document.createElement("img")
+    img.setAttribute("src", image)
     const usernameDiv = document.createElement("div")
     usernameDiv.className = "username"
+    usernameDiv.innerText = username
     const titleDiv = document.createElement("div")
     titleDiv.className = "title"
+    titleDiv.innerText = title
 
+    const contentDiv = document.createElement("div")
+    contentDiv.className = "text-ctn"
+    contentDiv.innerHTML = content
 
+    const icons = document.createElement("div")
+    icons.className = "icons-post"
+    const likeIcon = document.createElement("i")
+    likeIcon.className = "comment-posts fa fa-heart"
+    const commentsIcon = document.createElement("i")
+    commentsIcon.className = "comment-posts fa fa-comments"
 
-    section.addElementChild()
+    imgCtn.appendChild(img)
+
+    icons.appendChild(likeIcon)
+    icons.appendChild(commentsIcon)
+
+    infoUser.appendChild(imgCtn)
+    infoUser.appendChild(usernameDiv)
+    infoUser.appendChild(titleDiv)
+
+    innerPost.appendChild(infoUser)
+    innerPost.appendChild(contentDiv)
+    innerPost.appendChild(icons)
+
+    section.appendChild(innerPost)
+    document.querySelector(".all-posts").appendChild(section)
 }
 
 const getPosts = () => {
+    fetch("/getposts", {
+            method: "POST",
+            headers: {
+                "content-type": "application/json"
+            },
+        })
+        .then(async(res) => {
+            if (!res.ok) {
+                throw await res.json()
+            }
+            return res.json()
+        })
+        .then(data => {
+            data.forEach(element => {
+                addPostDiv(element.PostID, element.Title, element.SenderID, "../assets/images/defaultProfil.jpg", element.Content)
+            })
+        })
+        .catch(err => {
+            console.log(err)
+        })
+
 
 }
 
@@ -242,7 +291,7 @@ const pagination = () => {
 }
 
 
-
+getPosts()
 
 pagination()
 
