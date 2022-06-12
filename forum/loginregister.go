@@ -24,6 +24,10 @@ type LogParams struct {
 	Password string
 }
 
+type UserID struct {
+	Id int
+}
+
 type User struct {
 	Pseudo string
 }
@@ -67,6 +71,15 @@ func Login(w http.ResponseWriter, r *http.Request, global *Global) {
 	session.Values["authenticated"] = account.Pseudo
 	session.Save(r, w)
 	w.Write([]byte("{\"pseudo\": \"" + account.Pseudo + "\"}"))
+}
+
+func GetUserFromId(w http.ResponseWriter, r *http.Request, global *Global) {
+	var u UserID
+	bd, _ := ioutil.ReadAll(r.Body)
+	json.Unmarshal(bd, &u)
+	user := DisplayOneUser(GetDataFromTableWithID(Users{}, global.Db, "users", u.Id))
+	body, _ := json.MarshalIndent(user, "", "")
+	w.Write(body)
 }
 
 func GetInfos(w http.ResponseWriter, r *http.Request, global *Global) {

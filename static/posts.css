@@ -224,6 +224,7 @@
 
 .icons-post {
     align-self: flex-end;
+    display: inline-flex;
 }
 
 .comment-posts {

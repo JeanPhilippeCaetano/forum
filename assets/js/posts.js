@@ -74,7 +74,7 @@ const createPost = () => {
 
 /* Get All Posts */
 
-const addPostDiv = (id, title, username, image, content) => {
+const addPostDiv = (id, title, username, image, content, likes) => {
     const section = document.createElement("SECTION")
     section.setAttribute("id", "post" + id)
     const innerPost = document.createElement("div")
@@ -106,6 +106,9 @@ const addPostDiv = (id, title, username, image, content) => {
 
     imgCtn.appendChild(img)
 
+    const likesDiv = document.createElement("div")
+    likesDiv.innerHTML = likes
+    icons.appendChild(likesDiv)
     icons.appendChild(likeIcon)
     icons.appendChild(commentsIcon)
 
@@ -119,6 +122,31 @@ const addPostDiv = (id, title, username, image, content) => {
 
     section.appendChild(innerPost)
     document.querySelector(".all-posts").appendChild(section)
+}
+
+const getUser = (userID) => {
+    const promise = fetch("/getuser", {
+            method: "POST",
+            headers: {
+                "content-type": "application/json"
+            },
+            body: JSON.stringify({
+                id: userID
+            })
+        })
+        .then(async(res) => {
+            if (!res.ok) {
+                throw await res.json()
+            }
+            return res.json()
+        })
+        .then(data => {
+            return data
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    return promise
 }
 
 const getPosts = () => {
@@ -136,8 +164,9 @@ const getPosts = () => {
         })
         .then(data => {
             data.forEach(element => {
-                addPostDiv(element.PostID, element.Title, element.SenderID, "../assets/images/defaultProfil.jpg", element.Content)
+                (getUser(element.SenderID)).then(userData => addPostDiv(element.PostID, element.Title, userData.Pseudonyme, userData.Image, (element.Content).substr(0, 250), element.Likes))
             })
+
         })
         .catch(err => {
             console.log(err)

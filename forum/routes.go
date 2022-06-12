@@ -69,6 +69,9 @@ func loadAllRoutes(global *Global) {
 	http.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) {
 		Login(w, r, global)
 	})
+	http.HandleFunc("/getuser", func(w http.ResponseWriter, r *http.Request) {
+		GetUserFromId(w, r, global)
+	})
 	http.HandleFunc("/getposts", func(w http.ResponseWriter, r *http.Request) {
 		GetPosts(w, r, global)
 	})

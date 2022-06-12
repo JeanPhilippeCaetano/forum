@@ -216,6 +216,17 @@ func DisplayOnePost(rows *sql.Rows) Posts {
 	return p
 }
 
+func DisplayOneUser(rows *sql.Rows) Users {
+	var u Users
+	for rows.Next() {
+		err := rows.Scan(&u.UserID, &u.Pseudonyme, &u.Rank, &u.Email, &u.Password, &u.Biography, &u.Image)
+		if err != nil {
+			log.Panic(err)
+		}
+	}
+	return u
+}
+
 func DisplayRows(global *Global, rows *sql.Rows, structure interface{}) *Global {
 	data := reflect.TypeOf(structure).Name()
 	global = resetGlobal(global, data)
