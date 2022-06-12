@@ -23,7 +23,12 @@
             <div class="hide-title"></div>
             <div class="space-between">
                 <button class="filter-toggler" onclick="openFilters()">Trier par</button>
-                <button class="filter-toggler" onclick="openPopup()">Create Post</button>
+                <div class="search-box">
+                  <button class="btn-search"><i class="fas fa-search"></i></button>
+                  <input type="text" class="input-search" placeholder="Type to Search...">
+                </div>
+                <button class="filter-toggler new-post" onclick="openPopup()">Create Post</button>
+                <button class="filter-toggler cruz" onclick="openPopup()"><i class="fas fa-plus"></i></button>
             </div>
         </div>
         <div class="filters-container">
