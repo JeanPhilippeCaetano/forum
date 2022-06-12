@@ -150,6 +150,15 @@ const getUser = (userID) => {
 }
 
 const getPosts = () => {
+    const queryString = window.location.search
+    const params = Object.fromEntries(new URLSearchParams(queryString))
+    let searchValue = "";
+    if (params.search != null) {
+        searchValue = params.search
+    }
+    const postsDiv = document.querySelector(".all-posts")
+    postsDiv.innerHTML = ""
+    console.log(searchValue)
     fetch("/getposts", {
             method: "POST",
             headers: {
@@ -164,7 +173,12 @@ const getPosts = () => {
         })
         .then(data => {
             data.forEach(element => {
-                (getUser(element.SenderID)).then(userData => addPostDiv(element.PostID, element.Title, userData.Pseudonyme, userData.Image, (element.Content).substr(0, 250), element.Likes))
+                (getUser(element.SenderID)).then(userData => {
+                    console.log(userData.Pseudonyme)
+                    if (userData.Pseudonyme.includes(searchValue) || element.Content.includes(searchValue) || element.Title.includes(searchValue)) {
+                        addPostDiv(element.PostID, element.Title, userData.Pseudonyme, userData.Image, (element.Content).substr(0, 245), element.Likes)
+                    }
+                })
             })
 
         })
@@ -176,6 +190,18 @@ const getPosts = () => {
 }
 
 /* End Get All Posts */
+
+/* Searchbar */
+
+const changeSearchValue = () => {
+    const searchInput = document.querySelector(".input-search")
+    const url = new URL(window.location);
+    url.searchParams.set("search", searchInput.value)
+    window.history.replaceState({}, '', url)
+    getPosts()
+}
+
+/* End searchbar */
 
 /* Create post text zone */
 
