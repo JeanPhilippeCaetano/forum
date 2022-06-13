@@ -28,7 +28,7 @@
                 <button class="filter-toggler" onclick="openFilters()">Trier par</button>
                 <div class="search-box">
                     <button class="btn-search"><i class="fas fa-search"></i></button>
-                    <input type="text" class="input-search" placeholder="Type to Search...">
+                    <input type="text" class="input-search" placeholder="Type to Search..." onkeyup="changeSearchValue()">
                 </div>
                 <button class="filter-toggler new-post" onclick="openPopup()">Create Post</button>
                 <button class="filter-toggler cruz" onclick="openPopup()"><i class="fas fa-plus"></i></button>
@@ -73,7 +73,7 @@
         <div class="posts-container">
             <div class="hide-bar"></div>
             <div class="all-posts">
-
+                {{template "previewPost"}}
             </div>
             <div class="pagination:container">
                 <a onclick="goToPrev()" value="left" class="pagination:number arrow prev">

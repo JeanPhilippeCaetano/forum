@@ -1,3 +1,14 @@
+const postsData = {
+    maxPosts: 0,
+    postsPerPage: 10,
+    page: 1,
+    count: 3,
+    firstSlide: 1,
+    secondSlide: 2,
+    thirdSlide: 3,
+    fourthSlide: 4,
+    fifthSlide: 5
+}
 const addChoosed = (value) => {
     const tags = document.querySelector(".tags-filters")
     tags.childNodes.forEach(elem => {
@@ -149,7 +160,7 @@ const getUser = (userID) => {
     return promise
 }
 
-const checkValue = (value) => {
+const checkValue = (value, userData, element) => {
     if (userData.Pseudonyme.toLowerCase().includes(value.toLowerCase()) ||
         element.Content.toLowerCase().includes(value.toLowerCase()) ||
         element.Title.toLowerCase().includes(value.toLowerCase()) ||
@@ -160,10 +171,23 @@ const checkValue = (value) => {
     return false
 }
 
+const checkValueFromPage = (index) => {
+    const slides = document.querySelectorAll(".slide")
+    console.log(slides)
+    const firstPage = slides[0].innerHTML
+    const lastPage = slides[slides.length - 1].innerHTML
+    console.log(index)
+    if ((firstPage <= index) && (index <= lastPage)) {
+        return true
+    }
+    return false
+}
+
 const getPosts = () => {
     const queryString = window.location.search
     const params = Object.fromEntries(new URLSearchParams(queryString))
     let searchValue = "";
+    postsData.maxPosts = 0
     if (params.search != null) {
         searchValue = params.search
     }
@@ -183,13 +207,24 @@ const getPosts = () => {
             return res.json()
         })
         .then(data => {
-            data.forEach(element => {
+            data.forEach((element) => {
                 (getUser(element.SenderID)).then(userData => {
-                    if (checkValue(value)) {
+                    if (checkValue(searchValue, userData, element)) {
+                        postsData.maxPosts += 1
+                        postsData.page = Math.ceil(postsData.maxPosts / 10)
+                        initPagination()
+
+                    }
+                })
+            })
+            data.forEach((element, index) => {
+                (getUser(element.SenderID)).then(userData => {
+                    if (checkValueFromPage(index)) {
                         addPostDiv(element.PostID, element.Title, userData.Pseudonyme, userData.Image, (element.Content).substr(0, 245), element.Likes)
                     }
                 })
             })
+
         })
         .catch(err => {
             console.log(err)
@@ -201,14 +236,13 @@ const getPosts = () => {
 /* Searchbar */
 
 const changeSearchValue = () => {
-    const searchInput = document.querySelector(".input-search")
-    const url = new URL(window.location);
-    url.searchParams.set("search", searchInput.value)
-    window.history.replaceState({}, '', url)
-    getPosts()
-}
-
-/* End searchbar */
+        const searchInput = document.querySelector(".input-search")
+        const url = new URL(window.location);
+        url.searchParams.set("search", searchInput.value)
+        window.history.replaceState({}, '', url)
+        getPosts()
+    }
+    /* End searchbar */
 
 /* Create post text zone */
 
@@ -236,26 +270,9 @@ tinymce.init({
 
 /* Pagination */
 
-
-const postsData = {
-    maxPosts: 235,
-    postsPerPage: 10,
-    page: Math.ceil(235 / 10),
-    count: 3,
-    firstSlide: 1,
-    secondSlide: 2,
-    thirdSlide: 3,
-    fourthSlide: 4,
-    fifthSlide: 5
-}
-
 const initMaxPages = () => {
-    let tab = []
-    for (let i = 1; i < Math.ceil(postsData.maxPosts / postsData.postsPerPage); i++) {
-        tab.push(i)
-    }
+    postsData.page = Math.ceil(postsData.maxPosts / 10)
 }
-
 
 const removeClasses = () => {
     const slides = document.querySelectorAll(".slide");
@@ -278,8 +295,6 @@ const initPagination = () => {
     slides[3].innerHTML = 4
     slides[4].innerHTML = Math.ceil(postsData.maxPosts / postsData.postsPerPage)
 }
-
-initPagination()
 
 const goToNext = () => {
     const slides = document.querySelectorAll(".slide");
@@ -349,3 +364,5 @@ const changerInnerText = (first, second, third, fourth, fifth) => {
 }
 
 /* end Pagination */
+
+getPosts()

@@ -3,6 +3,7 @@
 
 <head>
     <link href="../static/loginregister.css" rel="stylesheet">
+    <link rel="stylesheet" href="../static/headFoot.css">
 
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -11,6 +12,7 @@
 </head>
 
 <body>
+    {{template "header"}}
     <section class="user">
         <div class="user_options-container">
             <div class="user_options-text">
@@ -75,8 +77,7 @@
             </div>
         </div>
     </section>
-
-
+    {{template "footer"}}
     <!----------Designed By Pradeep Singh Tomar------------>
 
 </body>
