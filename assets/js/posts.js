@@ -163,7 +163,6 @@ const goToNum = (value) => {
 
 const changerInnerText = (first, second, third, fourth, fifth) => {
     const slides = document.querySelectorAll(".slide");
-
     slides[0].innerHTML = first
     slides[1].innerHTML = second
     slides[2].innerHTML = third
