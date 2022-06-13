@@ -28,7 +28,7 @@
                 <button class="filter-toggler" onclick="openFilters()">Trier par</button>
                 <div class="wrap">
                     <div class="search">
-                        <input type="text" class="searchTerm" placeholder="Search Post?">
+                        <input type="text" class="searchTerm" placeholder="Search Post?" onkeyup="changeSearchValue()">
                         <button type="submit" class="searchButton">
                             <i class="fas fa-search"></i>
                         </button>
@@ -77,7 +77,6 @@
         <div class="posts-container">
             <div class="hide-bar"></div>
             <div class="all-posts">
-                {{template "previewPost"}}
             </div>
             <div class="pagination:container">
                 <a onclick="goToPrev()" value="left" class="pagination:number arrow prev">

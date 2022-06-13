@@ -166,12 +166,16 @@ const checkValue = (value, userData, element) => {
 }
 
 const checkValueFromPage = (index) => {
-    const slides = document.querySelectorAll(".slide")
-    console.log(slides)
-    const firstPage = slides[0].innerHTML
-    const lastPage = slides[slides.length - 1].innerHTML
-    console.log(index)
-    if ((firstPage <= index) && (index <= lastPage)) {
+    const slides = [...document.querySelectorAll(".slide")]
+    let currentPage;
+    slides.forEach(element => {
+        if (element.classList.contains("pagination:active")) {
+            currentPage = parseInt(element.innerHTML) - 1
+        }
+    })
+    const firstNum = postsData.postsPerPage * currentPage + 1
+    const lastNum = postsData.postsPerPage * currentPage + postsData.postsPerPage
+    if ((firstNum <= index + 1) && (index + 1 <= lastNum)) {
         return true
     }
     return false
@@ -202,18 +206,18 @@ const getPosts = () => {
         })
         .then(data => {
             data.forEach((element) => {
-                (getUser(element.SenderID)).then(userData => {
-                    if (checkValue(searchValue, userData, element)) {
-                        postsData.maxPosts += 1
-                        postsData.page = Math.ceil(postsData.maxPosts / 10)
-                        initPagination()
-
-                    }
+                    (getUser(element.SenderID)).then(userData => {
+                        if (checkValue(searchValue, userData, element)) {
+                            postsData.maxPosts += 1
+                            postsData.page = Math.ceil(postsData.maxPosts / 10)
+                            console.log(postsData.maxPosts, postsData.page)
+                        }
+                    })
                 })
-            })
+                // initPagination()
             data.forEach((element, index) => {
                 (getUser(element.SenderID)).then(userData => {
-                    if (checkValueFromPage(index)) {
+                    if (checkValue(searchValue, userData, element)) {
                         addPostDiv(element.PostID, element.Title, userData.Pseudonyme, userData.Image, (element.Content).substr(0, 245), element.Likes)
                     }
                 })
@@ -230,7 +234,7 @@ const getPosts = () => {
 /* Searchbar */
 
 const changeSearchValue = () => {
-        const searchInput = document.querySelector(".input-search")
+        const searchInput = document.querySelector(".searchTerm")
         const url = new URL(window.location);
         url.searchParams.set("search", searchInput.value)
         window.history.replaceState({}, '', url)
@@ -278,6 +282,7 @@ const addClasses = (current) => {
 }
 
 const initPagination = () => {
+    console.log(postsData.page)
     const slides = document.querySelectorAll(".slide");
     const slideType = [slides[0], slides[1], slides[2], slides[3], slides[4]]
     const parent = document.querySelector(".display-pages")
@@ -329,6 +334,7 @@ const goToNext = () => {
             }
         }
     }
+    getPosts()
 }
 
 const goToPrev = () => {
@@ -360,6 +366,7 @@ const goToPrev = () => {
             }
         }
     }
+    getPosts()
 }
 
 const goToNum = (value) => {
@@ -385,6 +392,7 @@ const goToNum = (value) => {
     } else {
         addClasses(index - 1)
     }
+    getPosts()
 }
 
 const changerInnerText = (first, second, third, fourth, fifth) => {
@@ -399,3 +407,4 @@ const changerInnerText = (first, second, third, fourth, fifth) => {
 /* end Pagination */
 
 getPosts()
+    // initPagination()
