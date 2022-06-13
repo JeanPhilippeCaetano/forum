@@ -149,6 +149,17 @@ const getUser = (userID) => {
     return promise
 }
 
+const checkValue = (value) => {
+    if (userData.Pseudonyme.toLowerCase().includes(value.toLowerCase()) ||
+        element.Content.toLowerCase().includes(value.toLowerCase()) ||
+        element.Title.toLowerCase().includes(value.toLowerCase()) ||
+        value == ""
+    ) {
+        return true
+    }
+    return false
+}
+
 const getPosts = () => {
     const queryString = window.location.search
     const params = Object.fromEntries(new URLSearchParams(queryString))
@@ -174,19 +185,15 @@ const getPosts = () => {
         .then(data => {
             data.forEach(element => {
                 (getUser(element.SenderID)).then(userData => {
-                    console.log(userData.Pseudonyme)
-                    if (userData.Pseudonyme.includes(searchValue) || element.Content.includes(searchValue) || element.Title.includes(searchValue)) {
+                    if (checkValue(value)) {
                         addPostDiv(element.PostID, element.Title, userData.Pseudonyme, userData.Image, (element.Content).substr(0, 245), element.Likes)
                     }
                 })
             })
-
         })
         .catch(err => {
             console.log(err)
         })
-
-
 }
 
 /* End Get All Posts */
