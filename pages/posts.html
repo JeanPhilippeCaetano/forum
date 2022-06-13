@@ -23,9 +23,13 @@
             <div class="hide-title"></div>
             <div class="space-between">
                 <button class="filter-toggler" onclick="openFilters()">Trier par</button>
-                <div class="search-box">
-                  <button class="btn-search"><i class="fas fa-search"></i></button>
-                  <input type="text" class="input-search" placeholder="Type to Search...">
+                <div class="wrap">
+                    <div class="search">
+                        <input type="text" class="searchTerm" placeholder="Search Post?">
+                        <button type="submit" class="searchButton">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
                 </div>
                 <button class="filter-toggler new-post" onclick="openPopup()">Create Post</button>
                 <button class="filter-toggler cruz" onclick="openPopup()"><i class="fas fa-plus"></i></button>
@@ -80,25 +84,10 @@
               </a>
               
               <div class="display-pages">
-                  <a onclick="goToNum(this)"class="slide pagination:active pagination:number">
-                    
-                  </a>
-  
-                  <a onclick="goToNum(this)"class="slide mid-left pagination:number after">
-                    
-                  </a>
-                  
-                  <a onclick="goToNum(this)"class="slide mid pagination:number">
-                    
-                  </a>
-                  
-                  <a onclick="goToNum(this)"class="slide mid-right pagination:number">
-                    
-                  </a>
-
-                  <a onclick="goToNum(this)"class="slide pagination:number">
-                    
-                  </a>
+                  <a onclick="goToNum(this)"class="slide pagination:active pagination:number"></a>
+                  <a onclick="goToNum(this)"class="slide mid-left pagination:number after"></a>
+                  <a onclick="goToNum(this)"class="slide mid pagination:number"></a>
+                  <a onclick="goToNum(this)"class="slide mid-right pagination:number"></a><a onclick="goToNum(this)"class="slide pagination:number"></a>
               </div>
                 
               <a onclick="goToNext()" class="pagination:number arrow next">
