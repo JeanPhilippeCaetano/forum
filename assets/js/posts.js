@@ -2,12 +2,6 @@ const postsData = {
     maxPosts: 0,
     postsPerPage: 10,
     page: 1,
-    count: 3,
-    firstSlide: 1,
-    secondSlide: 2,
-    thirdSlide: 3,
-    fourthSlide: 4,
-    fifthSlide: 5
 }
 const addChoosed = (value) => {
     const tags = document.querySelector(".tags-filters")
@@ -270,10 +264,6 @@ tinymce.init({
 
 /* Pagination */
 
-const initMaxPages = () => {
-    postsData.page = Math.ceil(postsData.maxPosts / 10)
-}
-
 const removeClasses = () => {
     const slides = document.querySelectorAll(".slide");
     slides.forEach(elem => {
@@ -289,68 +279,111 @@ const addClasses = (current) => {
 
 const initPagination = () => {
     const slides = document.querySelectorAll(".slide");
-    slides[0].innerHTML = 1
-    slides[1].innerHTML = 2
-    slides[2].innerHTML = 3
-    slides[3].innerHTML = 4
-    slides[4].innerHTML = Math.ceil(postsData.maxPosts / postsData.postsPerPage)
+    const slideType = [slides[0], slides[1], slides[2], slides[3], slides[4]]
+    const parent = document.querySelector(".display-pages")
+    if (postsData.page > 5) {
+        slides[0].innerHTML = 1
+        slides[1].innerHTML = 2
+        slides[2].innerHTML = 3
+        slides[3].innerHTML = 4
+        slides[4].innerHTML = postsData.page
+    } else {
+        for (let i = 0; i < slides.length; i++) {
+            slides[i].remove()
+        }
+        for (let i = 0; i < postsData.page; i++) {
+            slideType[i].innerHTML = i + 1
+            parent.append(slideType[i])
+        }
+        addClasses(0)
+    }
+
 }
 
 const goToNext = () => {
     const slides = document.querySelectorAll(".slide");
-    if (slides[0].classList.contains("pagination:active")) {
-        addClasses(1)
-    } else if (slides[1].classList.contains("pagination:active")) {
-        addClasses(2)
-    } else if ((parseInt(slides[2].innerHTML) == (postsData.page - 2)) && slides[2].classList.contains("pagination:active")) {
-        addClasses(3)
 
-    } else if (parseInt(slides[3].innerHTML) == (postsData.page - 1)) {
-        addClasses(4)
+    if (postsData.page >= 5) {
+        if (slides[0].classList.contains("pagination:active")) {
+            addClasses(1)
+        } else if (slides[1].classList.contains("pagination:active")) {
+            addClasses(2)
+        } else if ((parseInt(slides[2].innerHTML) == (postsData.page - 2)) && slides[2].classList.contains("pagination:active")) {
+            addClasses(3)
+
+        } else if (parseInt(slides[3].innerHTML) == (postsData.page - 1)) {
+            addClasses(4)
+        } else {
+            slides[1].innerHTML = slides[2].innerHTML
+            slides[2].innerHTML = slides[3].innerHTML
+            slides[3].innerHTML = parseInt(slides[3].innerHTML) + 1
+        }
     } else {
-        slides[1].innerHTML = slides[2].innerHTML
-        slides[2].innerHTML = slides[3].innerHTML
-        slides[3].innerHTML = parseInt(slides[3].innerHTML) + 1
+        if (slides[postsData.page - 1].classList.contains("pagination:active") != true) {
+            if (slides[0].classList.contains("pagination:active")) {
+                addClasses(1)
+            } else if (slides[1].classList.contains("pagination:active")) {
+                addClasses(2)
+            } else if (slides[2].classList.contains("pagination:active")) {
+                addClasses(3)
+            }
+        }
     }
 }
 
 const goToPrev = () => {
     const slides = document.querySelectorAll(".slide");
 
-    if (slides[4].classList.contains("pagination:active")) {
-        addClasses(3)
-    } else if (slides[3].classList.contains("pagination:active")) {
-        addClasses(2)
-    } else if ((parseInt(slides[2].innerHTML) == 3) && slides[2].classList.contains("pagination:active")) {
-        addClasses(1)
+    if (postsData.page >= 5) {
+        if (slides[4].classList.contains("pagination:active")) {
+            addClasses(3)
+        } else if (slides[3].classList.contains("pagination:active")) {
+            addClasses(2)
+        } else if ((parseInt(slides[2].innerHTML) == 3) && slides[2].classList.contains("pagination:active")) {
+            addClasses(1)
 
-    } else if (parseInt(slides[1].innerHTML) == 2) {
-        addClasses(0)
+        } else if (parseInt(slides[1].innerHTML) == 2) {
+            addClasses(0)
+        } else {
+            slides[3].innerHTML = parseInt(slides[2].innerHTML)
+            slides[2].innerHTML = parseInt(slides[1].innerHTML)
+            slides[1].innerHTML = parseInt(slides[2].innerHTML) - 1
+        }
     } else {
-        slides[3].innerHTML = parseInt(slides[2].innerHTML)
-        slides[2].innerHTML = parseInt(slides[1].innerHTML)
-        slides[1].innerHTML = parseInt(slides[2].innerHTML) - 1
+        if (slides[0].classList.contains("pagination:active") != true) {
+            if (slides[postsData.page - 1].classList.contains("pagination:active")) {
+                addClasses(postsData.page - 2)
+            } else if (slides[postsData.page - 2].classList.contains("pagination:active")) {
+                addClasses(postsData.page - 3)
+            } else if (slides[postsData.page - 3].classList.contains("pagination:active")) {
+                addClasses(postsData.page - 4)
+            }
+        }
     }
 }
 
 const goToNum = (value) => {
     const slides = document.querySelectorAll(".slide");
-
-    if (parseInt(value.innerHTML) == postsData.page) {
-        changerInnerText(1, postsData.page - 3, postsData.page - 2, postsData.page - 1, postsData.page)
-        addClasses(4)
-    } else if (parseInt(value.innerHTML) == 1) {
-        changerInnerText(1, 2, 3, 4, postsData.page)
-        addClasses(0)
-    } else if ((value.classList.contains("mid-left") && (value.innerHTML != 2)) || (value.classList.contains("mid-right") && (value.innerHTML != postsData.page - 1))) {
-        changerInnerText(1, parseInt(value.innerHTML) - 1, parseInt(value.innerHTML), parseInt(value.innerHTML) + 1, postsData.page)
-        addClasses(2)
-    } else if ((value.classList.contains("mid"))) {
-        addClasses(2)
-    } else if (value.classList.contains("mid-left") && (parseInt(slides[0].innerHTML) == 1)) {
-        addClasses(1)
-    } else if (value.classList.contains("mid-right") && (parseInt(slides[4].innerHTML) == postsData.page)) {
-        addClasses(3)
+    const index = value.innerHTML
+    if (postsData.page >= 5) {
+        if (parseInt(value.innerHTML) == postsData.page) {
+            changerInnerText(1, postsData.page - 3, postsData.page - 2, postsData.page - 1, postsData.page)
+            addClasses(4)
+        } else if (parseInt(value.innerHTML) == 1) {
+            changerInnerText(1, 2, 3, 4, postsData.page)
+            addClasses(0)
+        } else if ((value.classList.contains("mid-left") && (value.innerHTML != 2)) || (value.classList.contains("mid-right") && (value.innerHTML != postsData.page - 1))) {
+            changerInnerText(1, parseInt(value.innerHTML) - 1, parseInt(value.innerHTML), parseInt(value.innerHTML) + 1, postsData.page)
+            addClasses(2)
+        } else if ((value.classList.contains("mid"))) {
+            addClasses(2)
+        } else if (value.classList.contains("mid-left") && (parseInt(slides[0].innerHTML) == 1)) {
+            addClasses(1)
+        } else if (value.classList.contains("mid-right") && (parseInt(slides[4].innerHTML) == postsData.page)) {
+            addClasses(3)
+        }
+    } else {
+        addClasses(index - 1)
     }
 }
 
