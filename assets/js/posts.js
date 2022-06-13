@@ -236,125 +236,116 @@ tinymce.init({
 
 /* Pagination */
 
+
 const postsData = {
-    maxPosts: 50,
+    maxPosts: 235,
+    postsPerPage: 10,
+    page: Math.ceil(235 / 10),
     count: 3,
-    sizePagination: 3,
-    page: 1
+    firstSlide: 1,
+    secondSlide: 2,
+    thirdSlide: 3,
+    fourthSlide: 4,
+    fifthSlide: 5
 }
 
-const pagination = () => {
-    // const slider = document.querySelector(".display-pages");
+const initMaxPages = () => {
+    let tab = []
+    for (let i = 1; i < Math.ceil(postsData.maxPosts / postsData.postsPerPage); i++) {
+        tab.push(i)
+    }
+}
+
+
+const removeClasses = () => {
     const slides = document.querySelectorAll(".slide");
-    const button = document.querySelectorAll(".arrow");
+    slides.forEach(elem => {
+        elem.classList.remove("pagination:active")
+    })
+}
 
-    let current = 0;
-    let prev = (slides.length);
-    let next = 1;
+const addClasses = (current) => {
+    removeClasses()
+    const slides = document.querySelectorAll(".slide");
+    slides[current].classList.add("pagination:active")
+}
 
-    /* variables at the beginning */
-    let startPrev = slides.length
-    let startCurrent = 0
-    let startNext = 1
+const initPagination = () => {
+    const slides = document.querySelectorAll(".slide");
+    slides[0].innerHTML = 1
+    slides[1].innerHTML = 2
+    slides[2].innerHTML = 3
+    slides[3].innerHTML = 4
+    slides[4].innerHTML = Math.ceil(postsData.maxPosts / postsData.postsPerPage)
+}
 
-    let endPrev = slides.length - 1
-    let endCurrent = slides.length
-    let endNext = 0
-        /* beginning pagination */
-    if (slides[0].innerHTML == 1) {
-        pageBtn(startCurrent)
-        exactPageBtn(startPrev, startCurrent, startNext)
-    } else if ((slides[5].innerHTML == postsData.maxPosts) && (slides[4].innerHTML == postsData.maxPosts - 1)) {
-        pageBtn(endCurrent)
-        exactPageBtn(endPrev, endCurrent, endNext)
+initPagination()
+
+const goToNext = () => {
+    const slides = document.querySelectorAll(".slide");
+    if (slides[0].classList.contains("pagination:active")) {
+        addClasses(1)
+    } else if (slides[1].classList.contains("pagination:active")) {
+        addClasses(2)
+    } else if ((parseInt(slides[2].innerHTML) == (postsData.page - 2)) && slides[2].classList.contains("pagination:active")) {
+        addClasses(3)
+
+    } else if (parseInt(slides[3].innerHTML) == (postsData.page - 1)) {
+        addClasses(4)
     } else {
-        pageBtn(current)
-        exactPageBtn(prev, current, next)
-    }
-
-    /* Change active page by clicking on Previous / Next btn */
-    const pageBtn = (current) => {
-        for (let i = 0; i < button.length; i++) {
-            button[i].addEventListener("click", () => {
-                i == 0 ? goTo("prev", current) : gotoNext("next", current);
-            })
-        }
-    }
-
-    const exactPageBtn = (prev, current, next) => {
-        for (let i = 0; i < slides.length - 1; i++) {
-            /* Change active page by clicking on exact page*/
-            slides[i].addEventListener("click", () => {
-                slides.forEach(elem => {
-                    elem.classList.remove("pagination:active")
-                })
-                current = i
-                if (current == (slides.length - 2)) {
-                    prev = current - 1
-                    next = 0
-                }
-                if (current == 0) {
-                    prev = slides.length - 1;
-                    next = 1
-                }
-                slides[i].classList.add("pagination:active")
-            })
-        }
-    }
-
-    const goTo = (prevOrNext, current) => {
-        const gotoPrev = () => current > 0 ? gotoNum(current - 1) : gotoNum(slides.length - 2);
-        const gotoNext = () => current < slides.length - 2 ? gotoNum(current + 1) : gotoNum(0);
-        if (prevOrNext == "prev") {
-            gotoPrev()
-        } else {
-            gotoNext()
-        }
-    }
-
-    const gotoNum = number => {
-        current = number;
-        prev = current - 1;
-        next = current + 1;
-        for (let i = 0; i < slides.length - 1; i++) {
-            slides[i].classList.remove("pagination:active");
-            slides[i].classList.remove("before");
-            slides[i].classList.remove("after");
-        }
-        if (next == (slides.length - 1)) {
-            next = 0;
-        }
-        if (prev == -1) {
-            prev = slides.length - 2;
-        }
-        addClass(prev, current, next)
-        changeInnerSlides(number)
-    }
-
-    const changeInnerSlides = (prev, curr, next) => {
-        if (curr + 1 == 6) {
-            slides.forEach(elem => {
-                elem.classList.remove("pagination:active")
-            })
-            addClass(prev, curr, next)
-            for (let i = 0; i < slides.length - 1; i++) {
-                slides[i].innerHTML = i + (paginationPosts.sizePagination * paginationPosts.page)
-            }
-            paginationPosts.endCount += paginationPosts.count
-            paginationPosts.page += 1
-        }
-    }
-
-    const addClass = (prev, curr, next) => {
-        slides[prev].classList.add("before")
-        slides[curr].classList.add("pagination:active")
-        slides[next].classList.add("after")
+        slides[1].innerHTML = slides[2].innerHTML
+        slides[2].innerHTML = slides[3].innerHTML
+        slides[3].innerHTML = parseInt(slides[3].innerHTML) + 1
     }
 }
 
+const goToPrev = () => {
+    const slides = document.querySelectorAll(".slide");
 
-getPosts()
+    if (slides[4].classList.contains("pagination:active")) {
+        addClasses(3)
+    } else if (slides[3].classList.contains("pagination:active")) {
+        addClasses(2)
+    } else if ((parseInt(slides[2].innerHTML) == 3) && slides[2].classList.contains("pagination:active")) {
+        addClasses(1)
 
-pagination()
+    } else if (parseInt(slides[1].innerHTML) == 2) {
+        addClasses(0)
+    } else {
+        slides[3].innerHTML = parseInt(slides[2].innerHTML)
+        slides[2].innerHTML = parseInt(slides[1].innerHTML)
+        slides[1].innerHTML = parseInt(slides[2].innerHTML) - 1
+    }
+}
+
+const goToNum = (value) => {
+    const slides = document.querySelectorAll(".slide");
+
+    if (parseInt(value.innerHTML) == postsData.page) {
+        changerInnerText(1, postsData.page - 3, postsData.page - 2, postsData.page - 1, postsData.page)
+        addClasses(4)
+    } else if (parseInt(value.innerHTML) == 1) {
+        changerInnerText(1, 2, 3, 4, postsData.page)
+        addClasses(0)
+    } else if ((value.classList.contains("mid-left") && (value.innerHTML != 2)) || (value.classList.contains("mid-right") && (value.innerHTML != postsData.page - 1))) {
+        changerInnerText(1, parseInt(value.innerHTML) - 1, parseInt(value.innerHTML), parseInt(value.innerHTML) + 1, postsData.page)
+        addClasses(2)
+    } else if ((value.classList.contains("mid"))) {
+        addClasses(2)
+    } else if (value.classList.contains("mid-left") && (parseInt(slides[0].innerHTML) == 1)) {
+        addClasses(1)
+    } else if (value.classList.contains("mid-right") && (parseInt(slides[4].innerHTML) == postsData.page)) {
+        addClasses(3)
+    }
+}
+
+const changerInnerText = (first, second, third, fourth, fifth) => {
+    const slides = document.querySelectorAll(".slide");
+    slides[0].innerHTML = first
+    slides[1].innerHTML = second
+    slides[2].innerHTML = third
+    slides[3].innerHTML = fourth
+    slides[4].innerHTML = fifth
+}
 
 /* end Pagination */

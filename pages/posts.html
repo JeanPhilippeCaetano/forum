@@ -26,7 +26,12 @@
             <div class="hide-title"></div>
             <div class="space-between">
                 <button class="filter-toggler" onclick="openFilters()">Trier par</button>
-                <button class="filter-toggler" onclick="openPopup()">Create Post</button>
+                <div class="search-box">
+                    <button class="btn-search"><i class="fas fa-search"></i></button>
+                    <input type="text" class="input-search" placeholder="Type to Search...">
+                </div>
+                <button class="filter-toggler new-post" onclick="openPopup()">Create Post</button>
+                <button class="filter-toggler cruz" onclick="openPopup()"><i class="fas fa-plus"></i></button>
             </div>
         </div>
         <div class="filters-container">
@@ -71,50 +76,47 @@
 
             </div>
             <div class="pagination:container">
-                <div class="pagination:number arrow prev">
+                <a onclick="goToPrev()" value="left" class="pagination:number arrow prev">
                     <svg width="18" height="18">
-                    <use xlink:href="#left" />
-                  </svg>
+                  <use xlink:href="#left" />
+                </svg>
                     <span class="arrow:text">Previous</span>
-                </div>
+                </a>
 
                 <div class="display-pages">
-                    <div class="slide pagination:number pagination:active">
-                        1
-                    </div>
+                    <a onclick="goToNum(this)" class="slide pagination:active pagination:number">
 
-                    <div class="slide pagination:number after">
-                        2
-                    </div>
+                    </a>
 
-                    <div class="slide pagination:number">
-                        3
-                    </div>
+                    <a onclick="goToNum(this)" class="slide mid-left pagination:number after">
 
-                    <div class="slide pagination:number">
-                        4
-                    </div>
+                    </a>
 
-                    <div class="slide pagination:number before">
-                        5
-                    </div>
+                    <a onclick="goToNum(this)" class="slide mid pagination:number">
 
-                    <div class="slide pagination:number">
-                        540
-                    </div>
+                    </a>
+
+                    <a onclick="goToNum(this)" class="slide mid-right pagination:number">
+
+                    </a>
+
+                    <a onclick="goToNum(this)" class="slide pagination:number">
+
+                    </a>
                 </div>
 
-                <div class="pagination:number arrow next">
+                <a onclick="goToNext()" class="pagination:number arrow next">
+                    <span class="arrow:text">Next</span>
                     <svg width="18" height="18">
-                    <use xlink:href="#right" />
-                  </svg>
-                </div>
+                  <use xlink:href="#right" />
+                </svg>
+                </a>
             </div>
 
             <svg class="hide">
-                    <symbol id="left" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></symbol>
-                    <symbol id="right" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></symbol>
-                </svg>
+                  <symbol id="left" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></symbol>
+                  <symbol id="right" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></symbol>
+              </svg>
             <div class="hide-bar"></div>
         </div>
     </section>

@@ -38,7 +38,14 @@ func PostsRoute(w http.ResponseWriter, r *http.Request) {
 
 func LoginRegister(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("loginregister")
-	tmpl := template.Must(template.ParseFiles("./pages/loginregister.html"))
+	tmpl := template.Must(template.ParseFiles("./pages/loginregister.html", "./templates/header.html", "./templates/footer.html"))
+	if r.Method != http.MethodPost {
+		tmpl.Execute(w, r)
+		return
+	}
+}
+func Contact(w http.ResponseWriter, r *http.Request) {
+	tmpl := template.Must(template.ParseFiles("./pages/contact.html", "./templates/header.html", "./templates/footer.html"))
 	if r.Method != http.MethodPost {
 		tmpl.Execute(w, r)
 		return
@@ -47,6 +54,7 @@ func LoginRegister(w http.ResponseWriter, r *http.Request) {
 
 func loadAllRoutes(global *Global) {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		Index(w, r)
 	})
 	http.HandleFunc("/profil", func(w http.ResponseWriter, r *http.Request) {
 		Pageprofil(w, r)
@@ -59,9 +67,6 @@ func loadAllRoutes(global *Global) {
 	})
 	http.HandleFunc("/posts", func(w http.ResponseWriter, r *http.Request) {
 		PostsRoute(w, r)
-	})
-	http.HandleFunc("/loginregister", func(w http.ResponseWriter, r *http.Request) {
-		LoginRegister(w, r)
 	})
 	http.HandleFunc("/register", func(w http.ResponseWriter, r *http.Request) {
 		Register(w, r, global)
@@ -83,5 +88,11 @@ func loadAllRoutes(global *Global) {
 	})
 	http.HandleFunc("/addpost", func(w http.ResponseWriter, r *http.Request) {
 		AddPost(w, r, global)
+	})
+	http.HandleFunc("/loginregister", func(w http.ResponseWriter, r *http.Request) {
+		LoginRegister(w, r)
+	})
+	http.HandleFunc("/contact", func(w http.ResponseWriter, r *http.Request) {
+		Contact(w, r)
 	})
 }
