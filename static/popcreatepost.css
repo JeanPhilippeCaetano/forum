@@ -1,0 +1,99 @@
+.tox .tox-notification--warn, .tox .tox-notification--warning {
+    display: none !important;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    background: rgba(0, 0, 0, 0.7);
+    transition: opacity 500ms;
+    visibility: hidden;
+}
+
+.overlay.active {
+    visibility: visible;
+    opacity: 1;
+}
+
+.popup {
+    margin: 70px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 5px;
+    width: 60%;
+    position: relative;
+}
+
+.popup h2 {
+    margin-top: 0;
+    color: #333;
+}
+
+.popup .close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    font-size: 30px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #333;
+}
+
+.popup .content {
+    max-height: 30%;
+    overflow: auto;
+}
+
+.mytextarea{
+    resize: none;
+}
+
+.tags{
+
+    display: block;
+}
+
+.choosedTags{
+    display: none;
+}
+
+.postButton{
+    display: flex;
+    width: 100%;
+    justify-content: right;
+}
+
+.buttonPost{
+    border-radius: 5px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    height: 30px;
+    width: 70px;
+    background-color: #ee964b;
+    border-color:#8a1b05 ;
+}
+
+.tagButton{
+    border-radius: 5px;
+    color: white;
+    font-size: 12px;
+    cursor: pointer;
+    height: 30px;
+    width: 70px;
+    background-color: #ee964b;
+    border-color:#8a1b05 ;
+}
+
+@media screen and (max-width: 700px) {
+    .box {
+        width: 70%;
+    }
+    .popup {
+        width: 70%;
+    }
+}

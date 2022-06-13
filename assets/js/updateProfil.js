@@ -1,7 +1,13 @@
-const modifInfos = () => {
+const goToUrl = () => {
+    const query = new URLSearchParams(window.location.search)
+    const pseudo = query.get("pseudo")
+    location.href = "/modifprofil?pseudo=" + pseudo
+}
+
+const getInfo = () => {
     const input = document.getElementById('inputName')
     const query = new URLSearchParams(window.location.search)
-    fetch("/modifprofil", {
+    fetch("/getinfos", {
         method: "POST",
         headers: {
             "content-type": "application/json"
@@ -18,10 +24,19 @@ const modifInfos = () => {
         return res.json()
     })
     .then(data => {
-        // input.setAttribute("value", pseudo)
-        location.href = "/modifprofil?pseudo=" + data.pseudo
+        // input.setAttribute("value", query)
+        // console.log(input)
+        input.value = query.get("pseudo")
     })
-        .catch(err => {
-            errorlog.innerHTML = err.err
+    .catch(err => {
+        console.log(err.err)
         })
+        // console.log(pseudo)
+}
+
+getInfo()
+
+const replaceUsers = () => {
+    const input = document.getElementById('inputName')
+    
 }

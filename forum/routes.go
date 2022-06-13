@@ -29,14 +29,6 @@ func Pagemodifprofil(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func Post(w http.ResponseWriter, r *http.Request) {
-	tmpl := template.Must(template.ParseFiles("./pages/posts.html", "./templates/header.html", "./templates/footer.html"))
-	if r.Method != http.MethodPost {
-		tmpl.Execute(w, r)
-		return
-	}
-}
-
 // func InscReg(w http.ResponseWriter, r *http.Request) {
 // 	tmpl := template.Must(template.ParseFiles("./pages/loginregister.html", "./templates/header.html", "./templates/footer.html"))
 // 	if r.Method != http.MethodPost {
@@ -47,6 +39,14 @@ func Post(w http.ResponseWriter, r *http.Request) {
 
 func Contact(w http.ResponseWriter, r *http.Request) {
 	tmpl := template.Must(template.ParseFiles("./pages/contact.html", "./templates/header.html", "./templates/footer.html"))
+	if r.Method != http.MethodPost {
+		tmpl.Execute(w, r)
+		return
+	}
+}
+
+func PostsRoute(w http.ResponseWriter, r *http.Request) {
+	tmpl := template.Must(template.ParseFiles("./pages/posts.html", "./templates/header.html", "./templates/footer.html", "./templates/previewPost.html"))
 	if r.Method != http.MethodPost {
 		tmpl.Execute(w, r)
 		return
@@ -79,7 +79,7 @@ func loadAllRoutes(global *Global) {
 		Pagemodifprofil(w, r)
 	})
 	http.HandleFunc("/posts", func(w http.ResponseWriter, r *http.Request) {
-		Post(w, r)
+		PostsRoute(w, r)
 	})
 	// http.HandleFunc("/inscreg", func(w http.ResponseWriter, r *http.Request) {
 	// 	InscReg(w, r)
@@ -95,6 +95,9 @@ func loadAllRoutes(global *Global) {
 	})
 	http.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) {
 		Login(w, r, global)
+	})
+	http.HandleFunc("/getuser", func(w http.ResponseWriter, r *http.Request) {
+		GetUserFromId(w, r, global)
 	})
 	http.HandleFunc("/getposts", func(w http.ResponseWriter, r *http.Request) {
 		GetPosts(w, r, global)

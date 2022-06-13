@@ -7,7 +7,7 @@ import (
 func main() {
 	// db := forum.InitDatabase()
 	// global := &forum.Global{}
-	// forum.InsertData(forum.Users{}, db, "users", "Jp", "jp@gmail.com", "mdp123", "ma biographie", "../assets/images/defaultProfil.jpg")
+	// forum.InsertData(forum.Users{}, db, "users", "Jp", "admin", "jp@gmail.com", "mdp123", "ma biographie", "../assets/images/defaultProfil.jpg")
 	// global = forum.DisplayRows(global, forum.GetAllDataFromTable(db, "users"), forum.Users{})
 	// fmt.Println(global.AllUsers)
 	// // result, err := forum.InsertData(forum.Users{}, db, "users", "Jp", "jp@gmail.com", "mdp123", "ma biographie", "../assets/images/defaultProfil.jpg")

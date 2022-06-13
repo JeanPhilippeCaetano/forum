@@ -24,6 +24,10 @@ type LogParams struct {
 	Password string
 }
 
+type UserID struct {
+	Id int
+}
+
 type User struct {
 	Pseudo string
 }
@@ -39,6 +43,12 @@ func Register(w http.ResponseWriter, r *http.Request, global *Global) {
 			return
 		} else if err.Error() == "UNIQUE constraint failed: users.Pseudonyme" {
 			http.Error(w, `{"err": "Pseudo déjà utilisé"}`, http.StatusBadRequest)
+			return
+		} else if err.Error() == "CHECK constraint failed: length(Pseudonyme) <= 16" {
+			http.Error(w, `{"err": "Le pseudonyme ne doit pas dépasser 16 caractères"}`, http.StatusBadRequest)
+			return
+		} else if err.Error() == "CHECK constraint failed: length(Password) <= 16" {
+			http.Error(w, `{"err": "Le mot de passe ne doit pas dépasser 16 caractères"}`, http.StatusBadRequest)
 			return
 		}
 	}
@@ -61,6 +71,15 @@ func Login(w http.ResponseWriter, r *http.Request, global *Global) {
 	session.Values["authenticated"] = account.Pseudo
 	session.Save(r, w)
 	w.Write([]byte("{\"pseudo\": \"" + account.Pseudo + "\"}"))
+}
+
+func GetUserFromId(w http.ResponseWriter, r *http.Request, global *Global) {
+	var u UserID
+	bd, _ := ioutil.ReadAll(r.Body)
+	json.Unmarshal(bd, &u)
+	user := DisplayOneUser(GetDataFromTableWithID(Users{}, global.Db, "users", u.Id))
+	body, _ := json.MarshalIndent(user, "", "")
+	w.Write(body)
 }
 
 func GetInfos(w http.ResponseWriter, r *http.Request, global *Global) {

@@ -29,7 +29,11 @@ func AddPost(w http.ResponseWriter, r *http.Request, global *Global) {
 	var Post NewPostParams
 	body, _ := ioutil.ReadAll(r.Body)
 	json.Unmarshal(body, &Post)
-	result, _ := InsertData(Posts{}, global.Db, "posts", "pseudo", "0", Post.Title, Post.Content, Post.Tags, "0", time.Now().Format("2006.01.02 15:04:05"))
+	result, err := InsertData(Posts{}, global.Db, "posts", 1, nil, Post.Title, Post.Content, Post.Tags, 0, time.Now().Format("2006.01.02 15:04:05"))
+	if err != nil {
+		http.Error(w, `{"err":"`+err.Error()+"\"}", http.StatusBadRequest)
+		return
+	}
 	postId, _ := result.LastInsertId()
 	w.Write([]byte("{\"postID\": \"" + strconv.FormatInt(postId, 10) + "\"}"))
 }
@@ -56,6 +60,6 @@ func GetPost(w http.ResponseWriter, r *http.Request, global *Global) {
 func GetPosts(w http.ResponseWriter, r *http.Request, global *Global) {
 	posts := GetAllDataFromTable(global.Db, "posts")
 	global = DisplayRows(global, posts, Posts{})
-	body, _ := json.MarshalIndent(global.AllUsers, "", "")
+	body, _ := json.MarshalIndent(global.AllPosts, "", "")
 	w.Write(body)
 }
