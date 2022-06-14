@@ -207,11 +207,14 @@ func resetGlobal(global *Global, data string) *Global {
 
 func DisplayOnePost(rows *sql.Rows) Posts {
 	var p Posts
+	var parentId sql.NullInt64
 	for rows.Next() {
-		err := rows.Scan(&p.PostID, &p.SenderID, &p.ParentID, &p.Title, &p.Content, &p.Likes, &p.Date)
+
+		err := rows.Scan(&p.PostID, &p.SenderID, &parentId, &p.Title, &p.Content, &p.Tags, &p.Likes, &p.Date)
 		if err != nil {
 			log.Panic(err)
 		}
+		p.ParentID = int(parentId.Int64)
 	}
 	return p
 }

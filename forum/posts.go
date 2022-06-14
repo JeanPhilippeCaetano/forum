@@ -19,6 +19,7 @@ type ModifyPostParams struct {
 	Title   string
 	Content string
 	Tags    string
+	Likes   int
 }
 
 type PostParams struct {

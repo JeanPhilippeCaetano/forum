@@ -5,9 +5,9 @@ const stickyNavOnScroll = () => {
     const filter = document.querySelector(".filters-container")
     var lastScrollTop = 0;
 
-    window.addEventListener("scroll", function(){ // or window.addEventListener("scroll"....
+    window.addEventListener("scroll", function() { // or window.addEventListener("scroll"....
         var st = window.pageYOffset || document.documentElement.scrollTop; // Credits: "https://github.com/qeremy/so/blob/master/so.dom.js#L426"
-        if (st > lastScrollTop){
+        if (st > lastScrollTop) {
             nav.classList.add("sticky")
         } else {
             nav.classList.remove("sticky")
