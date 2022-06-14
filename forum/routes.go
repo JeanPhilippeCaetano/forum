@@ -34,8 +34,8 @@ func PostsRoute(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 }
-func Userpanel(w http.ResponseWriter, r *http.Request) {
-	tmpl := template.Must(template.ParseFiles("./pages/userpanel.html", "./templates/header.html", "./templates/footer.html"))
+func UsersRoute(w http.ResponseWriter, r *http.Request) {
+	tmpl := template.Must(template.ParseFiles("./pages/userpanel.html", "./templates/header.html", "./templates/footer.html", "./templates/previewUser.html"))
 	if r.Method != http.MethodPost {
 		tmpl.Execute(w, r)
 		return
@@ -70,8 +70,8 @@ func loadAllRoutes(global *Global) {
 	http.HandleFunc("/modifprofil", func(w http.ResponseWriter, r *http.Request) {
 		Pagemodifprofil(w, r)
 	})
-	http.HandleFunc("/userpanel", func(w http.ResponseWriter, r *http.Request) {
-		Userpanel(w, r)
+	http.HandleFunc("/users", func(w http.ResponseWriter, r *http.Request) {
+		UsersRoute(w, r)
 	})
 	http.HandleFunc("/posts", func(w http.ResponseWriter, r *http.Request) {
 		PostsRoute(w, r)
