@@ -1,4 +1,4 @@
-const postsData = {
+let postsData = {
     maxPosts: 0,
     postsPerPage: 10,
     page: 1,
@@ -80,6 +80,7 @@ const createPost = () => {
 /* Get All Posts */
 
 const addPostDiv = (id, title, username, image, content, likes) => {
+    console.log(id, title, username, image, content, likes)
     const section = document.createElement("SECTION")
     section.setAttribute("id", "post" + id)
     const innerPost = document.createElement("div")
@@ -181,11 +182,11 @@ const checkValueFromPage = (index) => {
     return false
 }
 
-const getPosts = () => {
+const getPosts = (verification) => {
     const queryString = window.location.search
     const params = Object.fromEntries(new URLSearchParams(queryString))
     let searchValue = "";
-    postsData.maxPosts = 0
+    let maxPosts = 0;
     if (params.search != null) {
         searchValue = params.search
     }
@@ -204,29 +205,48 @@ const getPosts = () => {
             }
             return res.json()
         })
-        .then(data => {
-            data.forEach((element) => {
-                    (getUser(element.SenderID)).then(userData => {
-                        if (checkValue(searchValue, userData, element)) {
-                            postsData.maxPosts += 1
-                            postsData.page = Math.ceil(postsData.maxPosts / 10)
-                            console.log(postsData.maxPosts, postsData.page)
-                        }
-                    })
-                })
-                // initPagination()
-            data.forEach((element, index) => {
-                (getUser(element.SenderID)).then(userData => {
+        .then(async(data) => {
+            let resultsTab = [];
+            for (const element of data) {
+                try {
+                    const userData = await getUser(element.SenderID)
                     if (checkValue(searchValue, userData, element)) {
-                        addPostDiv(element.PostID, element.Title, userData.Pseudonyme, userData.Image, (element.Content).substr(0, 245), element.Likes)
+                        maxPosts += 1
+                        if (verification !== undefined) {
+                            initPagination(maxPosts)
+                        }
+                        resultsTab.push([element, userData])
                     }
-                })
+                } catch (err) {
+                    console.log(err);
+                }
+            }
+            // data.forEach((element) => {
+            //     (getUser(element.SenderID)).then(userData => {
+            //         if (checkValue(searchValue, userData, element)) {
+            //             maxPosts += 1
+            //             if (verification !== undefined) {
+            //                 initPagination(maxPosts)
+            //             }
+            //             resultsTab.push([element, userData])
+            //                 // console.log(postsData.maxPosts, postsData.page)
+            //                 // console.log(resultsTab)
+            //         }
+            //     })
+            // });
+            console.log(resultsTab)
+            resultsTab.forEach((element, index) => {
+                console.log(element)
+                if (checkValueFromPage(index)) {
+                    addPostDiv(element[0].PostID, element[0].Title, element[1].Pseudonyme, element[1].Image, element[0].Content.substring(0, 500), element[0].Likes)
+                }
             })
-
         })
         .catch(err => {
             console.log(err)
         })
+        // console.log(maxPosts)
+        // postsData.maxPosts = maxPosts
 }
 
 /* End Get All Posts */
@@ -238,7 +258,7 @@ const changeSearchValue = () => {
         const url = new URL(window.location);
         url.searchParams.set("search", searchInput.value)
         window.history.replaceState({}, '', url)
-        getPosts()
+        getPosts("change")
     }
     /* End searchbar */
 
@@ -281,10 +301,13 @@ const addClasses = (current) => {
     slides[current].classList.add("pagination:active")
 }
 
-const initPagination = () => {
-    console.log(postsData.page)
-    const slides = document.querySelectorAll(".slide");
-    const slideType = [slides[0], slides[1], slides[2], slides[3], slides[4]]
+const slides = document.querySelectorAll(".slide");
+
+const initPagination = (nbPages) => {
+    if (nbPages !== undefined) {
+        postsData.page = Math.ceil(nbPages / 10)
+    }
+    const slideType = [...slides]
     const parent = document.querySelector(".display-pages")
     if (postsData.page > 5) {
         slides[0].innerHTML = 1
@@ -293,9 +316,7 @@ const initPagination = () => {
         slides[3].innerHTML = 4
         slides[4].innerHTML = postsData.page
     } else {
-        for (let i = 0; i < slides.length; i++) {
-            slides[i].remove()
-        }
+        parent.innerHTML = ""
         for (let i = 0; i < postsData.page; i++) {
             slideType[i].innerHTML = i + 1
             parent.append(slideType[i])
@@ -406,5 +427,6 @@ const changerInnerText = (first, second, third, fourth, fifth) => {
 
 /* end Pagination */
 
-getPosts()
+getPosts("initialisation")
+    // console.log(postsData.page, postsData.maxPosts)
     // initPagination()
