@@ -210,10 +210,17 @@
     font-weight: 900;
 }
 
+.title {
+    align-self: flex-end;
+}
+
 .text-ctn {
     border-radius: 5px;
+    margin-left: 5%;
+    width: 90%;
     border: 1px solid black;
     padding: 7px 7px 7px 7px;
+    align-self: flex-start;
     background-color: #faf0ca;
 }
 
