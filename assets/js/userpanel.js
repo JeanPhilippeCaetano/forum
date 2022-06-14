@@ -1,14 +1,38 @@
+const getUser = (userID) => {
+    const promise = fetch("/getuser", {
+            method: "POST",
+            headers: {
+                "content-type": "application/json"
+            },
+            body: JSON.stringify({
+                id: userID
+            })
+        })
+        .then(async(res) => {
+            if (!res.ok) {
+                throw await res.json()
+            }
+            return res.json()
+        })
+        .then(data => {
+            return data
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    return promise
+}
+
 const createPost = () => {
     const title = document.querySelector("#post-popup .popup #title").value
     const content = tinymce.get("mytextarea").getContent()
-    const tabTags = [...document.querySelectorAll(".tags button")]
     const tags = tabTags.filter(elem => {
         return elem.classList.contains("choosed")
     })
     const tagsValues = tags.map(elem => {
         return elem.value
     })
-    fetch("/addpost", {
+    fetch("/adduser", {
             method: "POST",
             headers: {
                 "content-type": "application/json"
@@ -26,7 +50,6 @@ const createPost = () => {
             return res.json()
         })
         .then(data => {
-            closePopup()
             location.href = "/users"
             console.log(data)
         })
@@ -35,52 +58,48 @@ const createPost = () => {
         })
 }
 
-const addUserDiv = (img, username, username, image, content, likes) => {
-    const section = document.createElement("SECTION")
-    section.setAttribute("id", "post" + id)
-    const innerPost = document.createElement("div")
-    innerPost.className = "inner-post"
-    const infoUser = document.createElement("div")
-    infoUser.className = "info-user"
-
+const addUserDiv = (id, image, username, date, content) => {
+    const container = document.createElement("a")
+    container.setAttribute("id", "user" + id)
+    container.className = "user-total"
+    const topUser = document.createElement("div")
+    topUser.className = "top-user"
     const imgCtn = document.createElement("div")
-    imgCtn.className = "img-ctn"
+    imgCtn.className = "img-container"
     const img = document.createElement("img")
+    img.className = "userIcon"
     img.setAttribute("src", image)
-    const usernameDiv = document.createElement("div")
-    usernameDiv.className = "username"
-    usernameDiv.innerText = username
-    const titleDiv = document.createElement("div")
-    titleDiv.className = "title"
-    titleDiv.innerText = title
 
-    const contentDiv = document.createElement("div")
-    contentDiv.className = "text-ctn"
-    contentDiv.innerHTML = content
 
-    const icons = document.createElement("div")
-    icons.className = "icons-post"
-    const likeIcon = document.createElement("i")
-    likeIcon.className = "comment-posts fa fa-heart"
-    const commentsIcon = document.createElement("i")
-    commentsIcon.className = "comment-posts fa fa-comments"
+    const userInfo = document.createElement("div")
+    userInfo.className = "userInfo"
+    const pseudo = document.createElement("div")
+    pseudo.className = "pseudo"
+    pseudo.innerText = username
+    const regDate = document.createElement("div")
+    regDate.className = "regDate"
+    regDate.innerText = date
+
+    const biography = document.createElement("div")
+    biography.className = "biography"
+    biography.innerHTML = content
 
     imgCtn.appendChild(img)
 
-    const likesDiv = document.createElement("div")
-    likesDiv.innerHTML = likes
-    icons.appendChild(likesDiv)
-    icons.appendChild(likeIcon)
-    icons.appendChild(commentsIcon)
+    userInfo.appendChild(pseudo)
+    userInfo.appendChild(regDate)
 
-    infoUser.appendChild(imgCtn)
-    infoUser.appendChild(usernameDiv)
-    infoUser.appendChild(titleDiv)
+    topUser.appendChild(imgCtn)
+    topUser.appendChild(userInfo)
 
-    innerPost.appendChild(infoUser)
-    innerPost.appendChild(contentDiv)
-    innerPost.appendChild(icons)
-
-    section.appendChild(innerPost)
-    document.querySelector(".all-posts").appendChild(section)
+    container.appendChild(topUser)
+    container.appendChild(biography)
+    console.log(container)
+    document.querySelector(".suggestedUsers").appendChild(container)
+    console.log(document.querySelector(".suggestedUsers"))
 }
+
+addUserDiv(1, "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png", "Chatte", "24/01/2001", "Hey sale queue j'aime la suze")
+addUserDiv(1, "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png", "Dhatte", "24/01/2001", "Hey sale queudfre glkjndhqz fbhdrscnq jgnsbkdjfs nqkfjve j'aime la suze")
+addUserDiv(1, "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png", "Ehatte", "24/01/2001", "Hey sale queue j'aizd eéeéeddéde la suze")
+addUserDiv(1, "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png", "Hhatte", "24/01/2001", "Hey sale queuela suze")
