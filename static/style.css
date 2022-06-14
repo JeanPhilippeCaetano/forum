@@ -1,118 +1,89 @@
-body {
-  margin: 0;
-  padding: 0;
-}
-
-#denver-parallax {
-  background-color: #10497E;
-}
-
-.parallax::-webkit-scrollbar {
-  display: none;
-}
-
-.parallax {
-  perspective: 1px;
-  /* Hide scrollbar for IE, Edge and Firefox */
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
-  perspective-origin: center;
-  overflow-y: auto;
-  overflow-x: hidden;
-  margin-top: 0;
-  height: 100vh;
-}
-
-.parallax .group {
-  position: relative;
-  height: 90vh;
-  transform-style: preserve-3d;
-}
-
-.parallax .layer {
-  position: absolute;
-  width: 101%;
-  overflow: hidden;
-}
-
-#city1 {
-  fill: #8A1B05;
-  transform: translateZ(0.25px) scale(0.75) translateY(-1vh);
-}
-
-#mountain1 {
-  fill: #8A1B05;
-  transform: translateZ(-2.25px) scale(3.25) translateY(-1vh);
-}
-
-#mountain2 {
-  fill: #F4D35E;
-  transform: translateZ(-2.5px) scale(3.5) translateY(-1vh);
-}
-
-#mountain3 {
-  fill: #F4D35E;
-  transform: translateZ(-3px) scale(4) translateY(-10vh);
-  height: 50vh;
-}
-
-#mountain4 {
-  fill: #FAF0CA;
-  transform: translateZ(-3.5px) scale(4.5) translateY(-20vh);
-  height: 30vh;
-}
-
-#sun {
-  fill: #ee964b;
-  transform: translateZ(-6px) scale(7) translateY(-25vh);
-  height: 25vh;
-}
-
-.city-front {
-  position: relative;
-  margin-top: -10%;
-  background-color: #8A1B05;
-  width: 100vw;
-  height: 100%;
-}
-
-.site_name {
-  color: #FAF0CA;
-  width: 50%;
-  height: 50%;
-  text-align: center;
-  margin-top: 10%;
-  font-family: "Open Sans";
-  font-size: 2vw;
-}
-
-.textExplain {
+.global{
   display: flex;
-  justify-content: center;
-  margin-bottom: 5vh;
+  flex-direction: column;
+  /* justify-content: center; */
+  align-items: center;
+  width: fit-content;
+  height: 100%;
+  background-color: #FAF0CA;
 }
+
+.title-index{
+  margin-top: 6%;
+}
+
+.textExplain{
+  width: 80%;
+  margin-top: 12%;
+  text-align: center;
+}
+
+@keyframes cursor {
+  from, to {
+    border-color: transparent;
+ }
+  50% {
+    border-color: black;
+ }
+}
+@keyframes typing {
+  from {
+    width: 100%;
+ }
+  90%, to {
+    width: 0;
+ }
+}
+@keyframes slide {
+  99.99999% {
+    font-size: 7vw;
+    letter-spacing: 3px;
+ }
+  to {
+    font-size: 0;
+    letter-spacing: 0;
+ }
+}
+.typing-slider {
+  font-family: Consolas, monospace;
+  font-weight: bold;
+  text-align: center;
+  white-space: nowrap;
+}
+.typing-slider p {
+  position: relative;
+  display: inline;
+  font-size: 0;
+  text-transform: uppercase;
+  letter-spacing: 0;
+  animation:slide 15s step-start infinite;
+}
+.typing-slider p::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  border-left: 3px solid black;
+  background-color: #FAF0CA;
+  animation: typing 5s infinite, cursor 1s infinite;
+}
+.typing-slider p:nth-child(1) {
+  animation-delay: 0s;
+}
+.typing-slider p:nth-child(1)::after {
+  animation-delay: 0s;
+  animation-timing-function: steps(22), step-end;
+}
+
+/* carte  */
 
 .doubleCard {
   display: flex;
   width: 80%;
-  margin-left: 10%;
+  margin-top: 10%;
   padding: 5vh;
 }
-
-@media screen and (max-width: 900px) {
-  .site_name {
-    width: 70%;
-    font-size: 6vw;
-  }
-  .city-front{
-    margin-top: -25%;
-    height: 100%;
-  }
-
-}
-
-
-/* carte */
 
 
 a {
@@ -243,14 +214,17 @@ h1 {
 }
 
 @media screen and (max-width: 900px) {
-  
+  .site_name{
+    font-size: 4vw;
+  }
+
   .doubleCard {
     flex-direction: column;
     margin-left: 0;
   }
 
   .row{
-    margin-left: 25%;
+    margin-left: 10%;
     padding: 3vh;
     width: 80%;
     height: 70%;
@@ -263,9 +237,13 @@ h1 {
 }
 
 @media screen and (max-width: 600px) {
+  .site_name{
+    font-size: 2vh;
+  }
+
   .row{
     width: 120%;
-    margin-left: 5%;
+    margin-left: -10%;
   }
   
 }
