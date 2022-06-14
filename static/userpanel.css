@@ -1,0 +1,116 @@
+
+
+.searchUser .searchbar {
+    display: flex;
+    justify-content: center;
+    opacity: 0.9;
+    position: sticky;
+}
+
+.searchbar .inputZone {
+    width: 900px;
+    display: block;
+    font-size: 18px;
+    
+}
+
+.suggestedUsers {
+    display: flex;
+    width: 900px;
+    background-color: #f4d35e;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 2px;
+    margin-right: 2px;
+}
+
+.user {
+    height: fit-content;
+    color: #f4d35e;
+    background-color: #10497e;
+    display: flex;
+    flex-direction: row;
+    margin-left: 2px;
+    margin-right: 2px;
+}
+
+
+.searchUser {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 90vh;
+}
+
+.search-btn {
+    width: 40px;
+}
+
+.userIcon {
+    width: 80px;
+}
+
+.userInfo{
+    display: inline-block;
+    margin-right: 20px;
+}
+
+.pseudo{
+    display: inline-flex;
+    font-size: large;
+    margin-right: 10px;
+}
+
+.regDate{
+    display: inline-flex;
+    font-size: small;
+    margin-right: 10px;
+}
+
+.biography{
+    font-size: medium;
+    display:flex;
+    align-self: center;
+    text-align:justify;
+}
+
+@media screen and (max-width: 900px) {
+    body{
+        background-color: #f4d35e;
+    }
+
+    .searchbar{
+        width: 90%;
+    }
+    
+    .userIcon{
+        width: 30%;
+    }
+    
+    .suggestedUsers{
+        width: 100%;
+        font-size: 3vw;
+        flex-direction: column;
+    }
+    
+    .user{
+        width: 99%;
+        font-size: 3vw;
+        display: inline-block;
+    }
+
+    .userInfo{
+        width: 70%;
+        display: flex;
+        flex-direction: row;
+        font-size: 3vw;
+    }
+    
+    .biography{
+        width: 90%;
+        font-size: 3vw;
+        display: block;
+    }
+    
+}

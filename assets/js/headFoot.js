@@ -26,5 +26,10 @@ const menuBurger = () => {
     })
 }
 
+const openFilters = () => {
+    const filters = document.querySelector(".filters-container")
+    filters.classList.toggle("open")
+}
+
 stickyNavOnScroll()
 menuBurger()

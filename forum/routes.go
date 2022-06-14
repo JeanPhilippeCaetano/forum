@@ -1,7 +1,6 @@
 package forum
 
 import (
-	"fmt"
 	"net/http"
 	"text/template"
 )
@@ -35,9 +34,15 @@ func PostsRoute(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 }
+func Userpanel(w http.ResponseWriter, r *http.Request) {
+	tmpl := template.Must(template.ParseFiles("./pages/userpanel.html", "./templates/header.html", "./templates/footer.html"))
+	if r.Method != http.MethodPost {
+		tmpl.Execute(w, r)
+		return
+	}
+}
 
 func LoginRegister(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("loginregister")
 	tmpl := template.Must(template.ParseFiles("./pages/loginregister.html", "./templates/header.html", "./templates/footer.html"))
 	if r.Method != http.MethodPost {
 		tmpl.Execute(w, r)
@@ -64,6 +69,9 @@ func loadAllRoutes(global *Global) {
 	})
 	http.HandleFunc("/modifprofil", func(w http.ResponseWriter, r *http.Request) {
 		Pagemodifprofil(w, r)
+	})
+	http.HandleFunc("/userpanel", func(w http.ResponseWriter, r *http.Request) {
+		Userpanel(w, r)
 	})
 	http.HandleFunc("/posts", func(w http.ResponseWriter, r *http.Request) {
 		PostsRoute(w, r)
