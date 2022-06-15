@@ -73,6 +73,10 @@
     margin-bottom: 2vh;
 }
 
+.error_message {
+    color: red!important;
+}
+
 
 /* tags */
 

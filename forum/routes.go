@@ -43,6 +43,11 @@ func Userpanel(w http.ResponseWriter, r *http.Request) {
 }
 
 func LoginRegister(w http.ResponseWriter, r *http.Request) {
+	session, _ := store.Get(r, "cookie-name")
+	if auth := session.Values["authenticated"].(bool); auth {
+		http.Error(w, "Tu es déjà connecté !", http.StatusForbidden)
+		return
+	}
 	tmpl := template.Must(template.ParseFiles("./pages/loginregister.html", "./templates/header.html", "./templates/footer.html"))
 	if r.Method != http.MethodPost {
 		tmpl.Execute(w, r)
@@ -81,6 +86,9 @@ func loadAllRoutes(global *Global) {
 	})
 	http.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) {
 		Login(w, r, global)
+	})
+	http.HandleFunc("/logout", func(w http.ResponseWriter, r *http.Request) {
+		Logout(w, r, global)
 	})
 	http.HandleFunc("/getuser", func(w http.ResponseWriter, r *http.Request) {
 		GetUserFromId(w, r, global)

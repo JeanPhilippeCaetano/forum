@@ -40,6 +40,7 @@ const openFilters = () => {
 
 const createPost = () => {
         const title = document.querySelector("#post-popup .popup #title").value
+        const errorlog = document.querySelector(".error_message")
         const content = tinymce.get("mytextarea").getContent()
         const tabTags = [...document.querySelectorAll(".tags button")]
         const tags = tabTags.filter(elem => {
@@ -48,7 +49,6 @@ const createPost = () => {
         const tagsValues = tags.map(elem => {
             return elem.value
         })
-        console.log(tagsValues)
         fetch("/addpost", {
                 method: "POST",
                 headers: {
@@ -69,9 +69,9 @@ const createPost = () => {
             .then(data => {
                 closePopup()
                 location.href = "/posts"
-                console.log(data)
             })
             .catch(err => {
+                errorlog.innerHTML = err.err
                 console.log(err)
             })
     }
@@ -80,7 +80,6 @@ const createPost = () => {
 /* Get All Posts */
 
 const addPostDiv = (id, title, username, image, content, likes) => {
-    console.log(id, title, username, image, content, likes)
     const section = document.createElement("SECTION")
     section.setAttribute("id", "post" + id)
     const innerPost = document.createElement("div")
@@ -192,7 +191,6 @@ const getPosts = (verification) => {
     }
     const postsDiv = document.querySelector(".all-posts")
     postsDiv.innerHTML = ""
-    console.log(searchValue)
     fetch("/getposts", {
             method: "POST",
             headers: {
@@ -212,31 +210,16 @@ const getPosts = (verification) => {
                     const userData = await getUser(element.SenderID)
                     if (checkValue(searchValue, userData, element)) {
                         maxPosts += 1
-                        if (verification !== undefined) {
-                            initPagination(maxPosts)
-                        }
                         resultsTab.push([element, userData])
                     }
                 } catch (err) {
                     console.log(err);
                 }
             }
-            // data.forEach((element) => {
-            //     (getUser(element.SenderID)).then(userData => {
-            //         if (checkValue(searchValue, userData, element)) {
-            //             maxPosts += 1
-            //             if (verification !== undefined) {
-            //                 initPagination(maxPosts)
-            //             }
-            //             resultsTab.push([element, userData])
-            //                 // console.log(postsData.maxPosts, postsData.page)
-            //                 // console.log(resultsTab)
-            //         }
-            //     })
-            // });
-            console.log(resultsTab)
+            if (verification !== undefined) {
+                initPagination(maxPosts)
+            }
             resultsTab.forEach((element, index) => {
-                console.log(element)
                 if (checkValueFromPage(index)) {
                     addPostDiv(element[0].PostID, element[0].Title, element[1].Pseudonyme, element[1].Image, element[0].Content.substring(0, 500), element[0].Likes)
                 }

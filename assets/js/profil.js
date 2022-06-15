@@ -1,8 +1,24 @@
+const getCookie = function(name) {
+    const cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; ++i) {
+        const pair = cookies[i].trim().split('=');
+        if (pair[0] == name)
+            return pair[1];
+    }
+    return null;
+};
+
 const getInfos = () => {
     const pseudo = document.querySelector(".nameUsers h1")
     const imgDiv = document.querySelector(".imgDiv")
     const biography = document.querySelector(".biography p")
+    const usernameConnected = getCookie("pseudo")
     const query = new URLSearchParams(window.location.search)
+    if (usernameConnected != "" && usernameConnected == query.get("pseudo")) {
+        const modifBtn = document.querySelector(".fas")
+        console.log(modifBtn)
+        modifBtn.style.display = "block"
+    }
     fetch("/getinfos", {
             method: "POST",
             headers: {
@@ -19,9 +35,14 @@ const getInfos = () => {
             return res.json()
         })
         .then(data => {
-            pseudo.innerHTML = data.Pseudonyme
-            imgDiv.style.backgroundImage = "url(" + data.Image + ")"
-            biography.innerHTML = data.Biography
+            console.log(data)
+            if (data.Pseudonyme != "") {
+                pseudo.innerHTML = data.Pseudonyme
+                imgDiv.style.backgroundImage = "url(" + data.Image + ")"
+                biography.innerHTML = data.Biography
+            } else {
+                location.href = "/"
+            }
         })
         .catch(err => {
             errorlog.innerHTML = err.err
