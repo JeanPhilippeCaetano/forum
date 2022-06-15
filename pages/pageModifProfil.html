@@ -3,6 +3,8 @@
 
 <head>
     <link rel="stylesheet" href="../static/pageModifProfil.css">
+    <link rel="stylesheet" href="../static/headFoot.css">
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,6 +22,7 @@
 </head>
 
 <body>
+    {{template "header"}}
     <section id="profile">
         <div class="imgContent">
             <div class="imgDiv">
@@ -29,30 +32,37 @@
         <div class="conteneur">
             <div class="nameUsers">
                 <!-- <h1>Amaury</h1> -->
-                <div>
+                <div class="nameChange">
                     <input id="inputName">
                     <button id="newUsersName">Valider</button>
                 </div>
-                <i class="fab fa-linkedin"></i>
-                <i class="fas fa-times" onclick="document.location.href='./profil'" style="cursor: pointer;"></i>
+                <i class="fab fa-linkedin" style="color: #faf0ca;"></i>
+                <i class="fas fa-times" onclick="document.location.href='./profil'" style="cursor: pointer; color: #faf0ca;"></i>
             </div>
             <div class="biography">
-                <textarea id="areaBiography" >Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere eveniet doloribus reprehenderit natus, beatae, id sequi aperiam, eius ex deleniti debitis error totam necessitatibus commodi vel saepe! Reiciendis, suscipit deleniti?</textarea>
+                <!-- <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Illum corporis cumque voluptate nam,
+                    mollitia dolorum odio ipsam excepturi commodi possimus optio tempora atque dolores sint ratione
+                    eaque est numquam aut.</p> -->
+                <textarea
+                    id="areaBiography">Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere eveniet doloribus reprehenderit natus, beatae, id sequi aperiam, eius ex deleniti debitis error totam necessitatibus commodi vel saepe! Reiciendis, suscipit deleniti?</textarea>
                 <button id="newBio">Valider</button>
             </div>
         </div>
     </section>
     <section id="changeMdp">
-            <input type="text" class="inputText" placeholder="Ancien mot de passe">
-            <input type="text" class="inputText" placeholder="Nouveau mot de passe">
-            <input type="text" class="inputText" placeholder="confirmer mot de passe">
-            <button class="buttonValide">Valider</button>
+        <input type="text" class="inputText" placeholder="Ancien mot de passe">
+        <input type="text" class="inputText" placeholder="Nouveau mot de passe">
+        <input type="text" class="inputText" placeholder="confirmer mot de passe">
+        <button class="buttonValide">Valider</button>
     </section>
     <section id="changeEmail">
         <input type="text" class="inputText" placeholder="Ancienne adresse email">
         <input type="text" class="inputText" placeholder="Nouvelle adresse email">
         <input type="text" class="inputText" placeholder="confirmer adresse email">
         <button class="buttonValide">Valider</button>
-</section>
+    </section>
+    {{template "footer"}}
 </body>
+<script type="text/javascript" src="/assets/js/updateProfil.js"></script>
+
 </html>

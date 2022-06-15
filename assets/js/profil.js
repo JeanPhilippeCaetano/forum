@@ -22,6 +22,7 @@ const getInfos = () => {
             pseudo.innerHTML = data.Pseudonyme
             imgDiv.style.backgroundImage = "url(" + data.Image + ")"
             biography.innerHTML = data.Biography
+            
         })
         .catch(err => {
             errorlog.innerHTML = err.err
