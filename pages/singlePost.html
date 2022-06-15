@@ -27,24 +27,25 @@
             <div class="displayPost">
                 <div class="post">
                     <div class="userInfo">
-                        <div class="PP"></div>
-                        <div class="username"> pseudal </div>
+                        <div class="PP" id="userPP"> </div>
+                        <div class="username" id="userName">  </div>
                         <div class="postInfo">
-                            <div class="displayLikesValue" id="like" data-like='true'> 1520 <i class="far fa-heart"></i><i onclick="likePost('like')" class="fa fa-heart"></i></div>
-                            <div class="displayCommentsValue" id="com"> 212 <i onclick="document.getElementById('comInput').focus()"  class="fa fa-comments" aria-hidden="true"></i></div>
+                            <!-- <i class="far fa-heart"></i><i onclick="likePost('like')" class="fa fa-heart"></i> -->
+                            <div class="displayLikesValue" id="like" data-like='true'> </div>
+                            <div class="displayCommentsValue" id="com"> <i onclick="document.getElementById('comInput').focus()"  class="fa fa-comments" aria-hidden="true"></i></div>
                         </div>
                     </div>
                     <div class="titleNtags">
-                        <div class="title"> Test pour le titre </div>
-                        <div class="tags"> HTML/CSS </div>
+                        <div class="title" id="postTitle">  </div>
+                        <div class="tags" id="postTags"> </div>
                     </div>
-                    <div class="postText">
-                        Oui bonjour je suis du texte en guise de test. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    <div class="postText" id="postContent">
+                        
                     </div>
-                    <div class="edit"><i onclick="console.log('edit post')" class="fas fa-edit"></i></div>
+                    <div class="edit"><i onclick="console.log('edit post')" class="fas fa-edit"></i></div> <!-- afficher que si le post en de l'utilisateur connecté + faire la fonction d'édit -->
                 </div>
                 <div class="writeCom">
-                    <div class="PP"></div>
+                    <div class="PP"></div> <!-- ajouter la pp du user -->
                     <input type="text" name="comment" class="commentInput" placeholder="Écrivez votre réponse" id="comInput">
                     <button class="subitComment" id="subCom" onclick="validTextInput()"> Répondre </button>
                 </div>

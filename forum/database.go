@@ -145,13 +145,13 @@ func parseUpdateParams(structure interface{}, table string, id int, parameters .
 			setters += ","
 		}
 	}
-	setters += "WHERE " + data.Type().Field(0).Name + "='" + strconv.Itoa(id) + "'"
+	setters += " WHERE " + data.Type().Field(0).Name + "='" + strconv.Itoa(id) + "'"
 	return statement + setters
 }
 
 func UpdateData(structure interface{}, db *sql.DB, table string, id int, parameters ...interface{}) (sql.Result, error) {
-	statement := parseUpdateParams(structure, table, id, parameters)
-	result, err := db.Exec(statement, parameters)
+	statement := parseUpdateParams(structure, table, id, parameters...)
+	result, err := db.Exec(statement, parameters...)
 	return result, err
 }
 
@@ -207,13 +207,26 @@ func resetGlobal(global *Global, data string) *Global {
 
 func DisplayOnePost(rows *sql.Rows) Posts {
 	var p Posts
+	var parentId sql.NullInt64
 	for rows.Next() {
-		err := rows.Scan(&p.PostID, &p.SenderID, &p.ParentID, &p.Title, &p.Content, &p.Likes, &p.Date)
+		err := rows.Scan(&p.PostID, &p.SenderID, &parentId, &p.Title, &p.Content, &p.Tags, &p.Likes, &p.Date)
+		if err != nil {
+			log.Panic(err)
+		}
+		p.ParentID = int(parentId.Int64)
+	}
+	return p
+}
+
+func DisplayOneUser(rows *sql.Rows) Users {
+	var u Users
+	for rows.Next() {
+		err := rows.Scan(&u.UserID, &u.Pseudonyme, &u.Rank, &u.Email, &u.Password, &u.Biography, &u.Image)
 		if err != nil {
 			log.Panic(err)
 		}
 	}
-	return p
+	return u
 }
 
 func DisplayRows(global *Global, rows *sql.Rows, structure interface{}) *Global {
@@ -243,10 +256,12 @@ func DisplayRows(global *Global, rows *sql.Rows, structure interface{}) *Global 
 			// 	global.AllComments = append(global.AllComments, c)
 		} else if data == "Posts" {
 			var p Posts
-			err := rows.Scan(&p.PostID, &p.SenderID, &p.ParentID, &p.Title, &p.Content, &p.Likes, &p.Date)
+			var parentId sql.NullInt64
+			err := rows.Scan(&p.PostID, &p.SenderID, &parentId, &p.Title, &p.Content, &p.Tags, &p.Likes, &p.Date)
 			if err != nil {
 				log.Panic(err)
 			}
+			p.ParentID = int(parentId.Int64)
 			global.AllPosts = append(global.AllPosts, p)
 		}
 	}

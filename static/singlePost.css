@@ -45,6 +45,7 @@ body {
     border: 2px var(--blue) solid;
     border-radius: 100%;
     background-color: var(--blue);
+    background-size: cover;
 }
 
 .post {
@@ -170,14 +171,14 @@ body {
 .commentInput {
     margin: 1.5%;
     width: 80%;
-    background-color: var(--orange);
+    background-color: var(--yellow);
 }
 
 .subitComment {
     margin: 1.5%;
     width: 10%;
-    background-color: var(--orange);
-    border: 2px solid var(--orange);
+    background-color: var(--yellow);
+    border: 2px solid var(--yellow);
     border-radius: 10px;
 }
 

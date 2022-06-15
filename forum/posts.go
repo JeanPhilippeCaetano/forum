@@ -1,6 +1,7 @@
 package forum
 
 import (
+	"database/sql"
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
@@ -12,17 +13,20 @@ type NewPostParams struct {
 	Title   string
 	Content string
 	Tags    string
+	Likes   int
 }
 
 type ModifyPostParams struct {
-	PostID  int
-	Title   string
-	Content string
-	Tags    string
+	PostID   int
+	SenderID int
+	Title    string
+	Content  string
+	Tags     string
+	Likes    int
 }
 
 type PostParams struct {
-	PostID int
+	Postid int `json:"postid"`
 }
 
 func AddPost(w http.ResponseWriter, r *http.Request, global *Global) {
@@ -43,7 +47,12 @@ func ModifyPost(w http.ResponseWriter, r *http.Request, global *Global) {
 	body, _ := ioutil.ReadAll(r.Body)
 	json.Unmarshal(body, &Post)
 	post := DisplayOnePost(GetDataFromTableWithID(Posts{}, global.Db, "posts", Post.PostID))
-	result, _ := UpdateData(Posts{}, global.Db, "posts", Post.PostID, strconv.Itoa(post.ParentID), Post.Title, Post.Content, Post.Tags, strconv.Itoa(post.Likes), post.Date)
+	var result sql.Result
+	if post.ParentID != 0 {
+		result, _ = UpdateData(Posts{}, global.Db, "posts", Post.PostID, post.SenderID, post.ParentID, Post.Title, Post.Content, Post.Tags, Post.Likes, post.Date)
+	} else {
+		result, _ = UpdateData(Posts{}, global.Db, "posts", Post.PostID, post.SenderID, nil, Post.Title, Post.Content, Post.Tags, Post.Likes, post.Date)
+	}
 	postId, _ := result.LastInsertId()
 	w.Write([]byte("{\"postID\": \"" + strconv.FormatInt(postId, 10) + "\"}"))
 }
@@ -52,7 +61,7 @@ func GetPost(w http.ResponseWriter, r *http.Request, global *Global) {
 	var PostBody PostParams
 	bd, _ := ioutil.ReadAll(r.Body)
 	json.Unmarshal(bd, &PostBody)
-	post := GetDataFromTableWithID(Posts{}, global.Db, "posts", PostBody.PostID)
+	post := DisplayOnePost(GetDataFromTableWithID(Posts{}, global.Db, "posts", PostBody.Postid))
 	body, _ := json.MarshalIndent(post, "", "")
 	w.Write(body)
 }
