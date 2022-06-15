@@ -73,6 +73,9 @@ func loadAllRoutes(global *Global) {
 	http.HandleFunc("/users", func(w http.ResponseWriter, r *http.Request) {
 		UsersRoute(w, r)
 	})
+	http.HandleFunc("/getusers", func(w http.ResponseWriter, r *http.Request) {
+		GetUsers(w, r, global)
+	})
 	http.HandleFunc("/posts", func(w http.ResponseWriter, r *http.Request) {
 		PostsRoute(w, r)
 	})
