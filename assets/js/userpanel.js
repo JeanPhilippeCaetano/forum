@@ -74,9 +74,7 @@ const addUserDiv = (id, image, username, date, content) => {
 
     container.appendChild(topUser)
     container.appendChild(biography)
-    console.log(container)
     document.querySelector(".suggestedUsers").appendChild(container)
-    console.log(document.querySelector(".suggestedUsers"))
 }
 
 const getUsers = (verification) => {
@@ -114,7 +112,6 @@ const getUsers = (verification) => {
                 }
             }
             resultsTab.forEach((element, index) => {
-                console.log("oui", element)
                 if (checkValueFromPage(index)) {
                     addUserDiv(element.UserID, element.Image, element.Pseudonyme, "date à faire", element.Biography)
                 }
