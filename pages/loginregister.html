@@ -39,8 +39,14 @@
                 </div>
                 <input id="pseudologin" type="text" placeholder="Pseudo" class="forms_field-input" onkeyup="checkEmptyInputsSignIn()" required autofocus />
                 <input id="passwordlogin" type="password" placeholder="Password" class="forms_field-input" onkeyup="checkEmptyInputsSignIn()" required />
-                <input id="signinBtn" disabled="true" type="button" value="Login" class="forms_buttons-action" onclick="onLoginClick()" />
-                <p class="signup">
+                <input id="signinBtn" disabled="true" type="button" value="Login" class="forms_buttons-action" style="color: white;" onclick="onLoginClick()" />
+                <div class="all_reseau">
+                    <i class="fab fa-google"></i>
+                    <i class="fab fa-linkedin-in" style="margin-left: 5%;"></i>
+                    <i class="fab fa-github" style="margin-left: 5%;"></i>
+                    <i class="fab fa-twitter" style="margin-left: 5%;"></i>
+                </div>
+                    <p class="signup">
                   Don't have an account ?
                   <a href="#" onclick="toggleForm();">Sign Up.</a>
                 </p>
@@ -58,7 +64,13 @@
                 <input id="emailregister" type="email" placeholder="Email" class="forms_field-input" placeholder="Email Address" onkeyup="checkEmptyInputsSignUp()" required />
                 <input id="passwordregister" type="password" class="forms_field-input" placeholder="Create Password" onkeyup="checkEmptyInputsSignUp()" required/>
                 <!-- <input type="password" name="" placeholder="Confirm Password" /> -->
-                <input id="signupBtn" type="button" value="Sign Up" class="forms_buttons-action" disabled="true" onclick="onRegisterClick()" />
+                <input id="signupBtn" type="button" value="Sign Up" class="forms_buttons-action" disabled="true" style="color: white;" onclick="onRegisterClick()" />
+                <div class="all_reseau">
+                    <i class="fab fa-google"></i>
+                    <i class="fab fa-linkedin-in" style="margin-left: 5%;"></i>
+                    <i class="fab fa-github" style="margin-left: 5%;"></i>
+                    <i class="fab fa-twitter" style="margin-left: 5%;"></i>
+                </div>
                 <p class="signup">
                   Already have an account ?
                   <a href="#" disabled="true" onclick="toggleForm();">Sign in.</a>
