@@ -4,7 +4,8 @@
 <head>
     <link rel="stylesheet" href="../static/style.css">
     <link rel="stylesheet" href="../static/headFoot.css">
-    <link rel="stylesheet" href=" ./../../static/userpanel.css">
+    <link rel="stylesheet" href="../static/userpanel.css">
+    <link rel="stylesheet" href="../static/posts.css">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -28,23 +29,50 @@
 
 <body>
     {{template "header"}}
-    <section class="searchUser">
-        <div class="searchbar">
-            <input type="search" placeholder="Quel utilisateur cherchez-vous ?" class="inputZone" required autofocus>
-            <button type="submit" class="search-btn"><i class="fa fa-search"></i></button>
+    <div class="select-filters">
+        <div class="wrap">
+            <div class="search">
+                <input type="text" class="userpanel" placeholder="Search User..." onkeyup="changeSearchValue()">
+                <button type="submit" class="searchButton">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
         </div>
+    </div>
+    <section id="usersDisplay">
         <div class="suggestedUsers">
-            <button class="user"><img class="userIcon" src="https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png"><div class="userInfo"><div class="pseudo">Pseudo</div><div class="regDate">regDate</div></div><div class="biography">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Odio provident omnis porro consequatur molestiae harum quod quasi ratione? Error, aliquam. Molestiae minima minus exercitationem sed fugit. Vitae praesentium sed totam!</div></button>
-            <button class="user"><img class="userIcon" src="https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png"><div class="userInfo"><div class="pseudo">Pseudo</div><div class="regDate">regDate</div></div><div class="biography">Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste, inventore mollitia laborum nam cumque fuga soluta corporis vero, esse a natus saepe tempore debitis voluptatum architecto doloremque distinctio veritatis excepturi!</div></button>
-            <button class="user"><img class="userIcon" src="https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png"><div class="userInfo"><div class="pseudo">Pseudo</div><div class="regDate">regDate</div></div><div class="biography">Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem error inventore possimus delectus amet odio laboriosam magnam iusto ullam. Nihil fuga quam explicabo sint tempora cumque quos earum reiciendis quibusdam.</div></button>
-            <button class="user"><img class="userIcon" src="https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png"><div class="userInfo"><div class="pseudo">Pseudo</div><div class="regDate">regDate</div></div><div class="biography">Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum repellendus iusto libero aliquam harum in accusantium quidem! Eum ea, quisquam illo repellendus sapiente nesciunt ad. Deleniti suscipit culpa ipsam aliquam?</div></button>
-            <button class="user"><img class="userIcon" src="https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png"><div class="userInfo"><div class="pseudo">Pseudo</div><div class="regDate">regDate</div></div><div class="biography">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur beatae molestias, autem omnis, numquam reiciendis dolorum nemo ratione, exercitationem praesentium cum totam sapiente possimus culpa voluptates! Doloribus dolorem tenetur quas?</div></button>
-            <button class="user"><img class="userIcon" src="https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png"><div class="userInfo"><div class="pseudo">Pseudo</div><div class="regDate">regDate</div></div><div class="biography">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Earum pariatur eaque aliquid debitis sunt quaerat, iusto at quas illum itaque suscipit dicta eius, vitae necessitatibus magni reiciendis? Sed, iusto modi?</div></button>
         </div>
+        <div class="pagination:container">
+            <a onclick="goToPrev()" value="left" class="pagination:number arrow prev">
+                <svg width="18" height="18">
+              <use xlink:href="#left" />
+            </svg>
+                <span class="arrow:text">Previous</span>
+            </a>
+
+            <div class="display-pages">
+                <a onclick="goToNum(this)" class="slide pagination:active pagination:number"></a>
+                <a onclick="goToNum(this)" class="slide mid-left pagination:number after"></a>
+                <a onclick="goToNum(this)" class="slide mid pagination:number"></a>
+                <a onclick="goToNum(this)" class="slide mid-right pagination:number"></a>
+                <a onclick="goToNum(this)" class="slide pagination:number"></a>
+            </div>
+
+            <a onclick="goToNext()" class="pagination:number arrow next">
+                <span class="arrow:text">Next</span>
+                <svg width="18" height="18">
+              <use xlink:href="#right" />
+            </svg>
+            </a>
+        </div>
+
+        <svg class="hide">
+              <symbol id="left" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></symbol>
+              <symbol id="right" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></symbol>
+        </svg>
     </section>
-    <br>
     {{template "footer"}}
 </body>
-<script type="text/javascript" src="../assets/js/suggestedUsers.js"></script>
-
+<script src="../assets/js/userpanel.js"></script>
+<script src="../assets/js/headFoot.js"></script>
 </html>

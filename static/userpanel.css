@@ -1,116 +1,131 @@
-
-
-.searchUser .searchbar {
-    display: flex;
-    justify-content: center;
-    opacity: 0.9;
-    position: sticky;
+.wrap {
+    margin-left: 30%;
+    width: 40% !important;
 }
 
-.searchbar .inputZone {
-    width: 900px;
-    display: block;
-    font-size: 18px;
-    
+.search {
+    width: 100% !important;
+}
+
+.userpanel {
+    min-width: fit-content;
+    width: 100%;
+    border: 2px solid #8A1B05;
+    background-color: transparent;
+    border-right: none;
+    padding: 5px;
+    height: 100%;
+    border-radius: 5px 0 0 5px;
+    outline: none;
+    color: #9DBFAF;
+}
+
+.userpanel::placeholder {
+    color: black;
+}
+
+.userpanel:focus {
+    color: #00B4CC;
+}
+
+#usersDisplay {
+    padding-top: 5vh;
+    padding-bottom: 1vh;
+    width: 100%;
+    min-height: 100vh;
+    height: fit-content;
+    background-color: #8A1B05;
 }
 
 .suggestedUsers {
     display: flex;
-    width: 900px;
-    background-color: #f4d35e;
-    display: flex;
+    width: 60%;
+    margin-left: 20%;
     flex-direction: column;
     justify-content: center;
-    margin-left: 2px;
-    margin-right: 2px;
 }
 
-.user {
+.user-total {
     height: fit-content;
-    color: #f4d35e;
-    background-color: #10497e;
+    color: black;
+    border: 1px solid black;
+    background-color: #faf0ca;
     display: flex;
     flex-direction: row;
-    margin-left: 2px;
-    margin-right: 2px;
 }
 
-
-.searchUser {
+.top-user {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: 90vh;
-}
-
-.search-btn {
-    width: 40px;
+    flex-direction: row;
 }
 
 .userIcon {
     width: 80px;
 }
 
-.userInfo{
-    display: inline-block;
-    margin-right: 20px;
+.userInfo {
+    margin: 10px 10px 10px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .pseudo{
     display: inline-flex;
     font-size: large;
-    margin-right: 10px;
 }
 
 .regDate{
     display: inline-flex;
-    font-size: small;
-    margin-right: 10px;
+    font-size: 0.8rem;
 }
 
-.biography{
+.biography {
     font-size: medium;
     display:flex;
-    align-self: center;
-    text-align:justify;
+    align-self: flex-start;
+    text-align:left;
+    padding: 10px 20px 20px 20px;
 }
 
 @media screen and (max-width: 900px) {
-    body{
-        background-color: #f4d35e;
+    .wrap {
+        margin-left: 20%;
+        width: 60% !important;
     }
 
-    .searchbar{
-        width: 90%;
+    .suggestedUsers {
+        width: 80%;
+        margin-left: 10%;
     }
-    
-    .userIcon{
-        width: 30%;
+
+    #usersDisplay {
+        padding-top: 6vh;
     }
-    
-    .suggestedUsers{
-        width: 100%;
-        font-size: 3vw;
+}
+
+@media screen and (max-width: 700px) {
+    .user-total {
         flex-direction: column;
     }
-    
-    .user{
-        width: 99%;
-        font-size: 3vw;
-        display: inline-block;
+
+    .userInfo {
+        margin-left: 5vh;
     }
 
-    .userInfo{
-        width: 70%;
-        display: flex;
+    .top-user {
         flex-direction: row;
-        font-size: 3vw;
+        align-items: center;
     }
-    
-    .biography{
-        width: 90%;
-        font-size: 3vw;
-        display: block;
+
+    .suggestedUsers {
+        width: 70%;
+        margin-left: 15%;
     }
-    
+}
+
+@media screen and (max-width: 500px) {
+    #usersDisplay {
+        padding-top: 7vh;
+    }
 }

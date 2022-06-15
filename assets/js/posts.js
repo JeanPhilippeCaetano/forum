@@ -3,6 +3,7 @@ let postsData = {
     postsPerPage: 10,
     page: 1,
 }
+
 const addChoosed = (value) => {
     const tags = document.querySelector(".tags-filters")
     tags.childNodes.forEach(elem => {
@@ -44,11 +45,13 @@ const createPost = () => {
         const content = tinymce.get("mytextarea").getContent()
         const tabTags = [...document.querySelectorAll(".tags button")]
         const tags = tabTags.filter(elem => {
-            return elem.classList.contains("choosed")
-        })
-        const tagsValues = tags.map(elem => {
-            return elem.value
-        })
+                return elem.classList.contains("choosed")
+            })
+            .then(data => {
+                closePopup()
+                location.href = "/posts"
+                console.log(data)
+            })
         fetch("/addpost", {
                 method: "POST",
                 headers: {

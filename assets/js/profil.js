@@ -15,9 +15,11 @@ const getInfos = () => {
     const usernameConnected = getCookie("pseudo")
     const query = new URLSearchParams(window.location.search)
     if (usernameConnected != "" && usernameConnected == query.get("pseudo")) {
-        const modifBtn = document.querySelector(".fas")
-        console.log(modifBtn)
-        modifBtn.style.display = "block"
+        const modifBtn = [...document.querySelectorAll(".fas")]
+
+        modifBtn.forEach(element => {
+            element.style.display = "block"
+        })
     }
     fetch("/getinfos", {
             method: "POST",
