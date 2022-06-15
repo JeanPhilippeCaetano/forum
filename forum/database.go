@@ -145,13 +145,13 @@ func parseUpdateParams(structure interface{}, table string, id int, parameters .
 			setters += ","
 		}
 	}
-	setters += "WHERE " + data.Type().Field(0).Name + "='" + strconv.Itoa(id) + "'"
+	setters += " WHERE " + data.Type().Field(0).Name + "='" + strconv.Itoa(id) + "'"
 	return statement + setters
 }
 
 func UpdateData(structure interface{}, db *sql.DB, table string, id int, parameters ...interface{}) (sql.Result, error) {
-	statement := parseUpdateParams(structure, table, id, parameters)
-	result, err := db.Exec(statement, parameters)
+	statement := parseUpdateParams(structure, table, id, parameters...)
+	result, err := db.Exec(statement, parameters...)
 	return result, err
 }
 

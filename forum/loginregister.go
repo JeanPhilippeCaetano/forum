@@ -24,6 +24,15 @@ type LogParams struct {
 	Password string
 }
 
+type ModifyParams struct {
+	Id        int
+	Pseudo    string
+	Email     string
+	Biography string
+	Password  string
+	Image     string
+}
+
 type UserID struct {
 	Id int
 }
@@ -110,6 +119,42 @@ func Login(w http.ResponseWriter, r *http.Request, global *Global) {
 	http.SetCookie(w, &c)
 	session.Save(r, w)
 	w.Write([]byte("{\"pseudo\": \"" + account.Pseudo + "\"}"))
+}
+
+func ModifyUser(w http.ResponseWriter, r *http.Request, global *Global) {
+	var u ModifyParams
+	session, _ := store.Get(r, "cookie-name")
+	bd, _ := ioutil.ReadAll(r.Body)
+	json.Unmarshal(bd, &u)
+	user := GetDataFromTableWithID(Users{}, global.Db, "users", u.Id)
+	userData := DisplayOneUser(user)
+	_, err := UpdateData(Users{}, global.Db, "users", userData.UserID, u.Pseudo, userData.Rank, u.Email, u.Password, u.Biography, u.Image)
+	if err != nil {
+		if err.Error() == "UNIQUE constraint failed: users.Email" {
+			http.Error(w, `{"err": "Mail déjà utilisé"}`, http.StatusBadRequest)
+			return
+		} else if err.Error() == "UNIQUE constraint failed: users.Pseudonyme" {
+			http.Error(w, `{"err": "Pseudo déjà utilisé"}`, http.StatusBadRequest)
+			return
+		} else if err.Error() == "CHECK constraint failed: length(Pseudonyme) <= 16" {
+			http.Error(w, `{"err": "Le pseudonyme ne doit pas dépasser 16 caractères"}`, http.StatusBadRequest)
+			return
+		} else if err.Error() == "CHECK constraint failed: length(Password) <= 16" {
+			http.Error(w, `{"err": "Le mot de passe ne doit pas dépasser 16 caractères"}`, http.StatusBadRequest)
+			return
+		}
+	}
+	newUser := DisplayOneUser(GetDataFromTableWithID(Users{}, global.Db, "users", userData.UserID))
+	body, _ := json.MarshalIndent(newUser, "", "")
+	session.Values["authenticated"] = true
+	session.Values["username"] = u.Pseudo
+	c := http.Cookie{
+		Name:   "pseudo",
+		Value:  u.Pseudo,
+		MaxAge: 3600}
+	http.SetCookie(w, &c)
+	session.Save(r, w)
+	w.Write(body)
 }
 
 func GetUserFromId(w http.ResponseWriter, r *http.Request, global *Global) {

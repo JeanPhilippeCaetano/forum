@@ -21,6 +21,14 @@ func Index(w http.ResponseWriter, r *http.Request) {
 }
 
 func Pagemodifprofil(w http.ResponseWriter, r *http.Request) {
+	session, _ := store.Get(r, "cookie-name")
+	if auth := session.Values["authenticated"].(bool); !auth {
+		http.Error(w, "Il faut être connecté pour exécuter une telle action !", http.StatusForbidden)
+		return
+	} else if auth := session.Values["username"].(string); auth != r.URL.Query().Get("pseudo") {
+		http.Error(w, "Vous ne pouvez pas modifier le profil d'une autre personne !", http.StatusForbidden)
+		return
+	}
 	tmpl := template.Must(template.ParseFiles("./pages/pageModifProfil.html", "./templates/header.html", "./templates/footer.html"))
 	if r.Method != http.MethodPost {
 		tmpl.Execute(w, r)
@@ -112,9 +120,9 @@ func loadAllRoutes(global *Global) {
 	http.HandleFunc("/posts", func(w http.ResponseWriter, r *http.Request) {
 		PostsRoute(w, r)
 	})
-	// http.HandleFunc("/inscreg", func(w http.ResponseWriter, r *http.Request) {
-	// 	InscReg(w, r)
-	// })
+	http.HandleFunc("/changeuser", func(w http.ResponseWriter, r *http.Request) {
+		ModifyUser(w, r, global)
+	})
 	http.HandleFunc("/contact", func(w http.ResponseWriter, r *http.Request) {
 		Contact(w, r)
 	})

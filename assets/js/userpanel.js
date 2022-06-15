@@ -6,7 +6,7 @@ let usersData = {
 
 const checkValue = (value, element) => {
     if (element.Pseudonyme.toLowerCase().includes(value.toLowerCase()) ||
-    value == ""
+        value == ""
     ) {
         return true
     }
@@ -38,7 +38,7 @@ const checkValueFromPage = (index) => {
 }
 
 const addUserDiv = (id, image, username, date, content) => {
-    console.log(id, image, username, date, content) 
+    console.log(id, image, username, date, content)
     const container = document.createElement("a")
     container.setAttribute("id", "user" + id)
     container.className = "user-total"
@@ -71,9 +71,11 @@ const addUserDiv = (id, image, username, date, content) => {
 
     topUser.appendChild(imgCtn)
     topUser.appendChild(userInfo)
-
     container.appendChild(topUser)
     container.appendChild(biography)
+    container.addEventListener('click', function() {
+        location.href = '/profil?pseudo=' + username
+    }, false);
     document.querySelector(".suggestedUsers").appendChild(container)
 }
 
@@ -88,18 +90,18 @@ const getUsers = (verification) => {
     const usersDiv = document.querySelector(".suggestedUsers")
     usersDiv.innerHTML = ""
     fetch("/getusers", {
-        method: "POST",
-        headers: {
-            "content-type": "application/json"
-        },
-    })
-        .then(async (res) => {
+            method: "POST",
+            headers: {
+                "content-type": "application/json"
+            },
+        })
+        .then(async(res) => {
             if (!res.ok) {
                 throw await res.json()
             }
             return res.json()
         })
-        .then(async (data) => {
+        .then(async(data) => {
             let resultsTab = [];
             for (const element of data) {
                 if (checkValue(searchValue, element)) {
