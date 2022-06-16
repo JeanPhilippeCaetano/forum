@@ -155,7 +155,7 @@ const getUser = (userID) => {
 }
 
 let tagsData = {
-    alltags : "bonsoir,hey,java"
+    alltags : "python,java"
 }
 
 const getTags = () => {
@@ -164,7 +164,26 @@ const getTags = () => {
 }
 
 const checkTags = (value, element) => {
+    
+}
 
+const filterByTag = (tab, element) => {
+    let includesTag = false
+    for (let i = 0; i < tab.length; i++) {
+        if (element.Tags.includes(tab[i])) {
+            includesTag = true
+        } else {
+            return false
+        }
+    }
+    return includesTag
+}
+
+const filterByLikes = (tab) => {
+    sortedTab = tab.sort((a,b)=>a.Likes-b.Likes)
+    if(valeurdufiltre == "descending") {
+        sortedTab = sortedTab.reverse()
+    }
 }
 
 const checkValue = (value, userData, element) => {
@@ -233,21 +252,18 @@ const getPosts = (verification) => {
                     console.log(err);
                 }
             }
-            // data.forEach((element) => {
-            //     (getUser(element.SenderID)).then(userData => {
-            //         if (checkValue(searchValue, userData, element)) {
-            //             maxPosts += 1
-            //             if (verification !== undefined) {
-            //                 initPagination(maxPosts)
-            //             }
-            //             resultsTab.push([element, userData])
-            //                 // console.log(postsData.maxPosts, postsData.page)
-            //                 // console.log(resultsTab)
-            //         }
-            //     })
-            // });
+            let tab = ["java", "python"]
+            // function () {
+
+            // }
+            const filteredTabTags = resultsTab.filter(post => {
+                return filterByTag(tab, post[0])
+            })
+            filterByLikes(filteredTabTags)
+            filterByComments()
+            console.log(filteredTab)
+            // maxPosts = filteredTab.length
             resultsTab.forEach((element, index) => {
-                console.log(element)
                 if (checkValueFromPage(index)) {
                     addPostDiv(element[0].PostID, element[0].Title, element[1].Pseudonyme, element[1].Image, element[0].Content.substring(0, 500), element[0].Likes)
                 }
@@ -256,8 +272,6 @@ const getPosts = (verification) => {
         .catch(err => {
             console.log(err)
         })
-        // console.log(maxPosts)
-        // postsData.maxPosts = maxPosts
 }
 
 /* End Get All Posts */
