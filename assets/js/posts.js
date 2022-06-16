@@ -154,7 +154,21 @@ const getUser = (userID) => {
     return promise
 }
 
+let tagsData = {
+    alltags : "bonsoir,hey,java"
+}
+
+const getTags = () => {
+    const tags = tagsData.alltags.split(",")
+    return tags
+}
+
+const checkTags = (value, element) => {
+
+}
+
 const checkValue = (value, userData, element) => {
+    console.log(element)
     if (userData.Pseudonyme.toLowerCase().includes(value.toLowerCase()) ||
         element.Content.toLowerCase().includes(value.toLowerCase()) ||
         element.Title.toLowerCase().includes(value.toLowerCase()) ||
@@ -208,7 +222,7 @@ const getPosts = (verification) => {
             for (const element of data) {
                 try {
                     const userData = await getUser(element.SenderID)
-                    if (checkValue(searchValue, userData, element)) {
+                    if (checkValue(searchValue, userData, element) ) {
                         maxPosts += 1
                         if (verification !== undefined) {
                             initPagination(maxPosts)
@@ -257,7 +271,7 @@ const changeSearchValue = () => {
         window.history.replaceState({}, '', url)
         getPosts("change")
     }
-    /* End searchbar */
+/* End searchbar */
 
 /* Create post text zone */
 
