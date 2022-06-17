@@ -41,7 +41,7 @@ body{
 .conteneur{
     display: flex;
     flex-direction: column;
-    margin-right: 10%;
+    margin-right: 15%;
     width: 70%;
 }
 
@@ -51,7 +51,7 @@ body{
     justify-content: space-between;
     width: 100%;
     height: 10%;
-    margin-top: 5%;
+    margin-top: 2%;
     font-size: 2vw;
     align-items: center;
     
@@ -61,6 +61,7 @@ body{
     height: 50px;
     width: 200px;
     border: solid 2px #faf0ca;
+    background-color: #FAF0CA;
     border-radius: 5px;
     font-size: 20px;
     color: #8a1b05;
@@ -104,6 +105,7 @@ body{
     width: 100%;
     color: #8a1b05;
     border-color: #faf0ca;
+    background-color: #FAF0CA;
     outline: 0;
 }
 
@@ -112,8 +114,6 @@ body{
     flex-direction: row;
     justify-content: center;
     width: 100%;
-    margin-top: 5%;
-    /* margin-left: -10%; */
 }
 
 #changeEmail{
@@ -121,14 +121,12 @@ body{
     flex-direction: row;
     justify-content: center;
     width: 100%;
-    margin-top: 5%;
     margin-bottom: 10%;
-    /* margin-left: -10%; */
 }
 
 .inputText{
     border-radius: 2px;
-    border-color: #faf0ca;
+    background-color: #FAF0CA;
     width: 15%;
     font-size: 20px;
     margin: 0 20px;
@@ -143,6 +141,24 @@ body{
     border-radius: 5px;
     color: #8a1b05;
     font-size: 16px;
+}
+
+/* message erreur */
+#erreurName{
+    color: red;
+}
+
+#erreurMdp{
+    /* padding: 0 0 5%; */
+    color: red;
+    margin-top: 3%;
+    margin-left: 23%;
+}
+
+#erreurEmail{
+    color: red;
+    margin-top: 3%;
+    margin-left: 23%;
 }
 
 @media screen and (max-width:900px) {
@@ -170,6 +186,7 @@ body{
         flex-direction: column;
         justify-content: center;
         width: 70%;
+        margin-left: 12.5%;
     }
 
     .nameChange{
@@ -184,7 +201,6 @@ body{
     .biography{
         display: flex;
         flex-direction: column;
-        margin-left: -5%;
         width: 90%;
         align-items: center;
     }
@@ -202,5 +218,22 @@ body{
     .inputText{
         width: 100%;
         margin: 0 5px;
+    }
+
+    #erreurName{
+        margin-left: 20%;    
+    }
+    
+    #erreurMdp{
+        /* padding: 0 0 5%; */
+        color: red;
+        margin-top: 3%;
+        /* margin-left: 23%; */
+    }
+    
+    #erreurEmail{
+        color: red;
+        margin-top: 3%;
+        /* margin-left: 23%; */
     }
 }
