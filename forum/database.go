@@ -18,6 +18,7 @@ type Users struct {
 	Password   string
 	Biography  string
 	Image      string
+	Date       string
 }
 
 // type PostComments struct {
@@ -60,7 +61,8 @@ func InitDatabase() *sql.DB {
     	Email TEXT NOT NULL UNIQUE,
     	Password TEXT NOT NULL CHECK(length(Password) <= 16),
 		Biography TEXT NOT NULL,
-    	Image TEXT NOT NULL 
+    	Image TEXT NOT NULL,
+		Date DATE NOT NULL
 	);
 	
 	CREATE TABLE IF NOT EXISTS posts
@@ -76,30 +78,7 @@ func InitDatabase() *sql.DB {
 		FOREIGN KEY(SenderID) REFERENCES users(UserID),
 		FOREIGN KEY(ParentID) REFERENCES posts(PostID)
 	);
-
 	`
-	// CREATE TABLE IF NOT EXISTS postcomments
-	// (
-	// 	CommentID INTEGER PRIMARY KEY AUTOINCREMENT,
-	// 	Content TEXT NOT NULL,
-	// 	SenderID INTEGER NOT NULL,
-	// 	PostID INTEGER NOT NULL,
-	// 	Likes INTEGER NOT NULL,
-	// 	Date DATE NOT NULL,
-	// 	FOREIGN KEY(SenderID) REFERENCES users(UserID),
-	// 	FOREIGN KEY(PostID) REFERENCES posts(PostID)
-	// );
-	// CREATE TABLE IF NOT EXISTS comments
-	// (
-	// 	CommentID INTEGER PRIMARY KEY AUTOINCREMENT,
-	// 	Content TEXT NOT NULL,
-	// 	SenderID INTEGER NOT NULL,
-	// 	ReceiverID INTEGER NOT NULL,
-	// 	Likes INTEGER NOT NULL,
-	// 	Date DATE NOT NULL,
-	// 	FOREIGN KEY(SenderID) REFERENCES users(UserID),
-	// 	FOREIGN KEY(ReceiverID) REFERENCES users(UserID)
-	// );
 	db.Exec(statement)
 	if err != nil {
 		log.Panic(err)
@@ -184,7 +163,7 @@ func GetUser(db *sql.DB, table string, pseudo string) (Users, error) {
 	statement := "SELECT * FROM " + table + " WHERE Pseudonyme='" + pseudo + "'"
 	rows, err := db.Query(statement)
 	for rows.Next() {
-		err := rows.Scan(&u.UserID, &u.Pseudonyme, &u.Rank, &u.Email, &u.Password, &u.Biography, &u.Image)
+		err := rows.Scan(&u.UserID, &u.Pseudonyme, &u.Rank, &u.Email, &u.Password, &u.Biography, &u.Image, &u.Date)
 		if err != nil {
 			log.Panic(err)
 		}
@@ -195,10 +174,6 @@ func GetUser(db *sql.DB, table string, pseudo string) (Users, error) {
 func resetGlobal(global *Global, data string) *Global {
 	if data == "Users" {
 		global.AllUsers = []Users{}
-		// } else if data == "Comments" {
-		// 	global.AllComments = []Comments{}
-		// } else if data == "PostComments" {
-		// 	global.AllPostsComments = []PostComments{}
 	} else if data == "Posts" {
 		global.AllPosts = []Posts{}
 	}
@@ -221,7 +196,7 @@ func DisplayOnePost(rows *sql.Rows) Posts {
 func DisplayOneUser(rows *sql.Rows) Users {
 	var u Users
 	for rows.Next() {
-		err := rows.Scan(&u.UserID, &u.Pseudonyme, &u.Rank, &u.Email, &u.Password, &u.Biography, &u.Image)
+		err := rows.Scan(&u.UserID, &u.Pseudonyme, &u.Rank, &u.Email, &u.Password, &u.Biography, &u.Image, &u.Date)
 		if err != nil {
 			log.Panic(err)
 		}
@@ -235,25 +210,11 @@ func DisplayRows(global *Global, rows *sql.Rows, structure interface{}) *Global 
 	for rows.Next() {
 		if data == "Users" {
 			var u Users
-			err := rows.Scan(&u.UserID, &u.Pseudonyme, &u.Rank, &u.Email, &u.Password, &u.Biography, &u.Image)
+			err := rows.Scan(&u.UserID, &u.Pseudonyme, &u.Rank, &u.Email, &u.Password, &u.Biography, &u.Image, &u.Date)
 			if err != nil {
 				log.Panic(err)
 			}
 			global.AllUsers = append(global.AllUsers, u)
-			// } else if data == "PostComments" {
-			// 	var pc PostComments
-			// 	err := rows.Scan(&pc.CommentID, &pc.Content, &pc.SenderID, &pc.PostID, &pc.Likes, &pc.Date)
-			// 	if err != nil {
-			// 		log.Panic(err)
-			// 	}
-			// 	global.AllPostsComments = append(global.AllPostsComments, pc)
-			// } else if data == "Comments" {
-			// 	var c Comments
-			// 	err := rows.Scan(&c.CommentID, &c.Content, &c.SenderID, &c.ReceiverID, &c.Likes, &c.Date)
-			// 	if err != nil {
-			// 		log.Panic(err)
-			// 	}
-			// 	global.AllComments = append(global.AllComments, c)
 		} else if data == "Posts" {
 			var p Posts
 			var parentId sql.NullInt64

@@ -1,6 +1,6 @@
 let filtersOn = false
 
-const getCookie = function(name) {
+const getCookies = function(name) {
     const cookies = document.cookie.split(';');
     for (let i = 0; i < cookies.length; ++i) {
         const pair = cookies[i].trim().split('=');

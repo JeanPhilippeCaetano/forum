@@ -3,7 +3,6 @@ package forum
 import (
 	"database/sql"
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 	"strconv"
@@ -33,14 +32,14 @@ type PostParams struct {
 func AddPost(w http.ResponseWriter, r *http.Request, global *Global) {
 	var Post NewPostParams
 	session, _ := store.Get(r, "cookie-name")
-	fmt.Println(session.Values["authenticated"])
 	if auth := session.Values["authenticated"].(bool); !auth {
 		http.Error(w, `{"err":"Il faut être connecté pour faire cela !"}`, http.StatusForbidden)
 		return
 	}
+	user, _ := GetUser(global.Db, "users", session.Values["username"].(string))
 	body, _ := ioutil.ReadAll(r.Body)
 	json.Unmarshal(body, &Post)
-	result, err := InsertData(Posts{}, global.Db, "posts", 1, nil, Post.Title, Post.Content, Post.Tags, 0, time.Now().Format("2006.01.02 15:04:05"))
+	result, err := InsertData(Posts{}, global.Db, "posts", user.UserID, nil, Post.Title, Post.Content, Post.Tags, 0, time.Now().Format("2006.01.02 15:04:05"))
 	if err != nil {
 		http.Error(w, `{"err":"`+err.Error()+"\"}", http.StatusBadRequest)
 		return

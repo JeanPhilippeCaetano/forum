@@ -24,7 +24,7 @@ body {
     margin-top: 2%;
 }
 
-.center { 
+.center {
     height: 90%;
     display: flex;
     flex-direction: row;
@@ -82,14 +82,15 @@ body {
     margin-top: 3%;
     margin-left: auto;
     margin-right: 3%;
-    width:fit-content;
+    width: fit-content;
     text-align: right;
     font-size: 1.5em;
     font-weight: bold;
     color: var(--brown);
 }
 
-.displayLikesValue, .displayCommentsValue .i{
+.displayLikesValue,
+.displayCommentsValue .i {
     cursor: pointer;
 }
 
@@ -109,7 +110,7 @@ body {
     display: inline;
 }
 
-.titleNtags{
+.titleNtags {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -117,7 +118,8 @@ body {
     margin-right: 2%;
 }
 
-.title, .tags {
+.title,
+.tags {
     color: var(--brown);
     font-weight: bold;
 }
@@ -166,6 +168,16 @@ body {
     max-height: 55px;
     min-width: 55px;
     max-height: 55px;
+}
+
+.writeCom .cantComment {
+    margin: .5%;
+    padding: 1%;
+    border: 2px solid var(--yellow);
+    border-radius: 10px;
+    color: var(--brown);
+    text-align: center;
+    font-size: large;
 }
 
 .commentInput {
@@ -284,54 +296,56 @@ body {
     margin-bottom: 2%;
 }
 
+
 /* css pour la pop up d'alerte lors d'une entrée invalide pour un commentaire */
 
 #modalContainer {
-	background-color:rgba(0, 0, 0, 0.3);
+    background-color: rgba(0, 0, 0, 0.3);
     position: absolute;
-    top:0;
-	width:100%;
-	height:100%;
-	left:0px;
-	z-index:1;
-	background-image:url(tp.png); /* required by MSIE to prevent actions on lower z-index elements */
+    top: 0;
+    width: 100%;
+    height: 100%;
+    left: 0px;
+    z-index: 1;
+    background-image: url(tp.png);
+    /* required by MSIE to prevent actions on lower z-index elements */
 }
 
 #alertBox {
-	width:30%;
+    width: 30%;
     height: fit-content;
-	border:1px solid #fff;
-	background-color:#fff;
-    top:15%;
+    border: 1px solid #fff;
+    background-color: #fff;
+    top: 15%;
 }
 
-#modalContainer > #alertBox {
-	position:fixed;
+#modalContainer>#alertBox {
+    position: fixed;
 }
 
 #alertBox h1 {
-	margin:0;
-	font:bold 1em;
-	background-color:var(--orange);
-	border-bottom:1px solid var(--orange);
-    color:#FFF;
-	padding:10px 0 10px 5px;
+    margin: 0;
+    font: bold 1em;
+    background-color: var(--orange);
+    border-bottom: 1px solid var(--orange);
+    color: #FFF;
+    padding: 10px 0 10px 5px;
 }
 
 #alertBox p {
-	height:50px;
+    height: 50px;
     padding: 30px 0 40px 0;
-    text-align:center;
-    vertical-align:middle;
+    text-align: center;
+    vertical-align: middle;
 }
 
 #alertBox #closeBtn {
-	display:block;
-	position:relative;
-	margin:10px auto 10px auto;
-	padding:7px;
-	width:70px;
-	text-align:center;
-	color:#FFF;
-	background-color:var(--orange);
+    display: block;
+    position: relative;
+    margin: 10px auto 10px auto;
+    padding: 7px;
+    width: 70px;
+    text-align: center;
+    color: #FFF;
+    background-color: var(--orange);
 }

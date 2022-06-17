@@ -17,6 +17,7 @@ type RegParams struct {
 	Pseudo   string
 	Email    string
 	Password string
+	Date     string
 }
 
 type LogParams struct {
@@ -46,7 +47,7 @@ func Register(w http.ResponseWriter, r *http.Request, global *Global) {
 	session, _ := store.Get(r, "cookie-name")
 	body, _ := ioutil.ReadAll(r.Body)
 	json.Unmarshal(body, &account)
-	_, err := InsertData(Users{}, global.Db, "users", account.Pseudo, "Utilisateur", account.Email, account.Password, "", "../assets/images/defaultProfil.jpg")
+	_, err := InsertData(Users{}, global.Db, "users", account.Pseudo, "Utilisateur", account.Email, account.Password, "", "../assets/images/defaultProfil.jpg", account.Date)
 	if err != nil {
 		if err.Error() == "UNIQUE constraint failed: users.Email" {
 			http.Error(w, `{"err": "Mail déjà utilisé"}`, http.StatusBadRequest)
@@ -67,7 +68,7 @@ func Register(w http.ResponseWriter, r *http.Request, global *Global) {
 	c := http.Cookie{
 		Name:   "pseudo",
 		Value:  account.Pseudo,
-		MaxAge: 0}
+		MaxAge: 2147483647}
 	http.SetCookie(w, &c)
 	session.Save(r, w)
 	w.Write([]byte("{\"pseudo\": \"" + account.Pseudo + "\"}"))
@@ -103,7 +104,7 @@ func Login(w http.ResponseWriter, r *http.Request, global *Global) {
 	c := http.Cookie{
 		Name:   "pseudo",
 		Value:  account.Pseudo,
-		MaxAge: 0}
+		MaxAge: 2147483647}
 	http.SetCookie(w, &c)
 	session.Save(r, w)
 	w.Write([]byte("{\"pseudo\": \"" + account.Pseudo + "\"}"))
@@ -116,7 +117,7 @@ func ModifyUser(w http.ResponseWriter, r *http.Request, global *Global) {
 	json.Unmarshal(bd, &u)
 	user := GetDataFromTableWithID(Users{}, global.Db, "users", u.Id)
 	userData := DisplayOneUser(user)
-	_, err := UpdateData(Users{}, global.Db, "users", userData.UserID, u.Pseudo, userData.Rank, u.Email, u.Password, u.Biography, u.Image)
+	_, err := UpdateData(Users{}, global.Db, "users", userData.UserID, u.Pseudo, userData.Rank, u.Email, u.Password, u.Biography, u.Image, userData.Date)
 	if err != nil {
 		if err.Error() == "UNIQUE constraint failed: users.Email" {
 			http.Error(w, `{"err": "Mail déjà utilisé"}`, http.StatusBadRequest)
@@ -139,7 +140,7 @@ func ModifyUser(w http.ResponseWriter, r *http.Request, global *Global) {
 	c := http.Cookie{
 		Name:   "pseudo",
 		Value:  u.Pseudo,
-		MaxAge: 0}
+		MaxAge: 2147483647}
 	http.SetCookie(w, &c)
 	session.Save(r, w)
 	w.Write(body)

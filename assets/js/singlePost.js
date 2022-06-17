@@ -1,3 +1,14 @@
+const getCookie = function(name) {
+    const cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; ++i) {
+        const pair = cookies[i].trim().split('=');
+        if (pair[0] == name)
+            return pair[1];
+    }
+    return null;
+};
+
+
 let objectPost = new Object()
 let objectUser = new Object()
 let arrayComments = []
@@ -11,6 +22,7 @@ const postTagDIv = document.getElementById('postTags')
 const postLikesDiv = document.getElementById('like')
 const postContentDiv = document.getElementById('postContent')
 const postComDiv = document.getElementById('com')
+const writeCom = document.querySelector(".writeCom")
 
 const heartsIcon = ` <i class="far fa-heart"></i><i onclick="likePost('like')" class="fa fa-heart"></i>`
 const commentIcon = ` <i onclick="document.getElementById('comInput').focus()"  class="fa fa-comments" aria-hidden="true"></i>`
@@ -19,6 +31,9 @@ const commentsDiv = document.getElementById('divCom')
 const commentInput = document.getElementById('comInput')
 const commentButton = document.getElementById('subCom')
 const commentDivs = document.getElementsByClassName('oneComment')
+
+const ppAddCom = document.querySelector(".writeCom .PP")
+const editIcon = document.querySelector(".fa-edit")
 
 const noComYet = () => {
     const getInfoDiv = document.getElementById('noCom')
@@ -251,6 +266,45 @@ const displayPostInfo = () => {
     postLikesDiv.innerHTML = objectPost.Likes + heartsIcon
     postContentDiv.innerHTML = objectPost.Content
     postComDiv.innerHTML = arrayComments.length + commentIcon
+    const username = getCookie("pseudo")
+    if (!username) {
+        writeCom.innerHTML = ""
+        cantComment = document.createElement("div")
+        cantComment.className = "cantComment"
+        cantComment.textContent = "Il faut être connecté pour pouvoir commenter. Cliquez ici pour être redirigé vers la page de connexion."
+        cantComment.addEventListener('click', function() {
+            location.href = '/loginregister'
+        }, false);
+        writeCom.appendChild(cantComment)
+        return
+    } else {
+        fetch("/getinfos", {
+                method: "POST",
+                headers: {
+                    "content-type": "application/json"
+                },
+                body: JSON.stringify({
+                    pseudo: username
+                })
+            })
+            .then(async(res) => {
+                if (!res.ok) {
+                    throw await res.json()
+                }
+                return res.json()
+            })
+            .then(data => {
+                ppAddCom.style.backgroundImage = `url("` + data.Image + `")`
+            })
+            .catch(err => {
+                console.log(err)
+            })
+
+    }
+    if (objectUser.Pseudonyme == username) {
+        editIcon.style.display = "block"
+
+    }
 }
 
 const updateLikesData = () => {

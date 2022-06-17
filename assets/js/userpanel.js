@@ -115,7 +115,7 @@ const getUsers = (verification) => {
             }
             resultsTab.forEach((element, index) => {
                 if (checkValueFromPage(index)) {
-                    addUserDiv(element.UserID, element.Image, element.Pseudonyme, "date à faire", element.Biography)
+                    addUserDiv(element.UserID, element.Image, element.Pseudonyme, element.Date, element.Biography)
                 }
             })
         })
