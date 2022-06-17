@@ -22,6 +22,10 @@ func Index(w http.ResponseWriter, r *http.Request) {
 
 func Pagemodifprofil(w http.ResponseWriter, r *http.Request) {
 	session, _ := store.Get(r, "cookie-name")
+	if session.Values["authenticated"] == nil {
+		http.Error(w, "Il faut être connecté pour exécuter une telle action !", http.StatusForbidden)
+		return
+	}
 	if auth := session.Values["authenticated"].(bool); !auth {
 		http.Error(w, "Il faut être connecté pour exécuter une telle action !", http.StatusForbidden)
 		return
@@ -36,21 +40,6 @@ func Pagemodifprofil(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// func InscReg(w http.ResponseWriter, r *http.Request) {
-// 	tmpl := template.Must(template.ParseFiles("./pages/loginregister.html", "./templates/header.html", "./templates/footer.html"))
-// 	if r.Method != http.MethodPost {
-// 		tmpl.Execute(w, r)
-// 		return
-// 	}
-// }
-
-// func Contact(w http.ResponseWriter, r *http.Request) {
-// 	tmpl := template.Must(template.ParseFiles("./pages/contact.html", "./templates/header.html", "./templates/footer.html"))
-// 	if r.Method != http.MethodPost {
-// 		tmpl.Execute(w, r)
-// 		return
-// 	}
-// }
 func UsersRoute(w http.ResponseWriter, r *http.Request) {
 	tmpl := template.Must(template.ParseFiles("./pages/userpanel.html", "./templates/header.html", "./templates/footer.html", "./templates/previewUser.html"))
 	if r.Method != http.MethodPost {
@@ -58,14 +47,6 @@ func UsersRoute(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 }
-
-// func LoginRegister(w http.ResponseWriter, r *http.Request) {
-// 	tmpl := template.Must(template.ParseFiles("./pages/loginregister.html", "./templates/header.html", "./templates/footer.html"))
-// 	if r.Method != http.MethodPost {
-// 		tmpl.Execute(w, r)
-// 		return
-// 	}
-// }
 
 func PostsRoute(w http.ResponseWriter, r *http.Request) {
 	tmpl := template.Must(template.ParseFiles("./pages/posts.html", "./templates/header.html", "./templates/footer.html", "./templates/previewPost.html"))
@@ -77,10 +58,13 @@ func PostsRoute(w http.ResponseWriter, r *http.Request) {
 
 func LoginRegister(w http.ResponseWriter, r *http.Request) {
 	session, _ := store.Get(r, "cookie-name")
-	if auth := session.Values["authenticated"].(bool); auth {
-		http.Error(w, "Tu es déjà connecté !", http.StatusForbidden)
-		return
+	if session.Values["authenticated"] != nil {
+		if auth := session.Values["authenticated"].(bool); auth {
+			http.Error(w, "Tu es déjà connecté !", http.StatusForbidden)
+			return
+		}
 	}
+
 	tmpl := template.Must(template.ParseFiles("./pages/loginregister.html", "./templates/header.html", "./templates/footer.html"))
 	if r.Method != http.MethodPost {
 		tmpl.Execute(w, r)

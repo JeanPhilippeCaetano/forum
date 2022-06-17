@@ -45,13 +45,11 @@ const createPost = () => {
         const content = tinymce.get("mytextarea").getContent()
         const tabTags = [...document.querySelectorAll(".tags button")]
         const tags = tabTags.filter(elem => {
-                return elem.classList.contains("choosed")
-            })
-            .then(data => {
-                closePopup()
-                location.href = "/posts"
-                console.log(data)
-            })
+            return elem.classList.contains("choosed")
+        })
+        const tagsValues = tags.map(elem => {
+            return elem.value
+        })
         fetch("/addpost", {
                 method: "POST",
                 headers: {
