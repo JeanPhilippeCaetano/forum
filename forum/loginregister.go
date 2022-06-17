@@ -44,10 +44,6 @@ type User struct {
 func Register(w http.ResponseWriter, r *http.Request, global *Global) {
 	var account RegParams
 	session, _ := store.Get(r, "cookie-name")
-	// if auth, ok := session.Values["authenticated"].(bool); ok || auth {
-	// 	http.Error(w, "Tu es déjà connecté !", http.StatusForbidden)
-	// 	return
-	// }
 	body, _ := ioutil.ReadAll(r.Body)
 	json.Unmarshal(body, &account)
 	_, err := InsertData(Users{}, global.Db, "users", account.Pseudo, "Utilisateur", account.Email, account.Password, "", "../assets/images/defaultProfil.jpg")
@@ -71,7 +67,7 @@ func Register(w http.ResponseWriter, r *http.Request, global *Global) {
 	c := http.Cookie{
 		Name:   "pseudo",
 		Value:  account.Pseudo,
-		MaxAge: 3600}
+		MaxAge: 0}
 	http.SetCookie(w, &c)
 	session.Save(r, w)
 	w.Write([]byte("{\"pseudo\": \"" + account.Pseudo + "\"}"))
@@ -79,14 +75,10 @@ func Register(w http.ResponseWriter, r *http.Request, global *Global) {
 
 func Logout(w http.ResponseWriter, r *http.Request, global *Global) {
 	session, _ := store.Get(r, "cookie-name")
-	// if auth, ok := session.Values["authenticated"].(bool); ok || auth {
-	// 	http.Error(w, "Tu es déjà déconnecté !", http.StatusForbidden)
-	// 	return
-	// }
 	c := http.Cookie{
 		Name:   "pseudo",
 		Value:  "",
-		MaxAge: 3600}
+		MaxAge: 0}
 	http.SetCookie(w, &c)
 	session.Values["authenticated"] = false
 	session.Save(r, w)
@@ -96,10 +88,6 @@ func Logout(w http.ResponseWriter, r *http.Request, global *Global) {
 func Login(w http.ResponseWriter, r *http.Request, global *Global) {
 	var account LogParams
 	session, _ := store.Get(r, "cookie-name")
-	// if auth, ok := session.Values["authenticated"].(bool); ok || auth {
-	// 	http.Error(w, "Tu es déjà connecté !", http.StatusForbidden)
-	// 	return
-	// }
 	body, _ := ioutil.ReadAll(r.Body)
 	json.Unmarshal(body, &account)
 	u, _ := GetUser(global.Db, "users", account.Pseudo)
@@ -115,7 +103,7 @@ func Login(w http.ResponseWriter, r *http.Request, global *Global) {
 	c := http.Cookie{
 		Name:   "pseudo",
 		Value:  account.Pseudo,
-		MaxAge: 3600}
+		MaxAge: 0}
 	http.SetCookie(w, &c)
 	session.Save(r, w)
 	w.Write([]byte("{\"pseudo\": \"" + account.Pseudo + "\"}"))
@@ -151,7 +139,7 @@ func ModifyUser(w http.ResponseWriter, r *http.Request, global *Global) {
 	c := http.Cookie{
 		Name:   "pseudo",
 		Value:  u.Pseudo,
-		MaxAge: 3600}
+		MaxAge: 0}
 	http.SetCookie(w, &c)
 	session.Save(r, w)
 	w.Write(body)

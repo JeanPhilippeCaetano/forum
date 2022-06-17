@@ -22,7 +22,7 @@ const createProfilDiv = (username, image) => {
 
 const changeHeader = () => {
     const username = getCookie("pseudo")
-    if (username == "") {
+    if (!username) {
         return
     }
     fetch("/getinfos", {
