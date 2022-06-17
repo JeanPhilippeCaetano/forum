@@ -1,6 +1,8 @@
 let objectPost = new Object()
 let objectUser = new Object()
 let arrayComments = []
+let allPostsID = []
+let parentPostID = -1
 
 const body = document.querySelector('body')
 
@@ -12,7 +14,8 @@ const postLikesDiv = document.getElementById('like')
 const postContentDiv = document.getElementById('postContent')
 const postComDiv = document.getElementById('com')
 
-const heartsIcon = ` <i class="far fa-heart"></i><i onclick="likePost('like')" class="fa fa-heart"></i>`
+const heartsIconP1 = ` <i class="far fa-heart"></i><i onclick="likePost('like',`
+const heartsIconP2 = `)" class="fa fa-heart"></i>`
 const commentIcon = ` <i onclick="document.getElementById('comInput').focus()"  class="fa fa-comments" aria-hidden="true"></i>`
 
 const commentsDiv = document.getElementById('divCom')
@@ -33,26 +36,43 @@ const noComYet = () => {
     }
 }
 
-const likePost = (id) => {
-    let displayLike = document.getElementById(id)
-    // let likesNbr = parseInt(displayLike.innerHTML.split('<')[0])
+const likePost = (idDiv, index) => {
+    let displayLike = document.getElementById(idDiv)
+    let likesNbr = choosePost(index)
     if (displayLike.hasAttribute("data-like") == true) {
-        objectPost.Likes += 1
-        updateLikesData()
+        likesNbr += 1
         displayLike.removeAttribute('data-like')
-        displayLike.innerHTML = objectPost.Likes + ` <i class="fa fa-heart"></i> <i onclick="likePost('` + id + `')" class="fas fa-heart-broken"></i>`
+        displayLike.innerHTML = likesNbr + ` <i class="fa fa-heart"></i> <i onclick="likePost('` + idDiv + `',` + index + `)" class="fas fa-heart-broken"></i>`
     } else if (displayLike.hasAttribute("data-like") == false) {
-        objectPost.Likes -= 1
-        updateLikesData()
+        likesNbr -= 1
         displayLike.setAttribute('data-like', true)
-        displayLike.innerHTML =  objectPost.Likes + ` <i class="far fa-heart"></i> <i onclick="likePost('` + id + `')" class="fa fa-heart"></i>`
-    }  
+        displayLike.innerHTML =  likesNbr + ` <i class="far fa-heart"></i> <i onclick="likePost('` + idDiv + `',` + index + `)" class="fa fa-heart"></i>`
+    }
+    updateObject(index, likesNbr)
+}
+
+const choosePost = (index) => {
+    if (index == -1) {
+        return objectPost.Likes
+    } else {
+        return arrayComments[index].Likes
+    }
+}
+
+const updateObject = (index, likesNbr) => {
+    if (index == -1) {
+        objectPost.Likes = likesNbr
+        updateLikesData(objectPost)
+    } else {
+        arrayComments[index].Likes = likesNbr
+        updateLikesData(arrayComments[index])
+    }
 }
 
 const validTextInput = () => {
     let char = isValidChar()
     if (comInput.value.length != 0 && char == true) {
-        pushCom() // ajouter les info dans la db
+        addCommentInDB()
     } else {
         createCustomAlert('Vous ne pouvez pas poster un commentaire vide !')
     }
@@ -68,24 +88,24 @@ const isValidChar = () => {
     return false
 }
 
-const pushCom = (objCom) => {
+const pushCom = (objCom, index) => {
     let comDiv = document.createElement('div')
     comDiv.setAttribute('class', 'oneComment')
-    comDiv.setAttribute('id', objCom.PostID) // id avec la base de donnée
+    comDiv.setAttribute('id', objCom.PostID) // id avec la base de donnée, fait
 
     let PPDiv = document.createElement('div')
-    PPDiv.setAttribute('class', 'PP') // ajouter l'image du profil utilisateur
+    PPDiv.setAttribute('class', 'PP') // ajouter l'image du profil utilisateur, fait
     PPDiv.style.backgroundImage = `url("` + objCom.Image + `")`
     comDiv.appendChild(PPDiv)
 
     let psuedoDiv = document.createElement('div')
     psuedoDiv.setAttribute('class', 'username')
-    psuedoDiv.innerHTML = objCom.Pseudonyme  // ajouter le pseudo de l'utilisateur
+    psuedoDiv.innerHTML = objCom.Pseudonyme  // ajouter le pseudo de l'utilisateur, fait
     comDiv.appendChild(psuedoDiv)
 
     let textDiv = document.createElement('div')
     textDiv.setAttribute('class', 'commentText')
-    textDiv.innerHTML = objCom.Content // changer le input.value avec le content de la base de donnée
+    textDiv.innerHTML = objCom.Content // changer le input.value avec le content de la base de donnée, fait
     comDiv.appendChild(textDiv)
 
     let iconDiv = document.createElement('div')
@@ -94,13 +114,13 @@ const pushCom = (objCom) => {
     let likeDiv = document.createElement('div')
     likeDiv.setAttribute('class', 'like')
     likeDiv.setAttribute('data-like', true)
-    likeDiv.setAttribute('id', 'likeCom' + objCom.PostID) // id avec la base de donnée
-    likeDiv.innerHTML = objCom.Likes + ` <i class="far fa-heart"></i><i onclick="likePost('likeCom` + objCom.PostID + `')"" class="fa fa-heart"></i>` // sûrement changer quelques choses pour le commentsIds
+    likeDiv.setAttribute('id', 'likeCom' + objCom.PostID) // id avec la base de donnée, fait
+    likeDiv.innerHTML = objCom.Likes + ` <i class="far fa-heart"></i><i onclick="likePost('likeCom` + objCom.PostID +  `', ` + index + `)"" class="fa fa-heart"></i>`
     iconDiv.appendChild(likeDiv)
 
     let answerDiv = document.createElement('div')
     answerDiv.setAttribute('class', 'com')
-    answerDiv.innerHTML = 0 + ` <i class="fa fa-comments" aria-hidden="true"></i>`  // nbs de com avec la base de donnée 
+    answerDiv.innerHTML = 0 + ` <i onclick="getPostIDForCom(` + index + `)" class="fa fa-comments" aria-hidden="true"></i>`  // nbs de com avec la base de donnée, fait
     iconDiv.appendChild(answerDiv)
 
     let trashcanEditDiv = document.createElement('div')  // afficher cette div que si le commentaire nous appartient
@@ -121,7 +141,7 @@ const addComPost = () => {
     noComYet()
 }
 
-const deletePost = (comID) => { // probablement modifier des trucs ici aussi avec les id
+const deletePost = (comID) => {
     for (let i=0;i<commentDivs.length;i++) {
         if (commentDivs[i].getAttribute('id') == comID) {
             commentDivs[i].remove()
@@ -137,9 +157,15 @@ const revomeComPost = () => {
     noComYet()
 }
 
-const displayComValue = () => {
-
-}
+const getPostIDForCom = (index) => {
+    document.getElementById('comInput').focus()
+    if (index == -1) {
+        parentPostID = objectPost.PostID
+    } else {
+        parentPostID = arrayComments[index-1].PostID
+    }
+    
+}   
 
 //Pop up alert message vide
 
@@ -248,25 +274,26 @@ const displayPostInfo = () => {
     userNameDiv.innerText = objectUser.Pseudonyme
     postTitleDIv.innerText = objectPost.Title
     postTagDIv.innerText = objectPost.Tags
-    postLikesDiv.innerHTML = objectPost.Likes + heartsIcon
+    postLikesDiv.innerHTML = objectPost.Likes + heartsIconP1 + '-1' + heartsIconP2
     postContentDiv.innerText = objectPost.Content
     postComDiv.innerHTML = arrayComments.length + commentIcon
+    allPostsID.push(objectPost.PostID)
 }
 
-const updateLikesData = () => {
+const updateLikesData = (obj) => {
     const promise = fetch("/modifypost", {
         method: "POST",
         headers: {
             "content-type": "application/json"
         },
         body: JSON.stringify({
-            postid: objectPost.PostID,
-            parentid: objectPost.ParentID,
-            title: objectPost.Title,
-            content: objectPost.Content,
-            tags: objectPost.Tags,
-            likes: objectPost.Likes,
-            date: objectPost.Date,
+            postid: obj.PostID,
+            parentid: obj.ParentID,
+            title: obj.Title,
+            content: obj.Content,
+            tags: obj.Tags,
+            likes: obj.Likes,
+            date: obj.Date,
         })
     })
     .then(async(res) => {
@@ -282,7 +309,6 @@ const updateLikesData = () => {
 }
 
 const displayComments = () => {
-    const query = new URLSearchParams(window.location.search)
     const promise = fetch("/getposts", {
         method: "POST",
         headers: {
@@ -298,18 +324,14 @@ const displayComments = () => {
     .then(async(data) => {
         try {
             for (const element of data) {
-                try {
-                    const userData = await getUser(element.SenderID)
-                    if (element.ParentID == parseInt(query.get("id"))) {      
-                        element.Pseudonyme = userData.Pseudonyme
-                        element.Image = userData.Image
-                        console.log(element)
-                        arrayComments.push(element)
-                        await pushCom(element)
-                    }                    
-                } catch (err) {
-                    console.log(err);
-                }
+                const userData = await getUser(element.SenderID)
+                if (allPostsID.includes(element.ParentID)) {      
+                    element.Pseudonyme = userData.Pseudonyme
+                    element.Image = userData.Image
+                    arrayComments.push(element)
+                    allPostsID.push(element.PostID)
+                    await pushCom(element, data.indexOf(element)-1)
+                }                    
             }
         } catch (err) {
             console.log(err);
@@ -318,6 +340,34 @@ const displayComments = () => {
     .catch(err => {
         console.log(err)
     })
+    return promise
+}
+
+const addCommentInDB = () => {
+    const query = new URLSearchParams(window.location.search)
+    if (parentPostID == -1) {
+        parentPostID = parseInt(query.get("id"))
+    }
+    const promise = fetch("/addcom", {
+        method: "POST",
+        headers: {
+            "content-type": "application/json"
+        },
+        body: JSON.stringify({
+            parentid: parentPostID,
+            content: commentInput.value,
+        })
+    })
+    .then(async(res) => {
+        if (!res.ok) {
+            throw await res.json()
+        }
+        return res.json()
+    })
+    .catch(err => {
+        console.log(err)
+    })
+    location.reload()
     return promise
 }
 
