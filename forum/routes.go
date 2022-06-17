@@ -139,6 +139,9 @@ func loadAllRoutes(global *Global) {
 	http.HandleFunc("/addpost", func(w http.ResponseWriter, r *http.Request) {
 		AddPost(w, r, global)
 	})
+	http.HandleFunc("/addcom", func(w http.ResponseWriter, r *http.Request) {
+		AddCom(w, r, global)
+	})
 	http.HandleFunc("/singlepost", func(w http.ResponseWriter, r *http.Request) {
 		PostNCom(w, r, global)
 	})
