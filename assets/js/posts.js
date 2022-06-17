@@ -40,41 +40,44 @@ const openFilters = () => {
 /* Create post Requests Api */
 
 const createPost = () => {
-    const title = document.querySelector("#post-popup .popup #title").value
-    const content = tinymce.get("mytextarea").getContent()
-    const tabTags = [...document.querySelectorAll(".tags button")]
-    const tags = tabTags.filter(elem => {
-        return elem.classList.contains("choosed")
-    })
-    const tagsValues = tags.map(elem => {
-        return elem.value
-    })
-    fetch("/addpost", {
-            method: "POST",
-            headers: {
-                "content-type": "application/json"
-            },
-            body: JSON.stringify({
-                title: title,
-                content: content,
-                tags: `${tagsValues}`
+        const title = document.querySelector("#post-popup .popup #title").value
+        const errorlog = document.querySelector(".error_message")
+        const content = tinymce.get("mytextarea").getContent()
+        const tabTags = [...document.querySelectorAll(".tags button")]
+        const tags = tabTags.filter(elem => {
+                return elem.classList.contains("choosed")
             })
-        })
-        .then(async(res) => {
-            if (!res.ok) {
-                throw await res.json()
-            }
-            return res.json()
-        })
-        .then(data => {
-            closePopup()
-            location.href = "/posts"
-            console.log(data)
-        })
-        .catch(err => {
-            console.log(err)
-        })
-}
+            .then(data => {
+                closePopup()
+                location.href = "/posts"
+                console.log(data)
+            })
+        fetch("/addpost", {
+                method: "POST",
+                headers: {
+                    "content-type": "application/json"
+                },
+                body: JSON.stringify({
+                    title: title,
+                    content: content,
+                    tags: `${tagsValues}`
+                })
+            })
+            .then(async(res) => {
+                if (!res.ok) {
+                    throw await res.json()
+                }
+                return res.json()
+            })
+            .then(data => {
+                closePopup()
+                location.href = "/posts"
+            })
+            .catch(err => {
+                errorlog.innerHTML = err.err
+                console.log(err)
+            })
+    }
     /* End Create post Requests Api */
 
 /* Get All Posts */
@@ -210,30 +213,16 @@ const getPosts = (verification) => {
                     const userData = await getUser(element.SenderID)
                     if (checkValue(searchValue, userData, element)) {
                         maxPosts += 1
-                        if (verification !== undefined) {
-                            initPagination(maxPosts)
-                        }
                         resultsTab.push([element, userData])
                     }
                 } catch (err) {
                     console.log(err);
                 }
             }
-            // data.forEach((element) => {
-            //     (getUser(element.SenderID)).then(userData => {
-            //         if (checkValue(searchValue, userData, element)) {
-            //             maxPosts += 1
-            //             if (verification !== undefined) {
-            //                 initPagination(maxPosts)
-            //             }
-            //             resultsTab.push([element, userData])
-            //                 // console.log(postsData.maxPosts, postsData.page)
-            //                 // console.log(resultsTab)
-            //         }
-            //     })
-            // });
+            if (verification !== undefined) {
+                initPagination(maxPosts)
+            }
             resultsTab.forEach((element, index) => {
-                console.log(element)
                 if (checkValueFromPage(index)) {
                     addPostDiv(element[0].PostID, element[0].Title, element[1].Pseudonyme, element[1].Image, element[0].Content.substring(0, 500), element[0].Likes)
                 }
@@ -269,17 +258,18 @@ tinymce.init({
 
         'a11ychecker', 'advlist', 'advcode', 'advtable', 'autolink', 'checklist', 'export',
 
-        'lists', 'link', 'image', 'charmap', 'preview', 'anchor', 'searchreplace', 'visualblocks',
+        'lists', 'link', 'image code', 'charmap', 'preview', 'anchor', 'searchreplace', 'visualblocks',
 
         'powerpaste', 'fullscreen', 'formatpainter', 'insertdatetime', 'media', 'table', 'help', 'wordcount'
 
     ],
 
-    toolbar: 'undo redo | formatpainter casechange blocks | bold italic backcolor | ' +
+    toolbar: 'undo redo | image code | formatpainter casechange blocks | bold italic backcolor | ' +
 
         'alignleft aligncenter alignright alignjustify | ' +
 
-        'bullist numlist checklist outdent indent | removeformat | a11ycheck code table help '
+        'bullist numlist checklist outdent indent | removeformat | a11ycheck code table help ',
+    images_upload_url: 'postAcceptor.php',
 });
 
 

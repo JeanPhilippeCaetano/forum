@@ -1,7 +1,6 @@
 package forum
 
 import (
-	"fmt"
 	"net/http"
 	"text/template"
 )
@@ -22,6 +21,14 @@ func Index(w http.ResponseWriter, r *http.Request) {
 }
 
 func Pagemodifprofil(w http.ResponseWriter, r *http.Request) {
+	session, _ := store.Get(r, "cookie-name")
+	if auth := session.Values["authenticated"].(bool); !auth {
+		http.Error(w, "Il faut être connecté pour exécuter une telle action !", http.StatusForbidden)
+		return
+	} else if auth := session.Values["username"].(string); auth != r.URL.Query().Get("pseudo") {
+		http.Error(w, "Vous ne pouvez pas modifier le profil d'une autre personne !", http.StatusForbidden)
+		return
+	}
 	tmpl := template.Must(template.ParseFiles("./pages/pageModifProfil.html", "./templates/header.html", "./templates/footer.html"))
 	if r.Method != http.MethodPost {
 		tmpl.Execute(w, r)
@@ -67,17 +74,21 @@ func PostsRoute(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 }
-func Contact(w http.ResponseWriter, r *http.Request) {
-	tmpl := template.Must(template.ParseFiles("./pages/contact.html", "./templates/header.html", "./templates/footer.html"))
+
+func LoginRegister(w http.ResponseWriter, r *http.Request) {
+	session, _ := store.Get(r, "cookie-name")
+	if auth := session.Values["authenticated"].(bool); auth {
+		http.Error(w, "Tu es déjà connecté !", http.StatusForbidden)
+		return
+	}
+	tmpl := template.Must(template.ParseFiles("./pages/loginregister.html", "./templates/header.html", "./templates/footer.html"))
 	if r.Method != http.MethodPost {
 		tmpl.Execute(w, r)
 		return
 	}
 }
-
-func LoginRegister(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("loginregister")
-	tmpl := template.Must(template.ParseFiles("./pages/loginregister.html", "./templates/header.html", "./templates/footer.html"))
+func Contact(w http.ResponseWriter, r *http.Request) {
+	tmpl := template.Must(template.ParseFiles("./pages/contact.html", "./templates/header.html", "./templates/footer.html"))
 	if r.Method != http.MethodPost {
 		tmpl.Execute(w, r)
 		return
@@ -109,9 +120,9 @@ func loadAllRoutes(global *Global) {
 	http.HandleFunc("/posts", func(w http.ResponseWriter, r *http.Request) {
 		PostsRoute(w, r)
 	})
-	// http.HandleFunc("/inscreg", func(w http.ResponseWriter, r *http.Request) {
-	// 	InscReg(w, r)
-	// })
+	http.HandleFunc("/changeuser", func(w http.ResponseWriter, r *http.Request) {
+		ModifyUser(w, r, global)
+	})
 	http.HandleFunc("/contact", func(w http.ResponseWriter, r *http.Request) {
 		Contact(w, r)
 	})
@@ -123,6 +134,9 @@ func loadAllRoutes(global *Global) {
 	})
 	http.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) {
 		Login(w, r, global)
+	})
+	http.HandleFunc("/logout", func(w http.ResponseWriter, r *http.Request) {
+		Logout(w, r, global)
 	})
 	http.HandleFunc("/getuser", func(w http.ResponseWriter, r *http.Request) {
 		GetUserFromId(w, r, global)

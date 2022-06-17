@@ -4,7 +4,7 @@ body {
     background-color: #8a1b05;
 }
 
-.content{
+.content {
     width: 100%;
     height: 100vh;
     margin-top: 3%;
@@ -19,7 +19,7 @@ body {
     align-items: center;
 }
 
-.imgContent{
+.imgContent {
     height: 10em;
     width: 10em;
 }
@@ -30,6 +30,10 @@ body {
     width: 100%;
     height: 100%;
     border-radius: 50%;
+}
+
+.a {
+    text-decoration: none;
 }
 
 .nameUsers {
@@ -50,11 +54,11 @@ body {
     width: 70%;
 }
 
-.usersName{
+.usersName {
     color: #FAF0CA;
 }
 
-.biography{
+.biography {
     margin-top: 5%;
     width: 70%;
     color: #FAF0CA;
@@ -87,47 +91,39 @@ body {
     justify-content: center;
     background-color: red;
     margin-top: 1%;
-    width:75%;
+    width: 75%;
     margin-left: 12.5%;
     align-items: center;
 }
 
 @media screen and (max-width: 900px) {
-    
-    #profile{
+    #profile {
         flex-direction: column;
         margin-top: 10%;
         margin-left: 10%;
     }
-
-    .conteneur{
+    .conteneur {
         width: 90%;
     }
-
-    .imgContent{
+    .imgContent {
         margin-left: -10%;
         width: 7em;
         height: 7em;
     }
-
-    .usersName{
+    .usersName {
         font-size: 2rem;
     }
-
-    i{
+    i {
         font-size: 1.5rem;
     }
-
-    .biography{
+    .biography {
         width: 100%;
     }
-
-    .buttonProfile{
+    .buttonProfile {
         font-size: 14px;
         width: 35%;
     }
-
-    .choiceContent{
+    .choiceContent {
         margin-left: 0.5%;
         width: 99%;
     }
