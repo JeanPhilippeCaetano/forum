@@ -2,7 +2,6 @@ let filtersOn = false
 
 const stickyNavOnScroll = () => {
     const nav = document.querySelector(".navbar-tc")
-    const filter = document.querySelector(".filters-container")
     var lastScrollTop = 0;
 
     window.addEventListener("scroll", function(){ // or window.addEventListener("scroll"....

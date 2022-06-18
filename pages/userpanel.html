@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <link rel="stylesheet" href="../static/style.css">
+    <link rel="stylesheet" href="../static/headFoot.css">
+    <link rel="stylesheet" href="../static/userpanel.css">
+    <link rel="stylesheet" href="../static/posts.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css"
+        integrity="sha512-xA6Hp6oezhjd6LiLZynuukm80f8BoZ3OpcEYaqKoCV3HKQDrYjDE1Gu8ocxgxoXmwmSzM4iqPvCsOkQNiu41GA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+        integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=*, initial-scale=1.0">
+    <title>Tuc'rack</title>
+
+</head>
+
+
+<body>
+    {{template "header"}}
+    <div class="select-filters">
+        <div class="wrap">
+            <div class="search">
+                <input type="text" class="userpanel" placeholder="Search User..." onkeyup="changeSearchValue()">
+                <button type="submit" class="searchButton">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <section id="usersDisplay">
+        <div class="suggestedUsers">
+        </div>
+        <div class="pagination:container">
+            <a onclick="goToPrev()" value="left" class="pagination:number arrow prev">
+                <svg width="18" height="18">
+              <use xlink:href="#left" />
+            </svg>
+                <span class="arrow:text">Previous</span>
+            </a>
+
+            <div class="display-pages">
+                <a onclick="goToNum(this)" class="slide pagination:active pagination:number"></a>
+                <a onclick="goToNum(this)" class="slide mid-left pagination:number after"></a>
+                <a onclick="goToNum(this)" class="slide mid pagination:number"></a>
+                <a onclick="goToNum(this)" class="slide mid-right pagination:number"></a>
+                <a onclick="goToNum(this)" class="slide pagination:number"></a>
+            </div>
+
+            <a onclick="goToNext()" class="pagination:number arrow next">
+                <span class="arrow:text">Next</span>
+                <svg width="18" height="18">
+              <use xlink:href="#right" />
+            </svg>
+            </a>
+        </div>
+
+        <svg class="hide">
+              <symbol id="left" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></symbol>
+              <symbol id="right" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></symbol>
+        </svg>
+    </section>
+    {{template "footer"}}
+</body>
+<script src="../assets/js/userpanel.js"></script>
+<script src="../assets/js/headFoot.js"></script>
+</html>

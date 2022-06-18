@@ -61,6 +61,8 @@ func loadAllRoutes(global *Global, mux *http.ServeMux) {
 	//config.LoadEnv()
 	config.LoadConfig()
 
+	// create a router
+
 	// define routes
 	mux.HandleFunc("/google_login", controller.GoogleLogin)
 	mux.HandleFunc("/google_callback", controller.GoogleCallback)

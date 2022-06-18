@@ -90,3 +90,10 @@ func GetInfos(w http.ResponseWriter, r *http.Request, global *Global) {
 	body, _ := json.MarshalIndent(user, "", "")
 	w.Write(body)
 }
+
+func GetUsers(w http.ResponseWriter, r *http.Request, global *Global) {
+	users := GetAllDataFromTable(global.Db, "users")
+	global = DisplayRows(global, users, Users{})
+	body, _ := json.MarshalIndent(global.AllUsers, "", "")
+	w.Write(body)
+}

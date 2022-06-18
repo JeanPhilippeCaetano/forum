@@ -3,6 +3,7 @@ let postsData = {
     postsPerPage: 10,
     page: 1,
 }
+
 const addChoosed = (value) => {
     const tags = document.querySelector(".tags-filters")
     tags.childNodes.forEach(elem => {
@@ -39,48 +40,46 @@ const openFilters = () => {
 /* Create post Requests Api */
 
 const createPost = () => {
-        const title = document.querySelector("#post-popup .popup #title").value
-        const content = tinymce.get("mytextarea").getContent()
-        const tabTags = [...document.querySelectorAll(".tags button")]
-        const tags = tabTags.filter(elem => {
-            return elem.classList.contains("choosed")
+    const title = document.querySelector("#post-popup .popup #title").value
+    const content = tinymce.get("mytextarea").getContent()
+    const tabTags = [...document.querySelectorAll(".tags button")]
+    const tags = tabTags.filter(elem => {
+        return elem.classList.contains("choosed")
+    })
+    const tagsValues = tags.map(elem => {
+        return elem.value
+    })
+    fetch("/addpost", {
+            method: "POST",
+            headers: {
+                "content-type": "application/json"
+            },
+            body: JSON.stringify({
+                title: title,
+                content: content,
+                tags: `${tagsValues}`
+            })
         })
-        const tagsValues = tags.map(elem => {
-            return elem.value
+        .then(async(res) => {
+            if (!res.ok) {
+                throw await res.json()
+            }
+            return res.json()
         })
-        console.log(tagsValues)
-        fetch("/addpost", {
-                method: "POST",
-                headers: {
-                    "content-type": "application/json"
-                },
-                body: JSON.stringify({
-                    title: title,
-                    content: content,
-                    tags: `${tagsValues}`
-                })
-            })
-            .then(async(res) => {
-                if (!res.ok) {
-                    throw await res.json()
-                }
-                return res.json()
-            })
-            .then(data => {
-                closePopup()
-                location.href = "/posts"
-                console.log(data)
-            })
-            .catch(err => {
-                console.log(err)
-            })
-    }
+        .then(data => {
+            closePopup()
+            location.href = "/posts"
+            console.log(data)
+        })
+        .catch(err => {
+            console.log(err)
+        })
+}
     /* End Create post Requests Api */
 
 /* Get All Posts */
 
 const addPostDiv = (id, title, username, image, content, likes) => {
-    console.log(id, title, username, image, content, likes)
     const section = document.createElement("SECTION")
     section.setAttribute("id", "post" + id)
     const innerPost = document.createElement("div")
@@ -192,7 +191,6 @@ const getPosts = (verification) => {
     }
     const postsDiv = document.querySelector(".all-posts")
     postsDiv.innerHTML = ""
-    console.log(searchValue)
     fetch("/getposts", {
             method: "POST",
             headers: {
@@ -234,7 +232,6 @@ const getPosts = (verification) => {
             //         }
             //     })
             // });
-            console.log(resultsTab)
             resultsTab.forEach((element, index) => {
                 console.log(element)
                 if (checkValueFromPage(index)) {
