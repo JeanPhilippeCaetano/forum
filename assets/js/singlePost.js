@@ -281,6 +281,12 @@ const deletePost = (comID) => {
                 revomeComPost()
             }
         }
+    } else {
+        if (comID == objectPost.PostID) {
+            for (let i = allPostsID.length - 1; i > 0; i--) {
+                deletePost(allPostsID[i])
+            }
+        }
     }
     fetch("/deletepost", {
             method: "POST",
