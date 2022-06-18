@@ -4,6 +4,9 @@ import (
 	"fmt"
 	"net/http"
 	"text/template"
+
+	"forum/forum/config"
+	"forum/forum/controller"
 )
 
 func Pageprofil(w http.ResponseWriter, r *http.Request) {
@@ -52,47 +55,59 @@ func Contact(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func loadAllRoutes(global *Global) {
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+func loadAllRoutes(global *Global, mux *http.ServeMux) {
+
+	// load configs
+	//config.LoadEnv()
+	config.LoadConfig()
+
+	// define routes
+	mux.HandleFunc("/google_login", controller.GoogleLogin)
+	mux.HandleFunc("/google_callback", controller.GoogleCallback)
+	mux.HandleFunc("/fb_login", controller.FbLogin)
+	mux.HandleFunc("/fb_callback", controller.FbCallback)
+
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		Index(w, r)
 	})
-	http.HandleFunc("/profil", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/profil", func(w http.ResponseWriter, r *http.Request) {
 		Pageprofil(w, r)
 	})
-	http.HandleFunc("/getinfos", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/getinfos", func(w http.ResponseWriter, r *http.Request) {
 		GetInfos(w, r, global)
 	})
-	http.HandleFunc("/modifprofil", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/modifprofil", func(w http.ResponseWriter, r *http.Request) {
 		Pagemodifprofil(w, r)
 	})
-	http.HandleFunc("/posts", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/posts", func(w http.ResponseWriter, r *http.Request) {
 		PostsRoute(w, r)
 	})
-	http.HandleFunc("/register", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/register", func(w http.ResponseWriter, r *http.Request) {
 		Register(w, r, global)
 	})
-	http.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) {
 		Login(w, r, global)
 	})
-	http.HandleFunc("/getuser", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/getuser", func(w http.ResponseWriter, r *http.Request) {
 		GetUserFromId(w, r, global)
 	})
-	http.HandleFunc("/getposts", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/getposts", func(w http.ResponseWriter, r *http.Request) {
 		GetPosts(w, r, global)
 	})
-	http.HandleFunc("/getpost", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/getpost", func(w http.ResponseWriter, r *http.Request) {
 		GetPost(w, r, global)
 	})
-	http.HandleFunc("/modifypost", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/modifypost", func(w http.ResponseWriter, r *http.Request) {
 		ModifyPost(w, r, global)
 	})
-	http.HandleFunc("/addpost", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/addpost", func(w http.ResponseWriter, r *http.Request) {
 		AddPost(w, r, global)
 	})
-	http.HandleFunc("/loginregister", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/loginregister", func(w http.ResponseWriter, r *http.Request) {
 		LoginRegister(w, r)
 	})
-	http.HandleFunc("/contact", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/contact", func(w http.ResponseWriter, r *http.Request) {
 		Contact(w, r)
 	})
+
 }
