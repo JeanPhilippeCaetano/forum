@@ -68,6 +68,8 @@ func loadAllRoutes(global *Global, mux *http.ServeMux) {
 	mux.HandleFunc("/google_callback", controller.GoogleCallback)
 	mux.HandleFunc("/fb_login", controller.FbLogin)
 	mux.HandleFunc("/fb_callback", controller.FbCallback)
+	mux.HandleFunc("/github_login", controller.GitHubLogin)
+	mux.HandleFunc("/github_callback", controller.GitHubCallback)
 
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		Index(w, r)

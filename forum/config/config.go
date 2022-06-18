@@ -3,21 +3,21 @@ package config
 import (
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/facebook"
+	"golang.org/x/oauth2/github"
 	"golang.org/x/oauth2/google"
 )
 
 type Config struct {
 	GoogleLoginConfig   oauth2.Config
 	FacebookLoginConfig oauth2.Config
-	// GithubLoginConfig   oauth2.Config
+	GithubLoginConfig   oauth2.Config
 }
 
 var AppConfig Config
 
 const OauthGoogleUrlAPI = "https://www.googleapis.com/oauth2/v2/userinfo?access_token="
 const OauthFacebookUrlAPI = "https://graph.facebook.com/v13.0/me?fields=id,name,email,picture&access_token&access_token="
-
-// const OauthGithubUrlAPI = "https://github.com/login/oauth/"
+const OauthGithubUrlAPI = "https://github.com/login/oauth/access_token"
 
 func LoadConfig() {
 	// Oauth configuration for Google
@@ -44,16 +44,16 @@ func LoadConfig() {
 		},
 	}
 
-	// // Oauth configuration for Github
-	// AppConfig.GithubLoginConfig = oauth2.Config{
-	// 	ClientID:     "653e7a69f14274004377",
-	// 	ClientSecret: "fa226b5a2fa95fffeb48bc1a84f624e155c660f3",
-	// 	Endpoint:     github.Endpoint,
-	// 	RedirectURL:  "http://localhost:8080/github_callback",
-	// 	Scopes: []string{
-	// 		"email",
-	// 		"public_profile",
-	// 	},
-	// }
+	// Oauth configuration for Github
+	AppConfig.GithubLoginConfig = oauth2.Config{
+		ClientID:     "653e7a69f14274004377",
+		ClientSecret: "fa226b5a2fa95fffeb48bc1a84f624e155c660f3",
+		Endpoint:     github.Endpoint,
+		RedirectURL:  "http://localhost:8080/github_callback",
+		Scopes: []string{
+			"read:user",
+			"user:email",
+		},
+	}
 
 }
