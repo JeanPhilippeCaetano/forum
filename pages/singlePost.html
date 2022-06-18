@@ -16,6 +16,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css" integrity="sha512-xA6Hp6oezhjd6LiLZynuukm80f8BoZ3OpcEYaqKoCV3HKQDrYjDE1Gu8ocxgxoXmwmSzM4iqPvCsOkQNiu41GA==" crossorigin="anonymous" referrerpolicy="no-referrer"
     />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <link rel="stylesheet" href="../static/popcreatepost.css">
     <title>Tuc'rack</title>
 </head>
 
@@ -43,7 +45,7 @@
                     <div class="postText" id="postContent">
 
                     </div>
-                    <div class="edit"><i onclick="console.log('edit post')" class="fas fa-edit" style="display:none"></i></div>
+                    <div class="adminUserOptions"><i onclick="openPopup()" class="fas fa-edit" style="margin-right:10%"></i><i onclick="deletePost(this.id)" class="fas fa-trash-alt" aria-hidden="true"></i></div>
                     <!-- afficher que si le post en de l'utilisateur connecté + faire la fonction d'édit -->
                 </div>
                 <div class="writeCom">
@@ -63,12 +65,43 @@
             </div>
             <div class="rightSpace"></div>
         </div>
+        <div id="post-popup" class="overlay">
+            <div class="popup">
+                <h2>Modify the post</h2>
+                <h3 class="error_message">
+                </h3>
+                <a class="close" onclick="closePopup()">&times;</a>
+                <h2>Title</h2>
+                <input type="text" id="title" name="dates">
+                <h2>Content:</h2>
+                <form method="post">
+                    <textarea id="mytextarea" style="resize: none;"></textarea>
+                </form>
+                <div class="content">
+                    <h2>Choose tags:</h2>
+                    <div class="tags tags-create-post">
+                        <button value="javascript" class="tag tag-lg" onclick="addTagsPost(this.value)">javascript</button>
+                        <button value="html/css" onclick="addTagsPost(this.value)" class="tag tag-lg">html/CSS</button>
+                        <button value="golang" onclick="addTagsPost(this.value)" class="tag tag-lg">Golang</button>
+                        <button value="java" onclick="addTagsPost(this.value)" class="tag tag-lg">Java</button>
+                        <button value="python" onclick="addTagsPost(this.value)" class="tag tag-lg">Python</button>
+                        <button value="mobile" onclick="addTagsPost(this.value)" class="tag tag-lg">Mobile</button>
+                        <button value="appli/logiciel" onclick="addTagsPost(this.value)" class="tag tag-lg">Appli/Logiciel</button>
+                    </div>
+                </div>
+                <div class="postButton">
+                    <button type="button" class="buttonPost" onclick="editPost()">Confirm</button>
+                </div>
+            </div>
+        </div>
         <!-- <div class="footer"> Footer by Emile </div> -->
         {{template "footer"}}
     </div>
-    <script src="../assets/js/singlePost.js">
-    </script>
+
+
 </body>
+<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+<script src="../assets/js/singlePost.js"></script>
 <script src="../assets/js/headFoot.js"></script>
 
 </html>

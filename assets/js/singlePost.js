@@ -36,7 +36,119 @@ const commentButton = document.getElementById('subCom')
 const commentDivs = document.getElementsByClassName('oneComment')
 
 const ppAddCom = document.querySelector(".writeCom .PP")
-const editIcon = document.querySelector(".fa-edit")
+const editDiv = document.querySelector(".adminUserOptions")
+
+tinymce.init({
+
+    selector: '#mytextarea',
+
+    plugins: [
+
+        'a11ychecker', 'advlist', 'advcode', 'advtable', 'autolink', 'checklist', 'export',
+
+        'lists', 'link', 'image code', 'charmap', 'preview', 'anchor', 'searchreplace', 'visualblocks',
+
+        'powerpaste', 'fullscreen', 'formatpainter', 'insertdatetime', 'media', 'table', 'help', 'wordcount'
+
+    ],
+
+    toolbar: 'undo redo | image code | formatpainter casechange blocks | bold italic backcolor | ' +
+
+        'alignleft aligncenter alignright alignjustify | ' +
+
+        'bullist numlist checklist outdent indent | removeformat | a11ycheck code table help ',
+    images_upload_url: 'postAcceptor.php',
+});
+
+const addTagsPost = (value) => {
+    const tags = document.querySelector(".tags-create-post")
+    tags.childNodes.forEach(elem => {
+        if (elem.value == value) {
+            elem.classList.toggle("choosed")
+        }
+    })
+}
+
+const getModifyPostInfos = () => {
+    const titlePopup = document.querySelector("#title")
+    const tagsTab = objectPost.Tags.split(",")
+    titlePopup.value = objectPost.Title
+    tinymce.activeEditor.setContent(objectPost.Content);
+    tagsTab.forEach(element => {
+        addTagsPost(element)
+    })
+}
+
+const openPopup = () => {
+    const behindPopup = document.querySelector(".overlay")
+    behindPopup.classList.add("active")
+    getModifyPostInfos()
+}
+
+const closePopup = () => {
+    const behindPopup = document.querySelector(".overlay")
+    behindPopup.classList.remove("active")
+}
+
+const checkPermsForEdit = (username) => {
+    if (username == objectUser.Pseudonyme) {
+        return true
+    } else {
+        fetch("/getinfos", {
+                method: "POST",
+                headers: {
+                    "content-type": "application/json"
+                },
+                body: JSON.stringify({
+                    pseudo: username
+                })
+            })
+            .then(async(res) => {
+                if (!res.ok) {
+                    throw await res.json()
+                }
+                return res.json()
+            })
+            .then(data => {
+                if (data.Rank == "Admin") {
+                    return true
+                }
+            })
+            .catch(err => {
+                console.log(err.err)
+            })
+    }
+    return false
+}
+
+const editPost = () => {
+    const username = getCookie("pseudo")
+    if (!username) {
+        createCustomAlert("Il faut être connecté pour pouvoir effectuer cela. Cliquez sur le bouton ci-dessous pour vous connecter/inscrire !", "likedisconnected")
+        return
+    }
+    const errorlog = document.querySelector(".error_message")
+    if (checkPermsForEdit(username)) {
+        const title = document.querySelector("#post-popup .popup #title").value
+        const content = tinymce.get("mytextarea").getContent()
+        const tabTags = [...document.querySelectorAll(".tags button")]
+        const tags = tabTags.filter(elem => {
+            return elem.classList.contains("choosed")
+        })
+        const tagsValues = tags.map(elem => {
+            return elem.value
+        })
+        let newPostObj = objectPost
+        newPostObj.Title = title
+        newPostObj.Content = content
+        newPostObj.Tags = `${tagsValues}`
+        updateLikesData(newPostObj)
+        closePopup()
+        location.href = "/singlepost?id=" + objectPost.PostID
+    } else {
+        errorlog.innerHTML = "Vous n'avez pas le droit d'effectuer cette action."
+    }
+}
 
 const noComYet = () => {
     const getInfoDiv = document.getElementById('noCom')
@@ -54,6 +166,11 @@ const noComYet = () => {
 const likePost = (idDiv, index) => {
     let displayLike = document.getElementById(idDiv)
     let likesNbr = choosePost(index)
+    const username = getCookie("pseudo")
+    if (!username) {
+        createCustomAlert("Il faut être connecté pour pouvoir effectuer cela. Cliquez sur le bouton ci-dessous pour vous connecter/inscrire !", "likedisconnected")
+        return
+    }
     if (displayLike.hasAttribute("data-like") == true) {
         likesNbr += 1
         displayLike.removeAttribute('data-like')
@@ -157,12 +274,35 @@ const addComPost = () => {
 }
 
 const deletePost = (comID) => {
-    for (let i = 0; i < commentDivs.length; i++) {
-        if (commentDivs[i].getAttribute('id') == comID) {
-            commentDivs[i].remove()
-            revomeComPost()
+    if (comID != objectPost.PostID) {
+        for (let i = 0; i < commentDivs.length; i++) {
+            if (commentDivs[i].getAttribute('id') == comID) {
+                commentDivs[i].remove()
+                revomeComPost()
+            }
         }
     }
+    fetch("/deletepost", {
+            method: "POST",
+            headers: {
+                "content-type": "application/json"
+            },
+            body: JSON.stringify({
+                postid: parseInt(comID)
+            })
+        })
+        .then(async(res) => {
+            if (!res.ok) {
+                throw await res.json()
+            }
+            return res.json()
+        })
+        .then(data => {
+            location.href = "/posts"
+        })
+        .catch(err => {
+            console.log(err)
+        })
 }
 
 const revomeComPost = () => {
@@ -184,7 +324,7 @@ const getPostIDForCom = (index) => {
 
 //Pop up alert message vide
 
-function createCustomAlert(txt) {
+function createCustomAlert(txt, disconnectedOption) {
     const d = document
 
     if (d.getElementById("modalContainer")) return;
@@ -206,8 +346,15 @@ function createCustomAlert(txt) {
 
     btn = alertObj.appendChild(d.createElement("a"));
     btn.id = "closeBtn";
-    btn.appendChild(d.createTextNode('OK'));
-    btn.href = "#";
+    if (!disconnectedOption) {
+        btn.appendChild(d.createTextNode('OK'));
+        btn.href = "#";
+    } else if (disconnectedOption == "likedisconnected") {
+        btn.appendChild(d.createTextNode("LOGIN"));
+        btn.addEventListener('click', function() {
+            location.href = '/loginregister'
+        }, false);
+    }
     btn.focus();
     btn.onclick = function() { removeCustomAlert(); return false; }
 
@@ -328,9 +475,10 @@ const displayPostInfo = () => {
             })
 
     }
-    if (objectUser.Pseudonyme == username) {
-        editIcon.style.display = "block"
-
+    if (checkPermsForEdit(username)) {
+        editDiv.style.display = "inline-flex"
+        const delIcon = document.querySelector(".adminUserOptions .fa-trash-alt")
+        delIcon.setAttribute("id", objectPost.PostID)
     }
 }
 

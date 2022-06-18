@@ -134,6 +134,13 @@ func UpdateData(structure interface{}, db *sql.DB, table string, id int, paramet
 	return result, err
 }
 
+func DeleteData(structure interface{}, db *sql.DB, table string, id int) (sql.Result, error) {
+	statement := "DELETE FROM " + table + " WHERE " + GetIDNameFromStruct(structure) + "=" + strconv.Itoa(id) + ""
+	fmt.Println(statement)
+	result, err := db.Exec(statement)
+	return result, err
+}
+
 func GetAllDataFromTable(db *sql.DB, table string) *sql.Rows {
 	statement := "SELECT * FROM " + table
 	query, err := db.Query(statement)

@@ -21,7 +21,7 @@ const createProfilDiv = (username, image) => {
 }
 
 const changeHeader = () => {
-    const username = getCookie("pseudo")
+    const username = getCookies("pseudo")
     if (!username) {
         return
     }

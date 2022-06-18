@@ -1,4 +1,4 @@
-const getCookies = function(name) {
+const getCookie = function(name) {
     const cookies = document.cookie.split(';');
     for (let i = 0; i < cookies.length; ++i) {
         const pair = cookies[i].trim().split('=');
@@ -12,7 +12,7 @@ const getInfos = () => {
     const pseudo = document.querySelector(".nameUsers h1")
     const imgDiv = document.querySelector(".imgDiv")
     const biography = document.querySelector(".biography p")
-    const usernameConnected = getCookies("pseudo")
+    const usernameConnected = getCookie("pseudo")
     const query = new URLSearchParams(window.location.search)
     if (usernameConnected != "" && usernameConnected == query.get("pseudo")) {
         const modifBtn = [...document.querySelectorAll(".fas")]

@@ -3,6 +3,7 @@ package forum
 import (
 	"database/sql"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"strconv"
@@ -75,6 +76,15 @@ func ModifyPost(w http.ResponseWriter, r *http.Request, global *Global) {
 	}
 	postId, _ := result.LastInsertId()
 	w.Write([]byte("{\"postID\": \"" + strconv.FormatInt(postId, 10) + "\"}"))
+}
+
+func DeletePost(w http.ResponseWriter, r *http.Request, global *Global) {
+	var PostID PostParams
+	bd, _ := ioutil.ReadAll(r.Body)
+	json.Unmarshal(bd, &PostID)
+	_, err := DeleteData(Posts{}, global.Db, "posts", PostID.Postid)
+	fmt.Println(err)
+	w.Write([]byte("{\"deleteMsg\": \"Post bien delete !\"}"))
 }
 
 func GetPost(w http.ResponseWriter, r *http.Request, global *Global) {
