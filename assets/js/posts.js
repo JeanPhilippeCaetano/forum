@@ -4,7 +4,7 @@ let postsData = {
     page: 1,
     tagsChoosed: "",
     ascOrDesc : "descending",
-    typeFilter : "date"
+    typeFilter : "Dates"
 }
 
 const getTags = () => {
@@ -16,6 +16,7 @@ const getTags = () => {
         return elem.value
     })
     postsData.tagsChoosed = tagsValues
+    getPosts()
 }
 
 const changeSort = (value) => {
@@ -29,6 +30,7 @@ const changeSort = (value) => {
         sortDiv[1].classList.add("sorted")
         postsData.ascOrDesc = "descending"
     }
+    getPosts()
 }
 
 const addChoosed = (value) => {
@@ -64,62 +66,6 @@ const openFilters = () => {
     const filters = document.querySelector(".filters-container")
     filters.classList.toggle("open")
 }
-
-/* Get Comments */
-
-// const getComments = (tabID) => {
-//     let allPostsID = tabID
-
-//     return new Promise((resolve, reject) =>
-//         fetch("/getposts", {
-//             method: "POST",
-//             headers: {
-//                 "content-type": "application/json"
-//             },
-//         })
-//         .then(res => {
-//             return res.json()
-//         })
-//         .then(data => {
-//             data.forEach(element => {
-//                 if (allPostsID.includes(element.ParentID)) {
-//                     allPostsID.push(element.PostID)
-//                 }
-//             })
-//             resolve(allPostsID)
-//         })
-//         .catch(err => {
-//             reject(err)
-//         }))
-// }
-
-// const getComments = (tabID) => {
-//     let allPostsID = tabID
-//     const promise = fetch("/getposts", {
-//             method: "POST",
-//             headers: {
-//                 "content-type": "application/json"
-//             },
-//         })
-//         .then(async(res) => {
-//             if (!res.ok) {
-//                 throw await res.json()
-//             }
-//             return res.json()
-//         })
-//         .then(data => {
-//             data.forEach(element => {
-//                 if (allPostsID.includes(element.ParentID)) {
-//                     allPostsID.push(element.PostID)
-//                 }
-//             })
-//             return allPostsID
-//         })
-//         .catch(err => {
-//             console.log(err)
-//         })
-//     return promise
-// }
 
 /* Create post Requests Api */
 
@@ -247,42 +193,6 @@ const getUser = (userID) => {
     return promise
 }
 
-const filtersBy = () => {
-    const choice = [...document.querySelectorAll(".choice")]
-    choice.forEach(elem => {
-        if (elem.checked) {
-            if (elem.classList.contains("likes-filter")) {
-                postsData.typeFilter = "likes"
-            } else if (elem.classList.contains("comments-filter")) {
-                postsData.typeFilter = "comments"
-            } else {
-                postsData.typeFilter = "date"
-            }
-        }
-    })
-}
-
-filtersBy()
-
-const filterByTag = (tab, element) => {
-    let includesTag = false
-    for (let i = 0; i < tab.length; i++) {
-        if (element.Tags.includes(tab[i])) {
-            includesTag = true
-        } else {
-            return false
-        }
-    }
-    return includesTag
-}
-
-const filterByLikes = (tab) => {
-    sortedTab = tab.sort((a,b)=>a.Likes-b.Likes)
-    if(postsData.ascOrDesc == "descending") {
-        sortedTab = sortedTab.reverse()
-    }
-    return sortedTab
-}
 
 const getComments = (tabID) => {
     let allPostsID = tabID
@@ -387,18 +297,19 @@ const getPosts = (verification) => {
                     console.log(err);
                 }
             }
-            const filteredTabTags = resultsTab.filter(post => {
+            console.log(resultsTab)
+            let filteredTabTags = resultsTab.filter(post => {
                 return filterByTag(postsData.tagsChoosed, post[0])
             })
             if(postsData.typeFilter == "Likes") {
-                filteredTabTags = filterByLikes(filteredTab)
+                filteredTabTags = filterByLikes(filteredTabTags)
             } else if (postsData.typeFilter == "Comments") {
-                filteredTabTags = filterByComments(filteredTab)
+                filteredTabTags = filterByComments(filteredTabTags)
             } else if (postsData.typeFilter == "Dates") {
-                filteredTabTags = filterByDates(filteredTab)
+                filteredTabTags = filterByDates(filteredTabTags)
             }
-            
             maxPosts = filteredTabTags.length
+
             if (verification !== undefined) {
                 initPagination(maxPosts)
             }
@@ -415,6 +326,65 @@ const getPosts = (verification) => {
 }
 
 /* End Get All Posts */
+
+
+const filtersBy = () => {
+    const choice = [...document.querySelectorAll(".choice")]
+    choice.forEach(elem => {
+        if (elem.checked) {
+            if (elem.classList.contains("likes-filter")) {
+                postsData.typeFilter = "Likes"
+            } else if (elem.classList.contains("comments-filter")) {
+                postsData.typeFilter = "Comments"
+            } else {
+                postsData.typeFilter = "Dates"
+            }
+        }
+    })
+    getPosts("e")
+}
+
+
+
+const filterByTag = (tab, element) => {
+    let includesTag = false
+    if(tab.length == 0) {
+        return true
+    } else {
+        for (let i = 0; i < tab.length; i++) {
+            if (element.Tags.includes(tab[i])) {
+                includesTag = true
+            } else {
+                return false
+            }
+        }
+    }
+    return includesTag
+}
+
+const filterByLikes = (tab) => {
+    sortedTab = tab.sort((a,b)=>a[0].Likes-b[0].Likes)
+    if(postsData.ascOrDesc == "descending") {
+        sortedTab = sortedTab.reverse()
+    }
+    return sortedTab
+}
+
+const filterByComments = (tab) => {
+    sortedTab = tab.sort((a,b) => a[2].length - b[2].length)
+    if(postsData.ascOrDesc == "descending") {
+        sortedTab = sortedTab.reverse()
+    }
+    return sortedTab
+}
+
+const filterByDates = (tab) => {
+    sortedTab = tab.sort((a,b) => new Date(a[0].Date) - new Date(b[0].Date))
+    if(postsData.ascOrDesc == "descending") {
+        sortedTab = sortedTab.reverse()
+    }
+    return sortedTab
+}
 
 /* Searchbar */
 
@@ -470,6 +440,7 @@ const addClasses = (current) => {
 const slides = document.querySelectorAll(".slide");
 
 const initPagination = (nbPages) => {
+    console.log(postsData.page)
     if (nbPages !== undefined) {
         postsData.page = Math.ceil(nbPages / 10)
     }
