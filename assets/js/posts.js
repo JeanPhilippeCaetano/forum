@@ -2,6 +2,33 @@ let postsData = {
     maxPosts: 0,
     postsPerPage: 10,
     page: 1,
+    tagsChoosed: "",
+    ascOrDesc : "descending",
+    typeFilter : "date"
+}
+
+const getTags = () => {
+    const tabTags = [...document.querySelectorAll(".tag-from-filters")]
+    const tags = tabTags.filter(elem => {
+        return elem.classList.contains("choosed")
+    })
+    const tagsValues = tags.map(elem => {
+        return elem.value
+    })
+    postsData.tagsChoosed = tagsValues
+}
+
+const changeSort = (value) => {
+    const sortDiv = [...document.querySelectorAll(".sort")]
+    if (value.classList.contains("fa-sort-amount-down-alt")) {
+        sortDiv[0].classList.add("sorted")        
+        sortDiv[1].classList.remove("sorted")
+        postsData.ascOrDesc = "ascending"
+    } else {
+        sortDiv[0].classList.remove("sorted")        
+        sortDiv[1].classList.add("sorted")
+        postsData.ascOrDesc = "descending"
+    }
 }
 
 const addChoosed = (value) => {
@@ -11,6 +38,7 @@ const addChoosed = (value) => {
             elem.classList.toggle("choosed")
         }
     })
+    getTags()
 }
 
 const addTagsPost = (value) => {
@@ -36,6 +64,9 @@ const openFilters = () => {
     const filters = document.querySelector(".filters-container")
     filters.classList.toggle("open")
 }
+
+
+
 
 /* Create post Requests Api */
 
@@ -154,18 +185,22 @@ const getUser = (userID) => {
     return promise
 }
 
-let tagsData = {
-    alltags : "python,java"
+const filtersBy = () => {
+    const choice = [...document.querySelectorAll(".choice")]
+    choice.forEach(elem => {
+        if (elem.checked) {
+            if (elem.classList.contains("likes-filter")) {
+                postsData.typeFilter = "likes"
+            } else if (elem.classList.contains("comments-filter")) {
+                postsData.typeFilter = "comments"
+            } else {
+                postsData.typeFilter = "date"
+            }
+        }
+    })
 }
 
-const getTags = () => {
-    const tags = tagsData.alltags.split(",")
-    return tags
-}
-
-const checkTags = (value, element) => {
-    
-}
+filtersBy()
 
 const filterByTag = (tab, element) => {
     let includesTag = false
@@ -181,13 +216,50 @@ const filterByTag = (tab, element) => {
 
 const filterByLikes = (tab) => {
     sortedTab = tab.sort((a,b)=>a.Likes-b.Likes)
-    if(valeurdufiltre == "descending") {
+    if(postsData.ascOrDesc == "descending") {
         sortedTab = sortedTab.reverse()
     }
+    return sortedTab
 }
 
+const getComments = (tabID) => {
+    let allPostsID = tabID
+    const promise = fetch("/getposts", {
+            method: "POST",
+            headers: {
+                "content-type": "application/json"
+            },
+        })
+        .then(async(res) => {
+            if (!res.ok) {
+                throw await res.json()
+            }
+            return res.json()
+        })
+        .then(data => {
+            data.forEach(element => {
+                if (allPostsID.includes(element.ParentID)) {
+                    allPostsID.push(element.PostID)
+                }
+            })
+            return allPostsID
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    return promise
+}
+
+// const filterByLikes = (element, sorted) => {
+//     const likes = document.getElementsByName("likes")
+//     likes[0].checked ? sorted = "ascending" : sorted = "descending"
+//     sortedTab = element.sort((a,b)=>a.Likes-b.Likes)
+//     if(valueOfFilter == "descending") {
+//         sortedTab = sortedTab.reverse()
+//     }
+
+// }
 const checkValue = (value, userData, element) => {
-    console.log(element)
     if (userData.Pseudonyme.toLowerCase().includes(value.toLowerCase()) ||
         element.Content.toLowerCase().includes(value.toLowerCase()) ||
         element.Title.toLowerCase().includes(value.toLowerCase()) ||
@@ -241,29 +313,31 @@ const getPosts = (verification) => {
             for (const element of data) {
                 try {
                     const userData = await getUser(element.SenderID)
-                    if (checkValue(searchValue, userData, element) ) {
-                        maxPosts += 1
+                    const nbComments = await getComments([element.PostID])
+                    if (checkValue(searchValue, userData, element) && element.ParentID == 0) {
                         if (verification !== undefined) {
                             initPagination(maxPosts)
                         }
-                        resultsTab.push([element, userData])
+                        resultsTab.push([element, userData, nbComments])
                     }
                 } catch (err) {
                     console.log(err);
                 }
             }
-            let tab = ["java", "python"]
-            // function () {
-
-            // }
+            console.log(element)
             const filteredTabTags = resultsTab.filter(post => {
-                return filterByTag(tab, post[0])
+                return filterByTag(postsData.tagsChoosed, post[0])
             })
-            filterByLikes(filteredTabTags)
-            filterByComments()
-            console.log(filteredTab)
-            // maxPosts = filteredTab.length
-            resultsTab.forEach((element, index) => {
+            if(postsData.typeFilter == "Likes") {
+                filteredTabTags = filterByLikes(filteredTab)
+            } else if (postsData.typeFilter == "Comments") {
+                filteredTabTags = filterByComments(filteredTab)
+            } else if (postsData.typeFilter == "Dates") {
+                filteredTabTags = filterByDates(filteredTab)
+            }
+            
+            maxPosts = filteredTabTags.length
+            filteredTabTags.forEach((element, index) => {
                 if (checkValueFromPage(index)) {
                     addPostDiv(element[0].PostID, element[0].Title, element[1].Pseudonyme, element[1].Image, element[0].Content.substring(0, 500), element[0].Likes)
                 }
@@ -453,5 +527,3 @@ const changerInnerText = (first, second, third, fourth, fifth) => {
 /* end Pagination */
 
 getPosts("initialisation")
-    // console.log(postsData.page, postsData.maxPosts)
-    // initPagination()

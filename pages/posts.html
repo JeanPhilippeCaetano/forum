@@ -40,36 +40,40 @@
         </div>
         <div class="filters-container">
             <div class="trier">
-                <div class="nbr-coms">
-                    <h3>Nombre de Likes</h3>
-                    <input type="radio" id="sort-likes" name="likes" value="croissant-likes" checked>
-                    <label for="croissant-likes"><i class="fas fa-sort-amount-down-alt"> Croissant</i></label><br>
-                    <input type="radio" id="sort-likes" name="likes" value="decroissant-likes">
-                    <label for="decroissant-likes"><i class="fas fa-sort-amount-down"> Décroissant</i></label><br>
+                <div class="order">
+                    <h3>Ordre :</h3>
+                    <div class="sort-order">
+                        <a class="sort fas fa-sort-amount-down-alt" onclick="changeSort(this)"> Croissant</a>
+                        <a class="sort fas fa-sort-amount-down sorted" onclick="changeSort(this)"> Décroissant</a>
+                    </div>
                 </div>
                 <div class="nbr-likes">
-                    <h3>Nombre de Commentaires</h3>
-                    <input type="radio" id="sort-comments" name="comments" value="croissant-comments" checked>
-                    <label for="croissant-comments"><span class="coms-input"></span><i class="fas fa-sort-amount-down-alt"> Croissant</i></label><br>
-                    <input type="radio" id="sort-comments" name="comments" value="decroissant-comments">
-                    <label for="decroissant-comments"><span class="coms-input"></span><i class="fas fa-sort-amount-down"> Décroissant</i></label><br>
+                    <h3>Trier par :</h3>
+                    <label class="form-control">
+                        <input type="radio" name="radio" class="choice likes-filter" onchange="filtersBy()"/>
+                        Likes
+                    </label>
+                      
+                    <label class="form-control">
+                        <input type="radio" name="radio" class="choice comments-filter" onchange="filtersBy()"/>
+                        Commentaires
+                    </label>
+
+                    <label class="form-control">
+                        <input type="radio" name="radio" class="choice date-filter" onchange="filtersBy()" checked/>
+                        Date de post
+                    </label>
                 </div>
-                <div class="date-creation">
-                    <h3>Par date de post</h3>
-                    <input type="radio" id="sort-dates" name="dates" value="croissant-dates" checked>
-                    <label for="croissant-dates"><span class="dates-input"></span><i class="fas fa-sort-amount-down-alt"> Plus récent</i></label><br>
-                    <input type="radio" id="sort-dates" name="dates" value="decroissant-dates">
-                    <label for="decroissant-dates"><span class="dates-input"></span><i class="fas fa-sort-amount-down"> Plus ancien</i></label><br>
-                </div>
+                
                 <div class="category tags-filters">
                     <h3>Par Tags</h3>
-                    <button value="javascript" class="tag tag-lg" onclick="addChoosed(this.value)">javascript</button>
-                    <button value="html/css" onclick="addChoosed(this.value)" class="tag tag-lg">html/CSS</button>
-                    <button value="golang" onclick="addChoosed(this.value)" class="tag tag-lg">Golang</button>
-                    <button value="java" onclick="addChoosed(this.value)" class="tag tag-lg">Java</button>
-                    <button value="python" onclick="addChoosed(this.value)" class="tag tag-lg">Python</button>
-                    <button value="mobile" onclick="addChoosed(this.value)" class="tag tag-lg">Mobile</button>
-                    <button value="appli/logiciel" onclick="addChoosed(this.value)" class="tag tag-lg">Appli/Logiciel</button>
+                    <button value="javascript" onclick="addChoosed(this.value)" class="tag tag-lg tag-from-filters" >Javascript</button>
+                    <button value="html/css" onclick="addChoosed(this.value)" class="tag tag-lg tag-from-filters">HTML/CSS</button>
+                    <button value="golang" onclick="addChoosed(this.value)" class="tag tag-lg tag-from-filters">Golang</button>
+                    <button value="java" onclick="addChoosed(this.value)" class="tag tag-lg tag-from-filters">Java</button>
+                    <button value="python" onclick="addChoosed(this.value)" class="tag tag-lg tag-from-filters">Python</button>
+                    <button value="mobile" onclick="addChoosed(this.value)" class="tag tag-lg tag-from-filters">Mobile</button>
+                    <button value="appli/logiciel" onclick="addChoosed(this.value)" class="tag tag-lg tag-from-filters">Appli/Logiciel</button>
                     <!-- <a href="/tags/firebase/"><span class="tag tag-lg"></span></a> -->
                 </div>
             </div>
