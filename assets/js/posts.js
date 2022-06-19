@@ -2,6 +2,7 @@ let postsData = {
     maxPosts: 0,
     postsPerPage: 10,
     page: 1,
+    nbComments: 0
 }
 
 const addChoosed = (value) => {
@@ -35,6 +36,62 @@ const closePopup = () => {
 const openFilters = () => {
     const filters = document.querySelector(".filters-container")
     filters.classList.toggle("open")
+}
+
+/* Get Comments */
+
+// const getComments = (tabID) => {
+//     let allPostsID = tabID
+
+//     return new Promise((resolve, reject) =>
+//         fetch("/getposts", {
+//             method: "POST",
+//             headers: {
+//                 "content-type": "application/json"
+//             },
+//         })
+//         .then(res => {
+//             return res.json()
+//         })
+//         .then(data => {
+//             data.forEach(element => {
+//                 if (allPostsID.includes(element.ParentID)) {
+//                     allPostsID.push(element.PostID)
+//                 }
+//             })
+//             resolve(allPostsID)
+//         })
+//         .catch(err => {
+//             reject(err)
+//         }))
+// }
+
+const getComments = (tabID) => {
+    let allPostsID = tabID
+    const promise = fetch("/getposts", {
+            method: "POST",
+            headers: {
+                "content-type": "application/json"
+            },
+        })
+        .then(async(res) => {
+            if (!res.ok) {
+                throw await res.json()
+            }
+            return res.json()
+        })
+        .then(data => {
+            data.forEach(element => {
+                if (allPostsID.includes(element.ParentID)) {
+                    allPostsID.push(element.PostID)
+                }
+            })
+            return allPostsID
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    return promise
 }
 
 /* Create post Requests Api */
@@ -80,7 +137,7 @@ const createPost = () => {
 
 /* Get All Posts */
 
-const addPostDiv = (id, title, username, image, content, likes) => {
+const addPostDiv = (id, title, username, image, content, likes, nbComments) => {
     const section = document.createElement("SECTION")
     section.setAttribute("id", "post" + id)
     const innerPost = document.createElement("div")
@@ -116,6 +173,9 @@ const addPostDiv = (id, title, username, image, content, likes) => {
     likesDiv.innerHTML = likes
     icons.appendChild(likesDiv)
     icons.appendChild(likeIcon)
+    const commentsDiv = document.createElement("div")
+    commentsDiv.innerHTML = nbComments
+    icons.appendChild(commentsDiv)
     icons.appendChild(commentsIcon)
 
     infoUser.appendChild(imgCtn)
@@ -132,6 +192,7 @@ const addPostDiv = (id, title, username, image, content, likes) => {
     }, false);
 
     document.querySelector(".all-posts").appendChild(section)
+
 }
 
 const getUser = (userID) => {
@@ -213,9 +274,10 @@ const getPosts = (verification) => {
             for (const element of data) {
                 try {
                     const userData = await getUser(element.SenderID)
+                    const nbComments = await getComments([element.PostID])
                     if (checkValue(searchValue, userData, element) && element.ParentID == 0) {
                         maxPosts += 1
-                        resultsTab.push([element, userData])
+                        resultsTab.push([element, userData, nbComments])
                     }
                 } catch (err) {
                     console.log(err);
@@ -224,9 +286,10 @@ const getPosts = (verification) => {
             if (verification !== undefined) {
                 initPagination(maxPosts)
             }
+
             resultsTab.forEach((element, index) => {
                 if (checkValueFromPage(index)) {
-                    addPostDiv(element[0].PostID, element[0].Title, element[1].Pseudonyme, element[1].Image, element[0].Content.substring(0, 500), element[0].Likes)
+                    addPostDiv(element[0].PostID, element[0].Title, element[1].Pseudonyme, element[1].Image, element[0].Content.substring(0, 500), element[0].Likes, element[2].length)
                 }
             })
         })

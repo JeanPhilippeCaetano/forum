@@ -116,36 +116,6 @@ const addCommentDiv = (id, title, username, image, content, likes) => {
     document.querySelector(".choiceContent").appendChild(section)
 }
 
-const checkMod = (username) => {
-    let bool = false;
-    bool = fetch("/getinfos", {
-            method: "POST",
-            headers: {
-                "content-type": "application/json"
-            },
-            body: JSON.stringify({
-                pseudo: username
-            })
-        })
-        .then(async(res) => {
-            if (!res.ok) {
-                throw await res.json()
-            }
-            return res.json()
-        })
-        .then(data => {
-            if (data.Rank == "Modérateur") {
-                return true
-            }
-            return false
-        })
-        .catch(err => {
-            console.log(err.err)
-        })
-
-    return bool
-}
-
 
 const getUserInfos = (username) => {
     const promise = fetch("/getinfos", {
@@ -193,8 +163,6 @@ const downrank = () => {
         })
     getInfos()
 }
-
-
 
 const uprank = () => {
     const query = new URLSearchParams(window.location.search)
