@@ -1,6 +1,7 @@
 package forum
 
 import (
+	"forum/forum/controller"
 	"net/http"
 	"text/template"
 )
@@ -95,86 +96,96 @@ func AdminPanel(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func LoadApi(global *Global) {
+func LoadApi(global *Global, mux *http.ServeMux) {
+
+	// AUTHENTIFICATION API (Google, Facebook, Github)
+
+	mux.HandleFunc("/google_login", controller.GoogleLogin)
+	mux.HandleFunc("/google_callback", controller.GoogleCallback)
+	mux.HandleFunc("/fb_login", controller.FbLogin)
+	mux.HandleFunc("/fb_callback", controller.FbCallback)
+	mux.HandleFunc("/github_login", controller.GitHubLogin)
+	mux.HandleFunc("/github_callback", controller.GitHubCallback)
 
 	// POSTS & COMMENTS
 
-	http.HandleFunc("/deletepost", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/deletepost", func(w http.ResponseWriter, r *http.Request) {
 		DeletePost(w, r, global)
 	})
-	http.HandleFunc("/getposts", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/getposts", func(w http.ResponseWriter, r *http.Request) {
 		GetPosts(w, r, global)
 	})
-	http.HandleFunc("/getpost", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/getpost", func(w http.ResponseWriter, r *http.Request) {
 		GetPost(w, r, global)
 	})
-	http.HandleFunc("/modifypost", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/modifypost", func(w http.ResponseWriter, r *http.Request) {
 		ModifyPost(w, r, global)
 	})
-	http.HandleFunc("/addpost", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/addpost", func(w http.ResponseWriter, r *http.Request) {
 		AddPost(w, r, global)
 	})
-	http.HandleFunc("/addcom", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/addcom", func(w http.ResponseWriter, r *http.Request) {
 		AddCom(w, r, global)
 	})
-	http.HandleFunc("/editcom", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/editcom", func(w http.ResponseWriter, r *http.Request) {
 		EditCom(w, r, global)
 	})
 
 	// AUTHENTIFICATION & MODIFICATION PROFILE
 
-	http.HandleFunc("/getusers", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/getusers", func(w http.ResponseWriter, r *http.Request) {
 		GetUsers(w, r, global)
 	})
-	http.HandleFunc("/getinfos", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/getinfos", func(w http.ResponseWriter, r *http.Request) {
 		GetInfos(w, r, global)
 	})
-	http.HandleFunc("/changerole", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/changerole", func(w http.ResponseWriter, r *http.Request) {
 		ChangeRole(w, r, global)
 	})
-	http.HandleFunc("/changeuser", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/changeuser", func(w http.ResponseWriter, r *http.Request) {
 		ModifyUser(w, r, global)
 	})
-	http.HandleFunc("/register", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/register", func(w http.ResponseWriter, r *http.Request) {
 		Register(w, r, global)
 	})
-	http.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) {
 		Login(w, r, global)
 	})
-	http.HandleFunc("/logout", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/logout", func(w http.ResponseWriter, r *http.Request) {
 		Logout(w, r, global)
 	})
-	http.HandleFunc("/getuser", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/getuser", func(w http.ResponseWriter, r *http.Request) {
 		GetUserFromId(w, r, global)
 	})
 }
 
-func LoadPages() {
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+func LoadPages(mux *http.ServeMux) {
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		Index(w, r)
 	})
-	http.HandleFunc("/profil", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/profil", func(w http.ResponseWriter, r *http.Request) {
 		Pageprofil(w, r)
 	})
-	http.HandleFunc("/admin", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/admin", func(w http.ResponseWriter, r *http.Request) {
 		AdminPanel(w, r)
 	})
-	http.HandleFunc("/modifprofil", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/modifprofil", func(w http.ResponseWriter, r *http.Request) {
 		Pagemodifprofil(w, r)
 	})
-	http.HandleFunc("/users", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/users", func(w http.ResponseWriter, r *http.Request) {
 		UsersRoute(w, r)
 	})
-	http.HandleFunc("/posts", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/posts", func(w http.ResponseWriter, r *http.Request) {
 		PostsRoute(w, r)
 	})
-	http.HandleFunc("/contact", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/contact", func(w http.ResponseWriter, r *http.Request) {
 		Contact(w, r)
 	})
-	http.HandleFunc("/loginregister", func(w http.ResponseWriter, r *http.Request) {
-		LoginRegister(w, r)
-	})
-	http.HandleFunc("/singlepost", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/singlepost", func(w http.ResponseWriter, r *http.Request) {
 		PostNCom(w, r)
 	})
+	mux.HandleFunc("/loginregister", func(w http.ResponseWriter, r *http.Request) {
+		LoginRegister(w, r)
+	})
+
 }
