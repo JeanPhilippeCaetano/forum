@@ -8,6 +8,8 @@ const getCookie = function(name) {
     return null;
 };
 
+let objUsernameConnected = new Object();
+let objUser = new Object();
 
 const addPostDiv = (id, title, username, image, content, likes) => {
     const section = document.createElement("SECTION")
@@ -115,8 +117,8 @@ const addCommentDiv = (id, title, username, image, content, likes) => {
 }
 
 const checkMod = (username) => {
-    console.log(username)
-    const modOrNot = fetch("/getinfos", {
+    let bool = false;
+    bool = fetch("/getinfos", {
             method: "POST",
             headers: {
                 "content-type": "application/json"
@@ -132,22 +134,21 @@ const checkMod = (username) => {
             return res.json()
         })
         .then(data => {
-            console.log(data.Rank)
             if (data.Rank == "Modérateur") {
                 return true
-            } else {
-                return false
             }
+            return false
         })
         .catch(err => {
-            console.error(err.err)
+            console.log(err.err)
         })
-    return modOrNot
+
+    return bool
 }
 
 
-const checkAdmin = (username) => {
-    const adminOrNot = fetch("/getinfos", {
+const getUserInfos = (username) => {
+    const promise = fetch("/getinfos", {
             method: "POST",
             headers: {
                 "content-type": "application/json"
@@ -163,16 +164,12 @@ const checkAdmin = (username) => {
             return res.json()
         })
         .then(data => {
-            if (data.Rank == "Administrateur") {
-                return true
-            } else {
-                return false
-            }
+            return data
         })
         .catch(err => {
-            errorlog.innerHTML = err.err
+            console.log(err.err)
         })
-    return adminOrNot
+    return promise
 }
 
 const downrank = () => {
@@ -187,18 +184,17 @@ const downrank = () => {
                 newrank: "Utilisateur"
             })
         })
-        .then(async(res) => {
-            if (!res.ok) {
-                throw await res.json()
-            }
-            return res.json()
+        .then(res => {
+            return res
         })
-        .then(data => {})
+        .then(data => { location.href = "/profil?pseudo=" + query.get("pseudo") })
         .catch(err => {
             console.log(err.err)
         })
     getInfos()
 }
+
+
 
 const uprank = () => {
     const query = new URLSearchParams(window.location.search)
@@ -212,18 +208,11 @@ const uprank = () => {
                 newrank: "Modérateur"
             })
         })
-        .then(async(res) => {
-            if (!res.ok) {
-                throw await res.json()
-            }
-            return res.json()
+        .then(res => {
+            return res
         })
         .then(data => {
-            if (data.Rank == "Administrateur") {
-                return true
-            } else {
-                return false
-            }
+            location.href = "/profil?pseudo=" + query.get("pseudo")
         })
         .catch(err => {
             console.error(err.err)
@@ -264,19 +253,21 @@ const getInfos = (tri) => {
     const query = new URLSearchParams(window.location.search)
     if (usernameConnected != "" && usernameConnected == query.get("pseudo") && !tri) {
         const modifBtn = [...document.querySelectorAll(".fas")]
-
         modifBtn.forEach(element => {
             if (!element.classList.contains("fa-graduation-cap") && !element.classList.contains("fa-angle-double-down")) {
                 element.style.display = "block"
             }
         })
     } else if (usernameConnected != "") {
-        if (checkAdmin(usernameConnected) && usernameConnected != query.get("pseudo") && !checkMod(query.get("pseudo"))) {
-            const upgrade = document.querySelector(".nameUsers .fa-graduation-cap")
+        const upgrade = document.querySelector(".nameUsers .fa-graduation-cap")
+        const downgrade = document.querySelector(".nameUsers .fa-angle-double-down")
+        console.log(objUsernameConnected, objUser)
+        if (objUsernameConnected.Rank == "Administrateur" && usernameConnected != query.get("pseudo") && objUser.Rank != "Modérateur") {
             upgrade.style.display = "block"
-        } else if (checkMod(query.get("pseudo"))) {
-            const downgrade = document.querySelector(".nameUsers .fa-angle-double-down")
+            downgrade.style.display = "none"
+        } else if (objUsernameConnected.Rank == "Administrateur" && usernameConnected != query.get("pseudo") && objUser.Rank == "Modérateur") {
             downgrade.style.display = "block"
+            upgrade.style.display = "none"
         }
     }
     const promise = fetch("/getinfos", {
@@ -298,7 +289,7 @@ const getInfos = (tri) => {
             if (!!tri) {
                 return data
             }
-            console.log(data)
+
             if (data.Pseudonyme != "") {
                 pseudo.innerHTML = data.Pseudonyme
                 imgDiv.style.backgroundImage = "url(" + data.Image + ")"
@@ -415,4 +406,63 @@ const getCommentsFromUser = () => {
         })
 }
 
-getInfos()
+const loadUserInfos = () => {
+    const query = new URLSearchParams(window.location.search)
+    return new Promise((resolve, reject) => {
+        fetch("/getinfos", {
+                method: "POST",
+                headers: {
+                    "content-type": "application/json"
+                },
+                body: JSON.stringify({
+                    pseudo: query.get("pseudo")
+                })
+            })
+            .then(res => {
+                return res.json()
+            })
+            .then(data => {
+                objUser = data
+                resolve(data)
+            })
+            .catch(err => {
+                reject(err)
+            })
+    })
+}
+
+const loadUserConnected = () => {
+    return new Promise((resolve, reject) => {
+        fetch("/getinfos", {
+                method: "POST",
+                headers: {
+                    "content-type": "application/json"
+                },
+                body: JSON.stringify({
+                    pseudo: getCookie("pseudo")
+                })
+            })
+            .then(res => {
+                return res.json()
+            })
+            .then(data => {
+                objUsernameConnected = data
+                resolve(data)
+            })
+            .catch(err => {
+                reject(err)
+            })
+    })
+}
+loadUserConnected()
+    .then((res) => {
+        objUsernameConnected = res
+    })
+    .catch(err => console.log(err))
+
+loadUserInfos()
+    .then((res) => {
+        objUser = res
+        getInfos()
+    })
+    .catch(err => console.log(err))

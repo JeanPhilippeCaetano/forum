@@ -11,6 +11,7 @@ const getCookie = function(name) {
 
 let objectPost = new Object()
 let objectUser = new Object()
+let objectUsernameConnected = new Object()
 let arrayComments = []
 let allPostsID = []
 let parentPostID = -1
@@ -330,7 +331,7 @@ const pushCom = (objCom, index) => {
     trashcanEditDiv.setAttribute('class', 'trashcanEdit')
     if (!!username && username == objCom.Pseudonyme) {
         trashcanEditDiv.innerHTML = `<i onclick="editCom(this.dataset.comid)" class="fas fa-edit" data-comid="${objCom.PostID}"></i> <i onclick="deletePost(this.dataset.comid)" class="fas fa-trash-alt" data-comid="${objCom.PostID}"></i>`
-    } else if (checkPermsForDeleteCom(username)) {
+    } else if ((objectUsernameConnected.Rank == "Administrateur" || username == objCom.Pseudonyme)) {
         trashcanEditDiv.innerHTML = `<i onclick="deletePost(this.dataset.comid)" class="fas fa-trash-alt" data-comid="${objCom.PostID}"></i>`
     }
     iconDiv.appendChild(trashcanEditDiv)
@@ -563,8 +564,7 @@ const displayPostInfo = () => {
     if (username == objectUser.Pseudonyme) {
         editPostIcon.style.display = "inline"
     }
-    if (checkPermsForDeletePost(username)) {
-        console.log("oui")
+    if (objectUsernameConnected.Rank == "Administrateur" || username == objectUser.Pseudonyme) {
         deletePostIcon.style.display = "inline"
         deletePostIcon.setAttribute("id", objectPost.PostID)
     }
@@ -733,6 +733,36 @@ const addCommentInDB = () => {
     location.reload()
     return promise
 }
+
+const loadUserConnected = () => {
+    return new Promise((resolve, reject) => {
+        fetch("/getinfos", {
+                method: "POST",
+                headers: {
+                    "content-type": "application/json"
+                },
+                body: JSON.stringify({
+                    pseudo: getCookie("pseudo")
+                })
+            })
+            .then(res => {
+                return res.json()
+            })
+            .then(data => {
+                objectUsernameConnected = data
+                resolve(data)
+            })
+            .catch(err => {
+                reject(err)
+            })
+    })
+}
+loadUserConnected()
+    .then((res) => {
+        objectUsernameConnected = res
+    })
+    .catch(err => console.log(err))
+
 
 loadPage()
 displayComments()
