@@ -79,7 +79,7 @@ func Contact(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func PostNCom(w http.ResponseWriter, r *http.Request, global *Global) {
+func PostNCom(w http.ResponseWriter, r *http.Request) {
 	tmpl := template.Must(template.ParseFiles("./pages/singlePost.html", "./templates/header.html", "./templates/footer.html"))
 	if r.Method != http.MethodPost {
 		tmpl.Execute(w, r)
@@ -95,54 +95,12 @@ func AdminPanel(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func loadAllRoutes(global *Global) {
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		Index(w, r)
-	})
-	http.HandleFunc("/profil", func(w http.ResponseWriter, r *http.Request) {
-		Pageprofil(w, r)
-	})
-	http.HandleFunc("/admin", func(w http.ResponseWriter, r *http.Request) {
-		AdminPanel(w, r)
-	})
-	http.HandleFunc("/changerole", func(w http.ResponseWriter, r *http.Request) {
-		ChangeRole(w, r, global)
-	})
-	http.HandleFunc("/getinfos", func(w http.ResponseWriter, r *http.Request) {
-		GetInfos(w, r, global)
-	})
+func LoadApi(global *Global) {
+
+	// POSTS & COMMENTS
+
 	http.HandleFunc("/deletepost", func(w http.ResponseWriter, r *http.Request) {
 		DeletePost(w, r, global)
-	})
-	http.HandleFunc("/modifprofil", func(w http.ResponseWriter, r *http.Request) {
-		Pagemodifprofil(w, r)
-	})
-	http.HandleFunc("/users", func(w http.ResponseWriter, r *http.Request) {
-		UsersRoute(w, r)
-	})
-	http.HandleFunc("/getusers", func(w http.ResponseWriter, r *http.Request) {
-		GetUsers(w, r, global)
-	})
-	http.HandleFunc("/posts", func(w http.ResponseWriter, r *http.Request) {
-		PostsRoute(w, r)
-	})
-	http.HandleFunc("/changeuser", func(w http.ResponseWriter, r *http.Request) {
-		ModifyUser(w, r, global)
-	})
-	http.HandleFunc("/contact", func(w http.ResponseWriter, r *http.Request) {
-		Contact(w, r)
-	})
-	http.HandleFunc("/loginregister", func(w http.ResponseWriter, r *http.Request) {
-		LoginRegister(w, r)
-	})
-	http.HandleFunc("/register", func(w http.ResponseWriter, r *http.Request) {
-		Register(w, r, global)
-	})
-	http.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) {
-		Login(w, r, global)
-	})
-	http.HandleFunc("/logout", func(w http.ResponseWriter, r *http.Request) {
-		Logout(w, r, global)
 	})
 	http.HandleFunc("/getposts", func(w http.ResponseWriter, r *http.Request) {
 		GetPosts(w, r, global)
@@ -162,10 +120,61 @@ func loadAllRoutes(global *Global) {
 	http.HandleFunc("/editcom", func(w http.ResponseWriter, r *http.Request) {
 		EditCom(w, r, global)
 	})
-	http.HandleFunc("/singlepost", func(w http.ResponseWriter, r *http.Request) {
-		PostNCom(w, r, global)
+
+	// AUTHENTIFICATION & MODIFICATION PROFILE
+
+	http.HandleFunc("/getusers", func(w http.ResponseWriter, r *http.Request) {
+		GetUsers(w, r, global)
+	})
+	http.HandleFunc("/getinfos", func(w http.ResponseWriter, r *http.Request) {
+		GetInfos(w, r, global)
+	})
+	http.HandleFunc("/changerole", func(w http.ResponseWriter, r *http.Request) {
+		ChangeRole(w, r, global)
+	})
+	http.HandleFunc("/changeuser", func(w http.ResponseWriter, r *http.Request) {
+		ModifyUser(w, r, global)
+	})
+	http.HandleFunc("/register", func(w http.ResponseWriter, r *http.Request) {
+		Register(w, r, global)
+	})
+	http.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) {
+		Login(w, r, global)
+	})
+	http.HandleFunc("/logout", func(w http.ResponseWriter, r *http.Request) {
+		Logout(w, r, global)
 	})
 	http.HandleFunc("/getuser", func(w http.ResponseWriter, r *http.Request) {
 		GetUserFromId(w, r, global)
+	})
+}
+
+func LoadPages() {
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		Index(w, r)
+	})
+	http.HandleFunc("/profil", func(w http.ResponseWriter, r *http.Request) {
+		Pageprofil(w, r)
+	})
+	http.HandleFunc("/admin", func(w http.ResponseWriter, r *http.Request) {
+		AdminPanel(w, r)
+	})
+	http.HandleFunc("/modifprofil", func(w http.ResponseWriter, r *http.Request) {
+		Pagemodifprofil(w, r)
+	})
+	http.HandleFunc("/users", func(w http.ResponseWriter, r *http.Request) {
+		UsersRoute(w, r)
+	})
+	http.HandleFunc("/posts", func(w http.ResponseWriter, r *http.Request) {
+		PostsRoute(w, r)
+	})
+	http.HandleFunc("/contact", func(w http.ResponseWriter, r *http.Request) {
+		Contact(w, r)
+	})
+	http.HandleFunc("/loginregister", func(w http.ResponseWriter, r *http.Request) {
+		LoginRegister(w, r)
+	})
+	http.HandleFunc("/singlepost", func(w http.ResponseWriter, r *http.Request) {
+		PostNCom(w, r)
 	})
 }

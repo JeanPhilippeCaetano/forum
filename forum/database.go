@@ -2,7 +2,6 @@ package forum
 
 import (
 	"database/sql"
-	"fmt"
 	"log"
 	"reflect"
 	"strconv"
@@ -112,10 +111,7 @@ func parseInsertParams(structure interface{}, table string, parameters ...interf
 
 func InsertData(structure interface{}, db *sql.DB, table string, parameters ...interface{}) (sql.Result, error) {
 	statement := parseInsertParams(structure, table, parameters...)
-	fmt.Println(parameters...)
-	fmt.Println(statement)
 	result, err := db.Exec(statement, parameters...)
-	fmt.Println(err)
 	return result, err
 }
 
@@ -142,7 +138,6 @@ func UpdateData(structure interface{}, db *sql.DB, table string, id int, paramet
 
 func DeleteData(structure interface{}, db *sql.DB, table string, id int) (sql.Result, error) {
 	statement := "DELETE FROM " + table + " WHERE " + GetIDNameFromStruct(structure) + "=" + strconv.Itoa(id) + ""
-	fmt.Println(statement)
 	result, err := db.Exec(statement)
 	return result, err
 }
@@ -189,6 +184,8 @@ func resetGlobal(global *Global, data string) *Global {
 		global.AllUsers = []Users{}
 	} else if data == "Posts" {
 		global.AllPosts = []Posts{}
+	} else if data == "Reports" {
+		global.AllReports = []Reports{}
 	}
 	return global
 }

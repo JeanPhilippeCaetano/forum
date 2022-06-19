@@ -47,8 +47,6 @@ const getTags = () => {
     const url = new URL(window.location);
     url.searchParams.set("tagsChoosed", `${tagsValues}`)
     window.history.replaceState({}, '', url)
-
-    getPosts("reloadPages")
 }
 
 const changeSort = (value) => {
@@ -322,7 +320,6 @@ const getPosts = (verification) => {
                     console.log(err);
                 }
             }
-            console.log(resultsTab)
             let filteredTabTags = resultsTab.filter(post => {
                 return filterByTag(postsData.tagsChoosed, post[0])
             })
@@ -333,9 +330,11 @@ const getPosts = (verification) => {
             } else if (postsData.typeFilter == "Dates") {
                 filteredTabTags = filterByDates(filteredTabTags)
             }
+            console.log(filteredTabTags)
             maxPosts = filteredTabTags.length
             if (maxPosts == 0) {
                 postsDiv.innerHTML = ""
+                initPagination(1)
                 addPostDiv(0, "Aucun résultat", "TUC'rack", "../assets/images/Fichier 1.svg", "", 0, 0)
             }
             if (verification !== undefined) {

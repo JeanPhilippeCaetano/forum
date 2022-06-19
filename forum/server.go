@@ -7,11 +7,10 @@ import (
 )
 
 type Global struct {
-	AllUsers []Users
-	AllPosts []Posts
-	// AllPostsComments []PostComments
-	// AllComments      []Comments
-	Db *sql.DB
+	AllUsers   []Users
+	AllPosts   []Posts
+	AllReports []Reports
+	Db         *sql.DB
 }
 
 func Server() {
@@ -29,7 +28,8 @@ func Server() {
 	fp := http.FileServer(http.Dir("./pages/"))
 	http.Handle("/pages/", http.StripPrefix("/pages/", fp))
 
-	loadAllRoutes(global)
+	LoadApi(global)
+	LoadPages()
 
 	http.ListenAndServe(":8080", nil)
 }

@@ -113,6 +113,11 @@ const getUsers = (verification) => {
 
                 }
             }
+            if (maxUsers == 0) {
+                usersDiv.innerHTML = ""
+                initPagination(1)
+                addUserDiv(0, "../assets/images/Fichier 1.svg", "Aucun résultat", "", "")
+            }
             resultsTab.forEach((element, index) => {
                 if (checkValueFromPage(index)) {
                     addUserDiv(element.UserID, element.Image, element.Pseudonyme, element.Date, element.Biography)
