@@ -2,7 +2,71 @@ let postsData = {
     maxPosts: 0,
     postsPerPage: 10,
     page: 1,
-    nbComments: 0
+    tagsChoosed: "",
+    ascOrDesc: "descending",
+    typeFilter: "Dates"
+}
+
+const getUrl = () => {
+    const queryString = window.location.search
+    const params = Object.fromEntries(new URLSearchParams(queryString))
+    const url = new URL(window.location);
+    const options = ['tagsChoosed', 'ascOrDesc', 'typeFilter']
+    const allTags = ["javascript", "html/css", "golang", "java", "python", "mobile", "appli/logiciel"]
+    Object.entries(params).forEach(element => {
+        if (options.includes(element[0])) {
+            if (element[0] == "ascOrDesc" && element[1] != "ascending" && element[1] != "descending") {
+                postsData[element[0]] = "descending"
+                url.searchParams.set([element[0]], postsData[element[0]])
+                window.history.replaceState({}, '', url)
+            } else if (element[0] == "typeFilter" && element[1] != "Dates" && element[1] != "Likes" && element[1] != "Comments") {
+                postsData[element[0]] = "Dates"
+                url.searchParams.set([element[0]], postsData[element[0]])
+                window.history.replaceState({}, '', url)
+            } else if (element[0] == "tagsChoosed" && !allTags.includes(element[1])) {
+                postsData[element[0]] = ""
+                url.searchParams.set([element[0]], postsData[element[0]])
+                window.history.replaceState({}, '', url)
+            } else {
+                postsData[element[0]] = element[1]
+            }
+
+        }
+    })
+}
+
+const getTags = () => {
+    const tabTags = [...document.querySelectorAll(".tag-from-filters")]
+    const tags = tabTags.filter(elem => {
+        return elem.classList.contains("choosed")
+    })
+    const tagsValues = tags.map(elem => {
+        return elem.value
+    })
+    postsData.tagsChoosed = tagsValues
+    const url = new URL(window.location);
+    url.searchParams.set("tagsChoosed", `${tagsValues}`)
+    window.history.replaceState({}, '', url)
+
+    getPosts("reloadPages")
+}
+
+const changeSort = (value) => {
+    const sortDiv = [...document.querySelectorAll(".sort")]
+    const url = new URL(window.location);
+    if (value.classList.contains("fa-sort-amount-down-alt")) {
+        sortDiv[0].classList.add("sorted")
+        sortDiv[1].classList.remove("sorted")
+        postsData.ascOrDesc = "ascending"
+        url.searchParams.set("ascOrDesc", "ascending")
+    } else {
+        sortDiv[0].classList.remove("sorted")
+        sortDiv[1].classList.add("sorted")
+        postsData.ascOrDesc = "descending"
+        url.searchParams.set("ascOrDesc", "descending")
+    }
+    window.history.replaceState({}, '', url)
+    getPosts("changePage")
 }
 
 const addChoosed = (value) => {
@@ -12,6 +76,8 @@ const addChoosed = (value) => {
             elem.classList.toggle("choosed")
         }
     })
+    getTags()
+    getPosts("changePage")
 }
 
 const addTagsPost = (value) => {
@@ -36,62 +102,6 @@ const closePopup = () => {
 const openFilters = () => {
     const filters = document.querySelector(".filters-container")
     filters.classList.toggle("open")
-}
-
-/* Get Comments */
-
-// const getComments = (tabID) => {
-//     let allPostsID = tabID
-
-//     return new Promise((resolve, reject) =>
-//         fetch("/getposts", {
-//             method: "POST",
-//             headers: {
-//                 "content-type": "application/json"
-//             },
-//         })
-//         .then(res => {
-//             return res.json()
-//         })
-//         .then(data => {
-//             data.forEach(element => {
-//                 if (allPostsID.includes(element.ParentID)) {
-//                     allPostsID.push(element.PostID)
-//                 }
-//             })
-//             resolve(allPostsID)
-//         })
-//         .catch(err => {
-//             reject(err)
-//         }))
-// }
-
-const getComments = (tabID) => {
-    let allPostsID = tabID
-    const promise = fetch("/getposts", {
-            method: "POST",
-            headers: {
-                "content-type": "application/json"
-            },
-        })
-        .then(async(res) => {
-            if (!res.ok) {
-                throw await res.json()
-            }
-            return res.json()
-        })
-        .then(data => {
-            data.forEach(element => {
-                if (allPostsID.includes(element.ParentID)) {
-                    allPostsID.push(element.PostID)
-                }
-            })
-            return allPostsID
-        })
-        .catch(err => {
-            console.log(err)
-        })
-    return promise
 }
 
 /* Create post Requests Api */
@@ -220,6 +230,35 @@ const getUser = (userID) => {
     return promise
 }
 
+
+const getComments = (tabID) => {
+    let allPostsID = tabID
+    const promise = fetch("/getposts", {
+            method: "POST",
+            headers: {
+                "content-type": "application/json"
+            },
+        })
+        .then(async(res) => {
+            if (!res.ok) {
+                throw await res.json()
+            }
+            return res.json()
+        })
+        .then(data => {
+            data.forEach(element => {
+                if (allPostsID.includes(element.ParentID)) {
+                    allPostsID.push(element.PostID)
+                }
+            })
+            return allPostsID
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    return promise
+}
+
 const checkValue = (value, userData, element) => {
     if (userData.Pseudonyme.toLowerCase().includes(value.toLowerCase()) ||
         element.Content.toLowerCase().includes(value.toLowerCase()) ||
@@ -270,37 +309,115 @@ const getPosts = (verification) => {
             return res.json()
         })
         .then(async(data) => {
+            getUrl()
             let resultsTab = [];
             for (const element of data) {
                 try {
                     const userData = await getUser(element.SenderID)
                     const nbComments = await getComments([element.PostID])
                     if (checkValue(searchValue, userData, element) && element.ParentID == 0) {
-                        maxPosts += 1
                         resultsTab.push([element, userData, nbComments])
                     }
                 } catch (err) {
                     console.log(err);
                 }
             }
+            console.log(resultsTab)
+            let filteredTabTags = resultsTab.filter(post => {
+                return filterByTag(postsData.tagsChoosed, post[0])
+            })
+            if (postsData.typeFilter == "Likes") {
+                filteredTabTags = filterByLikes(filteredTabTags)
+            } else if (postsData.typeFilter == "Comments") {
+                filteredTabTags = filterByComments(filteredTabTags)
+            } else if (postsData.typeFilter == "Dates") {
+                filteredTabTags = filterByDates(filteredTabTags)
+            }
+            maxPosts = filteredTabTags.length
+            if (maxPosts == 0) {
+                postsDiv.innerHTML = ""
+                addPostDiv(0, "Aucun résultat", "TUC'rack", "../assets/images/Fichier 1.svg", "", 0, 0)
+            }
             if (verification !== undefined) {
                 initPagination(maxPosts)
             }
 
-            resultsTab.forEach((element, index) => {
+            filteredTabTags.forEach((element, index) => {
                 if (checkValueFromPage(index)) {
-                    addPostDiv(element[0].PostID, element[0].Title, element[1].Pseudonyme, element[1].Image, element[0].Content.substring(0, 500), element[0].Likes, element[2].length)
+                    addPostDiv(element[0].PostID, element[0].Title, element[1].Pseudonyme, element[1].Image, element[0].Content.substring(0, 500), element[0].Likes, element[2].length - 1)
                 }
             })
         })
         .catch(err => {
             console.log(err)
         })
-        // console.log(maxPosts)
-        // postsData.maxPosts = maxPosts
 }
 
 /* End Get All Posts */
+
+
+const filtersBy = () => {
+    const choice = [...document.querySelectorAll(".choice")]
+    const url = new URL(window.location);
+    choice.forEach(elem => {
+        if (elem.checked) {
+            if (elem.classList.contains("likes-filter")) {
+                postsData.typeFilter = "Likes"
+                url.searchParams.set("typeFilter", "Likes")
+            } else if (elem.classList.contains("comments-filter")) {
+                postsData.typeFilter = "Comments"
+                url.searchParams.set("typeFilter", "Comments")
+            } else {
+                postsData.typeFilter = "Dates"
+                url.searchParams.set("typeFilter", "Dates")
+            }
+        }
+    })
+    window.history.replaceState({}, '', url)
+    getPosts("e")
+}
+
+
+
+const filterByTag = (tab, element) => {
+    let includesTag = false
+    if (tab.length == 0) {
+        return true
+    } else {
+        for (let i = 0; i < tab.length; i++) {
+            if (element.Tags.includes(tab[i])) {
+                includesTag = true
+            } else {
+                return false
+            }
+        }
+    }
+    return includesTag
+}
+
+const filterByLikes = (tab) => {
+    sortedTab = tab.sort((a, b) => a[0].Likes - b[0].Likes)
+    if (postsData.ascOrDesc == "descending") {
+        sortedTab = sortedTab.reverse()
+    }
+    return sortedTab
+}
+
+const filterByComments = (tab) => {
+    sortedTab = tab.sort((a, b) => (a[2].length - 1) - (b[2].length - 1))
+    if (postsData.ascOrDesc == "descending") {
+        sortedTab = sortedTab.reverse()
+    }
+    return sortedTab
+}
+
+const filterByDates = (tab) => {
+    sortedTab = tab.sort((a, b) => new Date(a[0].Date) - new Date(b[0].Date))
+    if (postsData.ascOrDesc == "descending") {
+        sortedTab = sortedTab.reverse()
+    }
+    return sortedTab
+}
 
 /* Searchbar */
 
@@ -356,6 +473,7 @@ const addClasses = (current) => {
 const slides = document.querySelectorAll(".slide");
 
 const initPagination = (nbPages) => {
+    console.log(postsData.page)
     if (nbPages !== undefined) {
         postsData.page = Math.ceil(nbPages / 10)
     }
@@ -480,5 +598,3 @@ const changerInnerText = (first, second, third, fourth, fifth) => {
 /* end Pagination */
 
 getPosts("initialisation")
-    // console.log(postsData.page, postsData.maxPosts)
-    // initPagination()
