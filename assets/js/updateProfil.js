@@ -59,7 +59,8 @@ const changeImage = (event) => {
                 email: userData.Email,
                 biography: userData.Biography,
                 password: userData.Password,
-                image: newImage
+                image: newImage,
+                postlikes: userData.PostLikes
             })
         })
         .then(async(res) => {
@@ -96,7 +97,8 @@ const changePassword = () => {
                             email: userData.Email,
                             biography: userData.Biography,
                             password: newMdp,
-                            image: userData.Image
+                            image: userData.Image,
+                            postlikes: userData.PostLikes
                         })
                     })
                     .then(async(res) => {
@@ -142,7 +144,8 @@ const changeEmail = () => {
                                 email: newEmail,
                                 biography: userData.Biography,
                                 password: userData.Password,
-                                image: userData.Image
+                                image: userData.Image,
+                                postlikes: userData.PostLikes
                             })
                         })
                         .then(async(res) => {
@@ -184,7 +187,8 @@ const changeBiography = () => {
                     email: userData.Email,
                     biography: newBiography,
                     password: userData.Password,
-                    image: userData.Image
+                    image: userData.Image,
+                    postlikes: userData.PostLikes
                 })
             })
             .then(async(res) => {
@@ -217,7 +221,8 @@ const changeUsername = () => {
                     email: userData.Email,
                     biography: userData.Biography,
                     password: userData.Password,
-                    image: userData.Image
+                    image: userData.Image,
+                    postlikes: userData.PostLikes
                 })
             })
             .then(async(res) => {

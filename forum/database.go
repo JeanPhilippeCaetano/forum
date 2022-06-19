@@ -18,26 +18,9 @@ type Users struct {
 	Password   string
 	Biography  string
 	Image      string
+	PostLikes  string
 	Date       string
 }
-
-// type PostComments struct {
-// 	CommentID int
-// 	Content   string
-// 	SenderID  int
-// 	PostID    int
-// 	Likes     int
-// 	Date      string
-// }
-
-// type Comments struct {
-// 	CommentID  int
-// 	Content    string
-// 	SenderID   int
-// 	ReceiverID int
-// 	Likes      int
-// 	Date       string
-// }
 
 type Posts struct {
 	PostID   int
@@ -47,6 +30,15 @@ type Posts struct {
 	Content  string
 	Tags     string
 	Likes    int
+	Date     string
+}
+
+type Reports struct {
+	ReportID int
+	SenderID int
+	ParentID int
+	PostID   int
+	Reason   string
 	Date     string
 }
 
@@ -62,6 +54,7 @@ func InitDatabase() *sql.DB {
     	Password TEXT NOT NULL CHECK(length(Password) <= 16),
 		Biography TEXT NOT NULL,
     	Image TEXT NOT NULL,
+		PostLikes TEXT NOT NULL,
 		Date DATE NOT NULL
 	);
 	
@@ -77,6 +70,19 @@ func InitDatabase() *sql.DB {
 		Date DATE NOT NULL,
 		FOREIGN KEY(SenderID) REFERENCES users(UserID),
 		FOREIGN KEY(ParentID) REFERENCES posts(PostID)
+	);
+
+	CREATE TABLE IF NOT EXISTS reports
+	(
+		ReportID INTEGER PRIMARY KEY AUTOINCREMENT,
+		SenderID INTEGER NOT NULL,
+		ParentID INTEGER,
+		PostID INTEGER,
+		Reason TEXT NOT NULL,
+		Date DATE NOT NULL,
+		FOREIGN KEY(SenderID) REFERENCES users(UserID),
+		FOREIGN KEY(PostID) REFERENCES posts(PostID),
+		FOREIGN KEY(ParentID) REFERENCES reports(ReportID)
 	);
 	`
 	db.Exec(statement)
@@ -170,7 +176,7 @@ func GetUser(db *sql.DB, table string, pseudo string) (Users, error) {
 	statement := "SELECT * FROM " + table + " WHERE Pseudonyme='" + pseudo + "'"
 	rows, err := db.Query(statement)
 	for rows.Next() {
-		err := rows.Scan(&u.UserID, &u.Pseudonyme, &u.Rank, &u.Email, &u.Password, &u.Biography, &u.Image, &u.Date)
+		err := rows.Scan(&u.UserID, &u.Pseudonyme, &u.Rank, &u.Email, &u.Password, &u.Biography, &u.Image, &u.PostLikes, &u.Date)
 		if err != nil {
 			log.Panic(err)
 		}
@@ -203,7 +209,7 @@ func DisplayOnePost(rows *sql.Rows) Posts {
 func DisplayOneUser(rows *sql.Rows) Users {
 	var u Users
 	for rows.Next() {
-		err := rows.Scan(&u.UserID, &u.Pseudonyme, &u.Rank, &u.Email, &u.Password, &u.Biography, &u.Image, &u.Date)
+		err := rows.Scan(&u.UserID, &u.Pseudonyme, &u.Rank, &u.Email, &u.Password, &u.Biography, &u.Image, &u.PostLikes, &u.Date)
 		if err != nil {
 			log.Panic(err)
 		}
@@ -217,7 +223,7 @@ func DisplayRows(global *Global, rows *sql.Rows, structure interface{}) *Global 
 	for rows.Next() {
 		if data == "Users" {
 			var u Users
-			err := rows.Scan(&u.UserID, &u.Pseudonyme, &u.Rank, &u.Email, &u.Password, &u.Biography, &u.Image, &u.Date)
+			err := rows.Scan(&u.UserID, &u.Pseudonyme, &u.Rank, &u.Email, &u.Password, &u.Biography, &u.Image, &u.PostLikes, &u.Date)
 			if err != nil {
 				log.Panic(err)
 			}

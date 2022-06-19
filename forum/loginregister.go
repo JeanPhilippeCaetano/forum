@@ -32,6 +32,7 @@ type ModifyParams struct {
 	Biography string
 	Password  string
 	Image     string
+	PostLikes string
 }
 
 type UserID struct {
@@ -47,7 +48,7 @@ func Register(w http.ResponseWriter, r *http.Request, global *Global) {
 	session, _ := store.Get(r, "cookie-name")
 	body, _ := ioutil.ReadAll(r.Body)
 	json.Unmarshal(body, &account)
-	_, err := InsertData(Users{}, global.Db, "users", account.Pseudo, "Utilisateur", account.Email, account.Password, "", "../assets/images/defaultProfil.jpg", account.Date)
+	_, err := InsertData(Users{}, global.Db, "users", account.Pseudo, "Utilisateur", account.Email, account.Password, "", "../assets/images/defaultProfil.jpg", "", account.Date)
 	if err != nil {
 		if err.Error() == "UNIQUE constraint failed: users.Email" {
 			http.Error(w, `{"err": "Mail déjà utilisé"}`, http.StatusBadRequest)
@@ -117,7 +118,7 @@ func ModifyUser(w http.ResponseWriter, r *http.Request, global *Global) {
 	json.Unmarshal(bd, &u)
 	user := GetDataFromTableWithID(Users{}, global.Db, "users", u.Id)
 	userData := DisplayOneUser(user)
-	_, err := UpdateData(Users{}, global.Db, "users", userData.UserID, u.Pseudo, userData.Rank, u.Email, u.Password, u.Biography, u.Image, userData.Date)
+	_, err := UpdateData(Users{}, global.Db, "users", userData.UserID, u.Pseudo, userData.Rank, u.Email, u.Password, u.Biography, u.Image, u.PostLikes, userData.Date)
 	if err != nil {
 		if err.Error() == "UNIQUE constraint failed: users.Email" {
 			http.Error(w, `{"err": "Mail déjà utilisé"}`, http.StatusBadRequest)
@@ -132,6 +133,8 @@ func ModifyUser(w http.ResponseWriter, r *http.Request, global *Global) {
 			http.Error(w, `{"err": "Le mot de passe ne doit pas dépasser 16 caractères"}`, http.StatusBadRequest)
 			return
 		}
+		http.Error(w, `{"err":"`+err.Error()+"\"}", http.StatusBadRequest)
+		return
 	}
 	newUser := DisplayOneUser(GetDataFromTableWithID(Users{}, global.Db, "users", userData.UserID))
 	body, _ := json.MarshalIndent(newUser, "", "")

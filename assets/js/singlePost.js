@@ -36,7 +36,8 @@ const commentButton = document.getElementById('subCom')
 const commentDivs = document.getElementsByClassName('oneComment')
 
 const ppAddCom = document.querySelector(".writeCom .PP")
-const editDiv = document.querySelector(".adminUserOptions")
+const editPostIcon = document.querySelector(".adminUserOptions .fa-edit")
+const deletePostIcon = document.querySelector(".adminUserOptions .fa-trash-alt")
 
 tinymce.init({
 
@@ -90,11 +91,12 @@ const closePopup = () => {
     behindPopup.classList.remove("active")
 }
 
-const checkPermsForEdit = (username) => {
+const checkPermsForDeletePost = (username) => {
+    let bool = false;
     if (username == objectUser.Pseudonyme) {
         return true
     } else {
-        fetch("/getinfos", {
+        bool = fetch("/getinfos", {
                 method: "POST",
                 headers: {
                     "content-type": "application/json"
@@ -110,15 +112,44 @@ const checkPermsForEdit = (username) => {
                 return res.json()
             })
             .then(data => {
-                if (data.Rank == "Admin") {
+                if (data.Rank == "Administrateur") {
                     return true
                 }
+                return false
             })
             .catch(err => {
                 console.log(err.err)
             })
     }
-    return false
+    return bool
+}
+
+const checkPermsForDeleteCom = (username) => {
+    const bool = fetch("/getinfos", {
+            method: "POST",
+            headers: {
+                "content-type": "application/json"
+            },
+            body: JSON.stringify({
+                pseudo: username
+            })
+        })
+        .then(async(res) => {
+            if (!res.ok) {
+                throw await res.json()
+            }
+            return res.json()
+        })
+        .then(data => {
+            if (data.Rank == "Administrateur") {
+                return true
+            }
+            return false
+        })
+        .catch(err => {
+            console.log(err.err)
+        })
+    return bool
 }
 
 const editPost = () => {
@@ -128,7 +159,7 @@ const editPost = () => {
         return
     }
     const errorlog = document.querySelector(".error_message")
-    if (checkPermsForEdit(username)) {
+    if (username == objectUser.Pseudonyme) {
         const title = document.querySelector("#post-popup .popup #title").value
         const content = tinymce.get("mytextarea").getContent()
         const tabTags = [...document.querySelectorAll(".tags button")]
@@ -166,6 +197,7 @@ const noComYet = () => {
 const likePost = (idDiv, index) => {
     let displayLike = document.getElementById(idDiv)
     let likesNbr = choosePost(index)
+    let delOrAdd;
     const username = getCookie("pseudo")
     if (!username) {
         createCustomAlert("Il faut être connecté pour pouvoir effectuer cela. Cliquez sur le bouton ci-dessous pour vous connecter/inscrire !", "likedisconnected")
@@ -173,14 +205,16 @@ const likePost = (idDiv, index) => {
     }
     if (displayLike.hasAttribute("data-like") == true) {
         likesNbr += 1
+        delOrAdd = "+"
         displayLike.removeAttribute('data-like')
         displayLike.innerHTML = likesNbr + ` <i class="fa fa-heart"></i> <i onclick="likePost('` + idDiv + `',` + index + `)" class="fas fa-heart-broken"></i>`
     } else if (displayLike.hasAttribute("data-like") == false) {
         likesNbr -= 1
+        delOrAdd = "-"
         displayLike.setAttribute('data-like', true)
         displayLike.innerHTML = likesNbr + ` <i class="far fa-heart"></i> <i onclick="likePost('` + idDiv + `',` + index + `)" class="fa fa-heart"></i>`
     }
-    updateObject(index, likesNbr)
+    updateObject(index, likesNbr, delOrAdd)
 }
 
 const choosePost = (index) => {
@@ -191,13 +225,13 @@ const choosePost = (index) => {
     }
 }
 
-const updateObject = (index, likesNbr) => {
+const updateObject = (index, likesNbr, delOrAdd) => {
     if (index == -1) {
         objectPost.Likes = likesNbr
-        updateLikesData(objectPost)
+        updateLikesData(objectPost, delOrAdd)
     } else {
         arrayComments[index].Likes = likesNbr
-        updateLikesData(arrayComments[index])
+        updateLikesData(arrayComments[index], delOrAdd)
     }
 }
 
@@ -220,10 +254,47 @@ const isValidChar = () => {
     return false
 }
 
+const confirmEditPost = (comid) => {
+    const commentText = document.querySelector(`[data-postid='${comid}'] .commentText #areaComment`).value
+    fetch("/editcom", {
+            method: "POST",
+            headers: {
+                "content-type": "application/json"
+            },
+            body: JSON.stringify({
+                id: comid,
+                content: commentText
+            })
+        })
+        .then(async(res) => {
+            if (!res.ok) {
+                throw await res.json()
+            }
+            return res.json()
+        })
+        .then(data => {
+            location.href = `/singlepost?id=${objectPost.PostID}`
+        })
+        .catch(err => {
+            console.log(err)
+        })
+
+}
+
+const editCom = (comid) => {
+    const commentText = document.querySelector(`[data-postid='${comid}'] .commentText`)
+    const commentContent = commentText.textContent
+    const trashcanEdit = document.querySelector(`[data-postid='${comid}'] .trashcanEdit`)
+    commentText.innerHTML = `<input type="text" id="areaComment" value='${commentContent}'>`
+    trashcanEdit.innerHTML = `<i onclick="confirmEditPost(${comid})" class="fas fa-check" style="margin-right:10%"></i><i onclick="location.href='/singlepost?id=${objectPost.PostID}'" class="fas fa-times"></i>`
+}
+
 const pushCom = (objCom, index) => {
+    const username = getCookie("pseudo")
+
     let comDiv = document.createElement('div')
     comDiv.setAttribute('class', 'oneComment')
-    comDiv.setAttribute('id', objCom.PostID) // id avec la base de donnée, fait
+    comDiv.setAttribute('data-postid', objCom.PostID) // id avec la base de donnée, fait
 
     let PPDiv = document.createElement('div')
     PPDiv.setAttribute('class', 'PP') // ajouter l'image du profil utilisateur, fait
@@ -257,11 +328,13 @@ const pushCom = (objCom, index) => {
 
     let trashcanEditDiv = document.createElement('div') // afficher cette div que si le commentaire nous appartient
     trashcanEditDiv.setAttribute('class', 'trashcanEdit')
-    trashcanEditDiv.innerHTML = `<i onclick="console.log('edit post')" class="fas fa-edit"></i> <i onclick="deletePost(this.parentElement.parentElement.parentElement.id)" class="fas fa-trash-alt"></i>`
+    if (!!username && username == objCom.Pseudonyme) {
+        trashcanEditDiv.innerHTML = `<i onclick="editCom(this.dataset.comid)" class="fas fa-edit" data-comid="${objCom.PostID}"></i> <i onclick="deletePost(this.dataset.comid)" class="fas fa-trash-alt" data-comid="${objCom.PostID}"></i>`
+    } else if (checkPermsForDeleteCom(username)) {
+        trashcanEditDiv.innerHTML = `<i onclick="deletePost(this.dataset.comid)" class="fas fa-trash-alt" data-comid="${objCom.PostID}"></i>`
+    }
     iconDiv.appendChild(trashcanEditDiv)
-
     comDiv.appendChild(iconDiv)
-
     commentsDiv.appendChild(comDiv)
     addComPost()
 }
@@ -474,6 +547,12 @@ const displayPostInfo = () => {
                 return res.json()
             })
             .then(data => {
+                const tabPostLikes = data.PostLikes.split(",")
+                if (!(tabPostLikes.length == 1 && tabPostLikes[0] == "") && tabPostLikes.includes(objectPost.PostID)) {
+                    console.log("nimporte quoi")
+                } else {
+                    postLikesDiv.innerHTML = objectPost.Likes + ` <i class="far fa-heart"></i><i onclick="likePost('like',` + '-1' + `)" class="fa fa-heart"></i>`
+                }
                 ppAddCom.style.backgroundImage = `url("` + data.Image + `")`
             })
             .catch(err => {
@@ -481,14 +560,89 @@ const displayPostInfo = () => {
             })
 
     }
-    if (checkPermsForEdit(username)) {
-        editDiv.style.display = "inline-flex"
-        const delIcon = document.querySelector(".adminUserOptions .fa-trash-alt")
-        delIcon.setAttribute("id", objectPost.PostID)
+    if (username == objectUser.Pseudonyme) {
+        editPostIcon.style.display = "inline"
+    }
+    if (checkPermsForDeletePost(username)) {
+        console.log("oui")
+        deletePostIcon.style.display = "inline"
+        deletePostIcon.setAttribute("id", objectPost.PostID)
     }
 }
 
-const updateLikesData = (obj) => {
+const changeUser = (userData, obj, delOrAdd) => {
+    let tabPostLikes = userData.PostLikes.split(",")
+    if (delOrAdd == "+") {
+        if (tabPostLikes.length == 1 && tabPostLikes[0] == "") {
+            tabPostLikes[0] = obj.PostID + ""
+        } else if (!tabPostLikes.includes(obj.PostID + "")) {
+            tabPostLikes.push(obj.PostID + "")
+        }
+    } else if (delOrAdd == "-") {
+        tabPostLikes = tabPostLikes.filter(e => e + "" != obj.PostID + "")
+    }
+    const promise = fetch("/changeuser", {
+            method: "POST",
+            headers: {
+                "content-type": "application/json"
+            },
+            body: JSON.stringify({
+                id: userData.UserID,
+                pseudo: userData.Pseudonyme,
+                email: userData.Email,
+                biography: userData.Biography,
+                password: userData.Password,
+                image: userData.Image,
+                postlikes: `${tabPostLikes}`
+            })
+        })
+        .then(async(res) => {
+            if (!res.ok) {
+                throw await res.json()
+            }
+            return res.json()
+        })
+        .then(data => {
+            return data
+        })
+        .catch(err => {
+            console.log(err.err)
+        })
+    return promise
+}
+
+const updateLikedPostUser = (obj, delOrAdd) => {
+    const username = getCookie("pseudo")
+    fetch("/getinfos", {
+            method: "POST",
+            headers: {
+                "content-type": "application/json"
+            },
+            body: JSON.stringify({
+                pseudo: username
+            })
+        })
+        .then(async(res) => {
+            if (!res.ok) {
+                throw await res.json()
+            }
+            return res.json()
+        })
+        .then(async(data) => {
+            try {
+                await changeUser(data, obj, delOrAdd)
+            } catch (err) {
+                console.log(err)
+            }
+        })
+        .catch(err => {
+            console.log(err)
+        })
+
+}
+
+
+const updateLikesData = (obj, delOrAdd) => {
     const promise = fetch("/modifypost", {
             method: "POST",
             headers: {
@@ -513,6 +667,7 @@ const updateLikesData = (obj) => {
         .catch(err => {
             console.log(err)
         })
+    updateLikedPostUser(obj, delOrAdd)
     return promise
 }
 

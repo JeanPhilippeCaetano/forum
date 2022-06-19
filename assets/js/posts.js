@@ -213,7 +213,7 @@ const getPosts = (verification) => {
             for (const element of data) {
                 try {
                     const userData = await getUser(element.SenderID)
-                    if (checkValue(searchValue, userData, element)) {
+                    if (checkValue(searchValue, userData, element) && element.ParentID == 0) {
                         maxPosts += 1
                         resultsTab.push([element, userData])
                     }

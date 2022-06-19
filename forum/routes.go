@@ -87,12 +87,26 @@ func PostNCom(w http.ResponseWriter, r *http.Request, global *Global) {
 	}
 }
 
+func AdminPanel(w http.ResponseWriter, r *http.Request) {
+	tmpl := template.Must(template.ParseFiles("./pages/adminpanel.html", "./templates/header.html", "./templates/footer.html"))
+	if r.Method != http.MethodPost {
+		tmpl.Execute(w, r)
+		return
+	}
+}
+
 func loadAllRoutes(global *Global) {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		Index(w, r)
 	})
 	http.HandleFunc("/profil", func(w http.ResponseWriter, r *http.Request) {
 		Pageprofil(w, r)
+	})
+	http.HandleFunc("/admin", func(w http.ResponseWriter, r *http.Request) {
+		AdminPanel(w, r)
+	})
+	http.HandleFunc("/changerole", func(w http.ResponseWriter, r *http.Request) {
+		ChangeRole(w, r, global)
 	})
 	http.HandleFunc("/getinfos", func(w http.ResponseWriter, r *http.Request) {
 		GetInfos(w, r, global)
@@ -144,6 +158,9 @@ func loadAllRoutes(global *Global) {
 	})
 	http.HandleFunc("/addcom", func(w http.ResponseWriter, r *http.Request) {
 		AddCom(w, r, global)
+	})
+	http.HandleFunc("/editcom", func(w http.ResponseWriter, r *http.Request) {
+		EditCom(w, r, global)
 	})
 	http.HandleFunc("/singlepost", func(w http.ResponseWriter, r *http.Request) {
 		PostNCom(w, r, global)

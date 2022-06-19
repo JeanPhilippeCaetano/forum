@@ -15,5 +15,8 @@ func main() {
 	// forum.UpdateData(forum.Users{}, db, "users", 1, "Jeep", "jeep@gmail.com", "mdp", "biography", "../assets/images/defaultProfil.jpg")
 	// global = forum.DisplayRows(global, forum.GetDataFromTableWithID(forum.Users{}, db, "users", 1), forum.Users{})
 	// fmt.Println(global.AllUsers)
+	// forum.InsertData(forum.Users{}, db, "users", "Admin", "Administrateur", "admin@tucrack.com", "admin", "", "../assets/images/defaultProfil.jpg", "", time.Now().Format("2006.01.02 15:04:05"))
+	// forum.InsertData(forum.Users{}, db, "users", "Modo", "Modérateur", "modo@tucrack.com", "modo", "", "../assets/images/defaultProfil.jpg", "", time.Now().Format("2006.01.02 15:04:05"))
+
 	forum.Server()
 }

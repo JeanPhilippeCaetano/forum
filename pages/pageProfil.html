@@ -30,6 +30,8 @@
                 <div class="nameUsers">
                     <h1 class="usersName"></h1>
                     <i class="fas fa-cogs" onclick="goToUrl()" style="cursor: pointer; color: #FAF0CA;display:none;"></i>
+                    <i class="fas fa-graduation-cap" onclick="uprank()" style="cursor: pointer; color: #FAF0CA;display:none;"></i>
+                    <i class="fas fa-angle-double-down" onclick="downrank()" style="cursor: pointer; color: #FAF0CA;display:none;"></i>
                     <a href="/logout"><i class="fas fa-sign-out-alt" style="cursor: pointer; color: #FAF0CA;display:none;"></i></a>
                 </div>
                 <div class="biography">
@@ -38,14 +40,11 @@
             </div>
         </section>
         <section id="caracteristique">
-            <button class="buttonProfile">Posts</button>
-            <button class="buttonProfile">Likes</button>
-            <button class="buttonProfile">Commentaires</button>
+            <button onclick="getPostsFromUser()" class="buttonProfile">Posts</button>
+            <button onclick="getLikedPosts()" class="buttonProfile">Likes</button>
+            <button onclick="getCommentsFromUser()" class="buttonProfile">Commentaires</button>
         </section>
         <div class="choiceContent">
-            <!-- <div> -->
-            <h1>Test</h1>
-            <!-- </div> -->
         </div>
     </div>
     {{template "footer"}}
