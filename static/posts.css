@@ -79,6 +79,7 @@
     margin-bottom: 2vh;
 }
 
+<<<<<<< HEAD
 .nbr-likes h3 {
     margin-bottom: 10px;
 }
@@ -107,6 +108,12 @@
 .sort-order.sorted {
     background-color: #365b7e;
 }
+=======
+.error_message {
+    color: red!important;
+}
+
+>>>>>>> dda821ad5b7956c507d7ca0de631d209246d88b2
 
 /* tags */
 

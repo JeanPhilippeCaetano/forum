@@ -9,7 +9,7 @@ body {
 
 .parallax .group {
   position: relative;
-  height: 100vh;
+  height: 150vh;
   transform-style: preserve-3d;
 }
 
@@ -57,7 +57,7 @@ body {
   margin-top: -5px;
   background-color: #8A1B05;
   width: 100vw;
-  height: 130vh;
+  height: 180vh;
 }
 
 .site_name {
@@ -67,12 +67,14 @@ body {
   text-align: center;
   margin-top: 10%;
   font-family: "Open Sans";
+  font-size: 5vh;
 }
 
 .textExplain {
   display: flex;
   justify-content: center;
   margin-bottom: 5vh;
+  margin-top: -10%;
 }
 
 
@@ -215,6 +217,7 @@ h1 {
   color: #f4d35e;
   margin-top: 10px;
   font-family: "Vollkorn";
+  font-size: 2vw;
 }
 
 .card .text {
@@ -313,12 +316,19 @@ h1 {
     width: 100%;
     height: 70%;
   }
+  .card .title{
+    font-size: 3.5vw;
+  }
 }
 
 @media screen and (max-width: 600px) {
   .row {
     width: 120%;
     margin-left: 5%;
+  }
+
+  .card .title{
+    font-size: 5vw;
   }
 
 }

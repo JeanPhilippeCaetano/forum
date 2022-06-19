@@ -24,6 +24,9 @@ func main() {
 	// forum.InsertData(forum.Posts{}, db, "posts", 1, nil, "Babouin", "Amaury le gros babouin de ses grands morts", "mobile,golang", 1234567, time.Now().Format("2009.01.02 15:04:05"))
 	// forum.InsertData(forum.Posts{}, db, "posts", 1, nil, "Computer", "Amaury le gros computer de ses grands morts", "python,golang", 12345678, time.Now().Format("2010.01.02 15:04:05"))
 	// forum.InsertData(forum.Posts{}, db, "posts", 1, nil, "Insecte", "Amaury le gros insecte de ses grands morts", "java,golang", 123456789, time.Now().Format("2011.01.02 15:04:05"))
+	// forum.InsertData(forum.Users{}, db, "users", "Admin", "Administrateur", "admin@tucrack.com", "admin", "", "../assets/images/defaultProfil.jpg", "", time.Now().Format("2006.01.02 15:04:05"))
+	// forum.InsertData(forum.Users{}, db, "users", "Modo", "Modérateur", "modo@tucrack.com", "modo", "", "../assets/images/defaultProfil.jpg", "", time.Now().Format("2006.01.02 15:04:05"))
+
 	forum.Server()
 
 }

@@ -18,25 +18,9 @@ type Users struct {
 	Password   string
 	Biography  string
 	Image      string
+	PostLikes  string
+	Date       string
 }
-
-// type PostComments struct {
-// 	CommentID int
-// 	Content   string
-// 	SenderID  int
-// 	PostID    int
-// 	Likes     int
-// 	Date      string
-// }
-
-// type Comments struct {
-// 	CommentID  int
-// 	Content    string
-// 	SenderID   int
-// 	ReceiverID int
-// 	Likes      int
-// 	Date       string
-// }
 
 type Posts struct {
 	PostID   int
@@ -46,6 +30,15 @@ type Posts struct {
 	Content  string
 	Tags     string
 	Likes    int
+	Date     string
+}
+
+type Reports struct {
+	ReportID int
+	SenderID int
+	ParentID int
+	PostID   int
+	Reason   string
 	Date     string
 }
 
@@ -60,7 +53,9 @@ func InitDatabase() *sql.DB {
     	Email TEXT NOT NULL UNIQUE,
     	Password TEXT NOT NULL CHECK(length(Password) <= 16),
 		Biography TEXT NOT NULL,
-    	Image TEXT NOT NULL 
+    	Image TEXT NOT NULL,
+		PostLikes TEXT NOT NULL,
+		Date DATE NOT NULL
 	);
 	
 	CREATE TABLE IF NOT EXISTS posts
@@ -77,29 +72,19 @@ func InitDatabase() *sql.DB {
 		FOREIGN KEY(ParentID) REFERENCES posts(PostID)
 	);
 
+	CREATE TABLE IF NOT EXISTS reports
+	(
+		ReportID INTEGER PRIMARY KEY AUTOINCREMENT,
+		SenderID INTEGER NOT NULL,
+		ParentID INTEGER,
+		PostID INTEGER,
+		Reason TEXT NOT NULL,
+		Date DATE NOT NULL,
+		FOREIGN KEY(SenderID) REFERENCES users(UserID),
+		FOREIGN KEY(PostID) REFERENCES posts(PostID),
+		FOREIGN KEY(ParentID) REFERENCES reports(ReportID)
+	);
 	`
-	// CREATE TABLE IF NOT EXISTS postcomments
-	// (
-	// 	CommentID INTEGER PRIMARY KEY AUTOINCREMENT,
-	// 	Content TEXT NOT NULL,
-	// 	SenderID INTEGER NOT NULL,
-	// 	PostID INTEGER NOT NULL,
-	// 	Likes INTEGER NOT NULL,
-	// 	Date DATE NOT NULL,
-	// 	FOREIGN KEY(SenderID) REFERENCES users(UserID),
-	// 	FOREIGN KEY(PostID) REFERENCES posts(PostID)
-	// );
-	// CREATE TABLE IF NOT EXISTS comments
-	// (
-	// 	CommentID INTEGER PRIMARY KEY AUTOINCREMENT,
-	// 	Content TEXT NOT NULL,
-	// 	SenderID INTEGER NOT NULL,
-	// 	ReceiverID INTEGER NOT NULL,
-	// 	Likes INTEGER NOT NULL,
-	// 	Date DATE NOT NULL,
-	// 	FOREIGN KEY(SenderID) REFERENCES users(UserID),
-	// 	FOREIGN KEY(ReceiverID) REFERENCES users(UserID)
-	// );
 	db.Exec(statement)
 	if err != nil {
 		log.Panic(err)
@@ -145,13 +130,20 @@ func parseUpdateParams(structure interface{}, table string, id int, parameters .
 			setters += ","
 		}
 	}
-	setters += "WHERE " + data.Type().Field(0).Name + "='" + strconv.Itoa(id) + "'"
+	setters += " WHERE " + data.Type().Field(0).Name + "='" + strconv.Itoa(id) + "'"
 	return statement + setters
 }
 
 func UpdateData(structure interface{}, db *sql.DB, table string, id int, parameters ...interface{}) (sql.Result, error) {
-	statement := parseUpdateParams(structure, table, id, parameters)
-	result, err := db.Exec(statement, parameters)
+	statement := parseUpdateParams(structure, table, id, parameters...)
+	result, err := db.Exec(statement, parameters...)
+	return result, err
+}
+
+func DeleteData(structure interface{}, db *sql.DB, table string, id int) (sql.Result, error) {
+	statement := "DELETE FROM " + table + " WHERE " + GetIDNameFromStruct(structure) + "=" + strconv.Itoa(id) + ""
+	fmt.Println(statement)
+	result, err := db.Exec(statement)
 	return result, err
 }
 
@@ -184,7 +176,7 @@ func GetUser(db *sql.DB, table string, pseudo string) (Users, error) {
 	statement := "SELECT * FROM " + table + " WHERE Pseudonyme='" + pseudo + "'"
 	rows, err := db.Query(statement)
 	for rows.Next() {
-		err := rows.Scan(&u.UserID, &u.Pseudonyme, &u.Rank, &u.Email, &u.Password, &u.Biography, &u.Image)
+		err := rows.Scan(&u.UserID, &u.Pseudonyme, &u.Rank, &u.Email, &u.Password, &u.Biography, &u.Image, &u.PostLikes, &u.Date)
 		if err != nil {
 			log.Panic(err)
 		}
@@ -195,10 +187,6 @@ func GetUser(db *sql.DB, table string, pseudo string) (Users, error) {
 func resetGlobal(global *Global, data string) *Global {
 	if data == "Users" {
 		global.AllUsers = []Users{}
-		// } else if data == "Comments" {
-		// 	global.AllComments = []Comments{}
-		// } else if data == "PostComments" {
-		// 	global.AllPostsComments = []PostComments{}
 	} else if data == "Posts" {
 		global.AllPosts = []Posts{}
 	}
@@ -207,11 +195,13 @@ func resetGlobal(global *Global, data string) *Global {
 
 func DisplayOnePost(rows *sql.Rows) Posts {
 	var p Posts
+	var parentId sql.NullInt64
 	for rows.Next() {
-		err := rows.Scan(&p.PostID, &p.SenderID, &p.ParentID, &p.Title, &p.Content, &p.Likes, &p.Date)
+		err := rows.Scan(&p.PostID, &p.SenderID, &parentId, &p.Title, &p.Content, &p.Tags, &p.Likes, &p.Date)
 		if err != nil {
 			log.Panic(err)
 		}
+		p.ParentID = int(parentId.Int64)
 	}
 	return p
 }
@@ -219,7 +209,7 @@ func DisplayOnePost(rows *sql.Rows) Posts {
 func DisplayOneUser(rows *sql.Rows) Users {
 	var u Users
 	for rows.Next() {
-		err := rows.Scan(&u.UserID, &u.Pseudonyme, &u.Rank, &u.Email, &u.Password, &u.Biography, &u.Image)
+		err := rows.Scan(&u.UserID, &u.Pseudonyme, &u.Rank, &u.Email, &u.Password, &u.Biography, &u.Image, &u.PostLikes, &u.Date)
 		if err != nil {
 			log.Panic(err)
 		}
@@ -233,25 +223,11 @@ func DisplayRows(global *Global, rows *sql.Rows, structure interface{}) *Global 
 	for rows.Next() {
 		if data == "Users" {
 			var u Users
-			err := rows.Scan(&u.UserID, &u.Pseudonyme, &u.Rank, &u.Email, &u.Password, &u.Biography, &u.Image)
+			err := rows.Scan(&u.UserID, &u.Pseudonyme, &u.Rank, &u.Email, &u.Password, &u.Biography, &u.Image, &u.PostLikes, &u.Date)
 			if err != nil {
 				log.Panic(err)
 			}
 			global.AllUsers = append(global.AllUsers, u)
-			// } else if data == "PostComments" {
-			// 	var pc PostComments
-			// 	err := rows.Scan(&pc.CommentID, &pc.Content, &pc.SenderID, &pc.PostID, &pc.Likes, &pc.Date)
-			// 	if err != nil {
-			// 		log.Panic(err)
-			// 	}
-			// 	global.AllPostsComments = append(global.AllPostsComments, pc)
-			// } else if data == "Comments" {
-			// 	var c Comments
-			// 	err := rows.Scan(&c.CommentID, &c.Content, &c.SenderID, &c.ReceiverID, &c.Likes, &c.Date)
-			// 	if err != nil {
-			// 		log.Panic(err)
-			// 	}
-			// 	global.AllComments = append(global.AllComments, c)
 		} else if data == "Posts" {
 			var p Posts
 			var parentId sql.NullInt64

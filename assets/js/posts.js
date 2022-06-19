@@ -65,52 +65,106 @@ const openFilters = () => {
     filters.classList.toggle("open")
 }
 
+/* Get Comments */
 
+// const getComments = (tabID) => {
+//     let allPostsID = tabID
 
+//     return new Promise((resolve, reject) =>
+//         fetch("/getposts", {
+//             method: "POST",
+//             headers: {
+//                 "content-type": "application/json"
+//             },
+//         })
+//         .then(res => {
+//             return res.json()
+//         })
+//         .then(data => {
+//             data.forEach(element => {
+//                 if (allPostsID.includes(element.ParentID)) {
+//                     allPostsID.push(element.PostID)
+//                 }
+//             })
+//             resolve(allPostsID)
+//         })
+//         .catch(err => {
+//             reject(err)
+//         }))
+// }
+
+// const getComments = (tabID) => {
+//     let allPostsID = tabID
+//     const promise = fetch("/getposts", {
+//             method: "POST",
+//             headers: {
+//                 "content-type": "application/json"
+//             },
+//         })
+//         .then(async(res) => {
+//             if (!res.ok) {
+//                 throw await res.json()
+//             }
+//             return res.json()
+//         })
+//         .then(data => {
+//             data.forEach(element => {
+//                 if (allPostsID.includes(element.ParentID)) {
+//                     allPostsID.push(element.PostID)
+//                 }
+//             })
+//             return allPostsID
+//         })
+//         .catch(err => {
+//             console.log(err)
+//         })
+//     return promise
+// }
 
 /* Create post Requests Api */
 
 const createPost = () => {
-    const title = document.querySelector("#post-popup .popup #title").value
-    const content = tinymce.get("mytextarea").getContent()
-    const tabTags = [...document.querySelectorAll(".tags button")]
-    const tags = tabTags.filter(elem => {
-        return elem.classList.contains("choosed")
-    })
-    const tagsValues = tags.map(elem => {
-        return elem.value
-    })
-    fetch("/addpost", {
-            method: "POST",
-            headers: {
-                "content-type": "application/json"
-            },
-            body: JSON.stringify({
-                title: title,
-                content: content,
-                tags: `${tagsValues}`
+        const title = document.querySelector("#post-popup .popup #title").value
+        const errorlog = document.querySelector(".error_message")
+        const content = tinymce.get("mytextarea").getContent()
+        const tabTags = [...document.querySelectorAll(".tags button")]
+        const tags = tabTags.filter(elem => {
+            return elem.classList.contains("choosed")
+        })
+        const tagsValues = tags.map(elem => {
+            return elem.value
+        })
+        fetch("/addpost", {
+                method: "POST",
+                headers: {
+                    "content-type": "application/json"
+                },
+                body: JSON.stringify({
+                    title: title,
+                    content: content,
+                    tags: `${tagsValues}`
+                })
             })
-        })
-        .then(async(res) => {
-            if (!res.ok) {
-                throw await res.json()
-            }
-            return res.json()
-        })
-        .then(data => {
-            closePopup()
-            location.href = "/posts"
-            console.log(data)
-        })
-        .catch(err => {
-            console.log(err)
-        })
-}
+            .then(async(res) => {
+                if (!res.ok) {
+                    throw await res.json()
+                }
+                return res.json()
+            })
+            .then(data => {
+                closePopup()
+                location.href = "/posts"
+            })
+            .catch(err => {
+                errorlog.innerHTML = err.err
+                console.log(err)
+            })
+    }
     /* End Create post Requests Api */
 
 /* Get All Posts */
 
-const addPostDiv = (id, title, username, image, content, likes) => {
+const addPostDiv = (id, title, username, image, content, likes, nbComments) => {
     const section = document.createElement("SECTION")
     section.setAttribute("id", "post" + id)
     const innerPost = document.createElement("div")
@@ -146,6 +200,9 @@ const addPostDiv = (id, title, username, image, content, likes) => {
     likesDiv.innerHTML = likes
     icons.appendChild(likesDiv)
     icons.appendChild(likeIcon)
+    const commentsDiv = document.createElement("div")
+    commentsDiv.innerHTML = nbComments
+    icons.appendChild(commentsDiv)
     icons.appendChild(commentsIcon)
 
     infoUser.appendChild(imgCtn)
@@ -157,7 +214,12 @@ const addPostDiv = (id, title, username, image, content, likes) => {
     innerPost.appendChild(icons)
 
     section.appendChild(innerPost)
+    section.addEventListener('click', function() {
+        location.href = '/singlepost?id=' + id
+    }, false);
+
     document.querySelector(".all-posts").appendChild(section)
+
 }
 
 const getUser = (userID) => {
@@ -315,16 +377,16 @@ const getPosts = (verification) => {
                     const userData = await getUser(element.SenderID)
                     const nbComments = await getComments([element.PostID])
                     if (checkValue(searchValue, userData, element) && element.ParentID == 0) {
-                        if (verification !== undefined) {
-                            initPagination(maxPosts)
-                        }
+                        // if (verification !== undefined) {
+                        //     initPagination(maxPosts)
+                        // }
+                        // maxPosts += 1
                         resultsTab.push([element, userData, nbComments])
                     }
                 } catch (err) {
                     console.log(err);
                 }
             }
-            console.log(element)
             const filteredTabTags = resultsTab.filter(post => {
                 return filterByTag(postsData.tagsChoosed, post[0])
             })
@@ -337,9 +399,13 @@ const getPosts = (verification) => {
             }
             
             maxPosts = filteredTabTags.length
+            if (verification !== undefined) {
+                initPagination(maxPosts)
+            }
+
             filteredTabTags.forEach((element, index) => {
                 if (checkValueFromPage(index)) {
-                    addPostDiv(element[0].PostID, element[0].Title, element[1].Pseudonyme, element[1].Image, element[0].Content.substring(0, 500), element[0].Likes)
+                    addPostDiv(element[0].PostID, element[0].Title, element[1].Pseudonyme, element[1].Image, element[0].Content.substring(0, 500), element[0].Likes, element[2].length)
                 }
             })
         })
@@ -371,17 +437,18 @@ tinymce.init({
 
         'a11ychecker', 'advlist', 'advcode', 'advtable', 'autolink', 'checklist', 'export',
 
-        'lists', 'link', 'image', 'charmap', 'preview', 'anchor', 'searchreplace', 'visualblocks',
+        'lists', 'link', 'image code', 'charmap', 'preview', 'anchor', 'searchreplace', 'visualblocks',
 
         'powerpaste', 'fullscreen', 'formatpainter', 'insertdatetime', 'media', 'table', 'help', 'wordcount'
 
     ],
 
-    toolbar: 'undo redo | formatpainter casechange blocks | bold italic backcolor | ' +
+    toolbar: 'undo redo | image code | formatpainter casechange blocks | bold italic backcolor | ' +
 
         'alignleft aligncenter alignright alignjustify | ' +
 
-        'bullist numlist checklist outdent indent | removeformat | a11ycheck code table help '
+        'bullist numlist checklist outdent indent | removeformat | a11ycheck code table help ',
+    images_upload_url: 'postAcceptor.php',
 });
 
 

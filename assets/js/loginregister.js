@@ -1,3 +1,7 @@
+const toggleForm = () => {
+    const container = document.querySelector('.container');
+    container.classList.toggle('active');
+};
 /**
  * Variables
  */
@@ -8,18 +12,18 @@ const signupButton = document.getElementById('signup-button'),
 /**
  * Add event listener to the "Sign Up" button
  */
-signupButton.addEventListener('click', () => {
-    userForms.classList.remove('bounceRight')
-    userForms.classList.add('bounceLeft')
-}, false)
+// signupButton.addEventListener('click', () => {
+//     userForms.classList.remove('bounceRight')
+//     userForms.classList.add('bounceLeft')
+// }, false)
 
 /**
  * Add event listener to the "Login" button
  */
-loginButton.addEventListener('click', () => {
-    userForms.classList.remove('bounceLeft')
-    userForms.classList.add('bounceRight')
-}, false)
+// loginButton.addEventListener('click', () => {
+//     userForms.classList.remove('bounceLeft')
+//     userForms.classList.add('bounceRight')
+// }, false)
 
 const checkEmptyInputsSignUp = () => {
     const submitBtn = document.querySelector("#signupBtn")
@@ -44,7 +48,8 @@ const checkEmptyInputsSignIn = () => {
 }
 
 const onRegisterClick = () => {
-    const errorlog = document.querySelector(".user_forms-signup .forms_form .error_message p")
+    const errorlog = document.querySelector(".signupBx .formBx .error_message p")
+    const regDate = new Date(Date.now()).toUTCString();
     fetch("/register", {
             method: "POST",
             headers: {
@@ -53,7 +58,8 @@ const onRegisterClick = () => {
             body: JSON.stringify({
                 pseudo: document.getElementById("pseudoregister").value,
                 email: document.getElementById("emailregister").value,
-                password: document.getElementById("passwordregister").value
+                password: document.getElementById("passwordregister").value,
+                date: regDate
             })
 
         })
@@ -72,7 +78,8 @@ const onRegisterClick = () => {
 }
 
 const onLoginClick = () => {
-    const errorlog = document.querySelector(".user_forms-login .forms_form .error_message p")
+    const errorlog = document.querySelector(".signinBx .formBx .error_message p")
+    console.log(errorlog)
     fetch("/login", {
             method: "POST",
             headers: {
