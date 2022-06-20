@@ -297,6 +297,7 @@ const pushCom = (objCom, index, nbrComments) => {
 
     let comDiv = document.createElement('div')
     comDiv.setAttribute('class', 'oneComment')
+    comDiv.setAttribute('id', objCom.PostID)
     comDiv.setAttribute('data-postid', objCom.PostID) // id avec la base de donnée, fait
 
     let PPDiv = document.createElement('div')
@@ -354,7 +355,7 @@ const pushCom = (objCom, index, nbrComments) => {
     comDiv.appendChild(iconDiv)
     commentsDiv.appendChild(comDiv)
 
-
+    console.log(objCom.PostID, objCom.ParentID)
     addComPost()
 }
 
@@ -445,6 +446,7 @@ const revomeComPost = () => {
 }
 
 const getPostIDForCom = (index) => {
+    console.log(arrayComments, index)
     document.getElementById('comInput').focus()
     if (index == -1) {
         parentPostID = objectPost.PostID
@@ -749,18 +751,20 @@ const displayComments = () => {
             return res.json()
         })
         .then(async(data) => {
+            
             try {
+                let index = 0
                 for (const element of data) {
+                    console.log(data, arrayComments)
                     const userData = await getUser(element.SenderID)
-                    let index = 0
                     if (allPostsID.includes(element.ParentID)) {
                         element.Pseudonyme = userData.Pseudonyme
                         element.Image = userData.Image
                         arrayComments.push(element)
                         allPostsID.push(element.PostID)
-                        index++
                         const nbrComments = await getComments([element.PostID])
-                        await pushCom(element, index - 1, nbrComments.length - 1)
+                        await pushCom(element, index, nbrComments.length - 1)
+                        index++
                     }
                 }
             } catch (err) {
