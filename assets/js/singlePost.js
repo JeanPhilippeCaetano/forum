@@ -197,6 +197,7 @@ const noComYet = () => {
 
 const likePost = (idDiv, index) => {
     let displayLike = document.getElementById(idDiv)
+    console.log(index)
     let likesNbr = choosePost(index)
     let delOrAdd;
     const username = getCookie("pseudo")
@@ -222,7 +223,7 @@ const choosePost = (index) => {
     if (index == -1) {
         return objectPost.Likes
     } else {
-        console.log(index,arrayComments[index], arrayComments[index-1])
+        console.log("arrayComments", arrayComments)
         return arrayComments[index].Likes
     }
 }
@@ -291,7 +292,7 @@ const editCom = (comid) => {
     trashcanEdit.innerHTML = `<i onclick="confirmEditPost(${comid})" class="fas fa-check" style="margin-right:10%"></i><i onclick="location.href='/singlepost?id=${objectPost.PostID}'" class="fas fa-times"></i>`
 }
 
-const pushCom = (objCom, index) => {
+const pushCom = (objCom, index, nbrComments) => {
     const username = getCookie("pseudo")
 
     let comDiv = document.createElement('div')
@@ -303,15 +304,23 @@ const pushCom = (objCom, index) => {
     PPDiv.style.backgroundImage = `url("` + objCom.Image + `")`
     comDiv.appendChild(PPDiv)
 
-    let psuedoDiv = document.createElement('div')
-    psuedoDiv.setAttribute('class', 'username')
-    psuedoDiv.innerHTML = objCom.Pseudonyme // ajouter le pseudo de l'utilisateur, fait
-    comDiv.appendChild(psuedoDiv)
+    let containerUserComText = document.createElement('div')
+    containerUserComText.setAttribute('class', 'containerTextCom')
+
+    let pseudoDiv = document.createElement('div')
+    pseudoDiv.setAttribute('class', 'username')
+    pseudoDiv.innerHTML = objCom.Pseudonyme // ajouter le pseudo de l'utilisateur, fait
+        // comDiv.appendChild(psuedoDiv)
+    containerUserComText.appendChild(pseudoDiv)
 
     let textDiv = document.createElement('div')
     textDiv.setAttribute('class', 'commentText')
     textDiv.innerHTML = objCom.Content // changer le input.value avec le content de la base de donnée, fait
-    comDiv.appendChild(textDiv)
+        // comDiv.appendChild(textDiv)
+    containerUserComText.appendChild(textDiv)
+    comDiv.appendChild(containerUserComText)
+
+
 
     let iconDiv = document.createElement('div')
     iconDiv.setAttribute('class', 'icons')
@@ -320,12 +329,18 @@ const pushCom = (objCom, index) => {
     likeDiv.setAttribute('class', 'like')
     likeDiv.setAttribute('data-like', true)
     likeDiv.setAttribute('id', 'likeCom' + objCom.PostID) // id avec la base de donnée, fait
-    likeDiv.innerHTML = objCom.Likes + ` <i class="far fa-heart"></i><i onclick="likePost('likeCom` + objCom.PostID + `', ` + index + `)"" class="fa fa-heart"></i>`
-    iconDiv.appendChild(likeDiv)
 
+    const tabPostLikes = objectUsernameConnected.PostLikes.split(",")
+    if (!(tabPostLikes.length == 1 && tabPostLikes[0] == "") && tabPostLikes.includes(objCom.PostID + "")) {
+        likeDiv.innerHTML = objCom.Likes + ` <i class="fa fa-heart"></i><i onclick="likePost('likeCom` + objCom.PostID + `', ` + index + `)" class="fas fa-heart-broken"></i>`
+        likeDiv.removeAttribute("data-like")
+    } else {
+        likeDiv.innerHTML = objCom.Likes + ` <i class="far fa-heart"></i><i onclick="likePost('likeCom` + objCom.PostID + `', ` + index + `)"" class="fa fa-heart"></i>`
+    }
+    iconDiv.appendChild(likeDiv)
     let answerDiv = document.createElement('div')
     answerDiv.setAttribute('class', 'com')
-    answerDiv.innerHTML = 0 + ` <i onclick="getPostIDForCom(` + index + `)" class="fa fa-comments" aria-hidden="true"></i>` // nbs de com avec la base de donnée, fait
+    answerDiv.innerHTML = nbrComments + ` <i onclick="getPostIDForCom(` + index + `)" class="fa fa-comments" aria-hidden="true"></i>` // nbs de com avec la base de donnée, fait
     iconDiv.appendChild(answerDiv)
 
     let trashcanEditDiv = document.createElement('div') // afficher cette div que si le commentaire nous appartient
@@ -338,8 +353,39 @@ const pushCom = (objCom, index) => {
     iconDiv.appendChild(trashcanEditDiv)
     comDiv.appendChild(iconDiv)
     commentsDiv.appendChild(comDiv)
+
+
     addComPost()
 }
+
+const getComments = (tabID) => {
+    let allPostsID = tabID
+    const promise = fetch("/getposts", {
+            method: "POST",
+            headers: {
+                "content-type": "application/json"
+            },
+        })
+        .then(async(res) => {
+            if (!res.ok) {
+                throw await res.json()
+            }
+            return res.json()
+        })
+        .then(data => {
+            data.forEach(element => {
+                if (allPostsID.includes(element.ParentID)) {
+                    allPostsID.push(element.PostID)
+                }
+            })
+            return allPostsID
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    return promise
+}
+
 
 const addComPost = () => {
     const displayComs = document.getElementById('com')
@@ -354,6 +400,7 @@ const deletePost = (comID) => {
             if (commentDivs[i].getAttribute('id') == comID) {
                 commentDivs[i].remove()
                 revomeComPost()
+                deletePost(parseInt(commentDivs[i].getAttribute("data-postid")))
             }
         }
     } else {
@@ -379,7 +426,11 @@ const deletePost = (comID) => {
             return res.json()
         })
         .then(data => {
-            location.href = "/posts"
+            if (comID == objectPost.PostID) {
+                location.href = "/posts"
+            } else {
+                location.href = "/singlepost?id=" + objectPost.PostID
+            }
         })
         .catch(err => {
             console.log(err)
@@ -398,7 +449,7 @@ const getPostIDForCom = (index) => {
     if (index == -1) {
         parentPostID = objectPost.PostID
     } else {
-        parentPostID = arrayComments[index - 1].PostID
+        parentPostID = arrayComments[index].PostID
     }
 
 }
@@ -494,6 +545,10 @@ const loadPage = () => {
         .then(async(data) => {
             try {
                 const userData = await getUser(data.SenderID)
+                if (data.ParentID != 0) {
+                    location.href = "/posts"
+                    return
+                }
                 objectUser.Image = userData.Image
                 objectUser.Pseudonyme = userData.Pseudonyme
                 objectPost.Content = data.Content
@@ -505,9 +560,14 @@ const loadPage = () => {
                 objectPost.Tags = data.Tags
                 objectPost.Title = data.Title
             } catch (err) {
-                console.log(err);
+                console.log(err)
             }
             await displayPostInfo()
+        })
+        .catch(err => {
+            if (err.err == "Ce post n'existe pas") {
+                location.href = "/posts"
+            }
         })
     return promise
 }
@@ -517,6 +577,7 @@ const displayPostInfo = () => {
     userNameDiv.innerText = objectUser.Pseudonyme
     postTitleDIv.innerText = objectPost.Title
     postTagDIv.innerText = objectPost.Tags
+    const displayLikeDiv = document.querySelector('.displayLikesValue')
     postLikesDiv.innerHTML = objectPost.Likes + heartsIconP1 + '-1' + heartsIconP2
     postContentDiv.innerHTML = objectPost.Content
     postComDiv.innerHTML = arrayComments.length + commentIcon
@@ -550,8 +611,9 @@ const displayPostInfo = () => {
             })
             .then(data => {
                 const tabPostLikes = data.PostLikes.split(",")
-                if (!(tabPostLikes.length == 1 && tabPostLikes[0] == "") && tabPostLikes.includes(objectPost.PostID)) {
-                    console.log("nimporte quoi")
+                if (!(tabPostLikes.length == 1 && tabPostLikes[0] == "") && tabPostLikes.includes(objectPost.PostID + "")) {
+                    postLikesDiv.innerHTML = objectPost.Likes + ` <i class="fa fa-heart"></i><i onclick="likePost('like',-1)" class="fas fa-heart-broken"></i>`
+                    displayLikeDiv.removeAttribute('data-like')
                 } else {
                     postLikesDiv.innerHTML = objectPost.Likes + ` <i class="far fa-heart"></i><i onclick="likePost('like',` + '-1' + `)" class="fa fa-heart"></i>`
                 }
@@ -642,7 +704,6 @@ const updateLikedPostUser = (obj, delOrAdd) => {
 
 }
 
-
 const updateLikesData = (obj, delOrAdd) => {
     const promise = fetch("/modifypost", {
             method: "POST",
@@ -672,6 +733,8 @@ const updateLikesData = (obj, delOrAdd) => {
     return promise
 }
 
+
+
 const displayComments = () => {
     const promise = fetch("/getposts", {
             method: "POST",
@@ -689,13 +752,15 @@ const displayComments = () => {
             try {
                 for (const element of data) {
                     const userData = await getUser(element.SenderID)
+                    let index = 0
                     if (allPostsID.includes(element.ParentID)) {
                         element.Pseudonyme = userData.Pseudonyme
                         element.Image = userData.Image
                         arrayComments.push(element)
                         allPostsID.push(element.PostID)
-                        console.log(arrayComments.length)
-                        await pushCom(element, data.indexOf(element) - 1)
+                        index++
+                        const nbrComments = await getComments([element.PostID])
+                        await pushCom(element, index - 1, nbrComments.length - 1)
                     }
                 }
             } catch (err) {

@@ -2,7 +2,6 @@ package forum
 
 import (
 	"database/sql"
-	"fmt"
 	"log"
 	"reflect"
 	"strconv"
@@ -48,14 +47,14 @@ func InitDatabase() *sql.DB {
 	CREATE TABLE IF NOT EXISTS users
 	(
 		UserID INTEGER PRIMARY KEY AUTOINCREMENT,
-    	Pseudonyme TEXT NOT NULL UNIQUE CHECK(length(Pseudonyme) <= 16),
+    	Pseudonyme TEXT NOT NULL UNIQUE CHECK(length(Pseudonyme) <= 24),
 		Rank TEXT NOT NULL,
     	Email TEXT NOT NULL UNIQUE,
     	Password TEXT NOT NULL CHECK(length(Password) <= 16),
 		Biography TEXT NOT NULL,
     	Image TEXT NOT NULL,
 		PostLikes TEXT NOT NULL,
-		Date DATE NOT NULL
+		Date TEXT NOT NULL
 	);
 	
 	CREATE TABLE IF NOT EXISTS posts
@@ -67,7 +66,7 @@ func InitDatabase() *sql.DB {
 		Content TEXT NOT NULL,
 		Tags TEXT,
 		Likes INTEGER NOT NULL,
-		Date DATE NOT NULL,
+		Date TEXT NOT NULL,
 		FOREIGN KEY(SenderID) REFERENCES users(UserID),
 		FOREIGN KEY(ParentID) REFERENCES posts(PostID)
 	);
@@ -79,7 +78,7 @@ func InitDatabase() *sql.DB {
 		ParentID INTEGER,
 		PostID INTEGER,
 		Reason TEXT NOT NULL,
-		Date DATE NOT NULL,
+		Date TEXT NOT NULL,
 		FOREIGN KEY(SenderID) REFERENCES users(UserID),
 		FOREIGN KEY(PostID) REFERENCES posts(PostID),
 		FOREIGN KEY(ParentID) REFERENCES reports(ReportID)
@@ -112,10 +111,7 @@ func parseInsertParams(structure interface{}, table string, parameters ...interf
 
 func InsertData(structure interface{}, db *sql.DB, table string, parameters ...interface{}) (sql.Result, error) {
 	statement := parseInsertParams(structure, table, parameters...)
-	fmt.Println(parameters...)
-	fmt.Println(statement)
 	result, err := db.Exec(statement, parameters...)
-	fmt.Println(err)
 	return result, err
 }
 
@@ -142,7 +138,6 @@ func UpdateData(structure interface{}, db *sql.DB, table string, id int, paramet
 
 func DeleteData(structure interface{}, db *sql.DB, table string, id int) (sql.Result, error) {
 	statement := "DELETE FROM " + table + " WHERE " + GetIDNameFromStruct(structure) + "=" + strconv.Itoa(id) + ""
-	fmt.Println(statement)
 	result, err := db.Exec(statement)
 	return result, err
 }
@@ -189,6 +184,8 @@ func resetGlobal(global *Global, data string) *Global {
 		global.AllUsers = []Users{}
 	} else if data == "Posts" {
 		global.AllPosts = []Posts{}
+	} else if data == "Reports" {
+		global.AllReports = []Reports{}
 	}
 	return global
 }

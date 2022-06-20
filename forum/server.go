@@ -7,29 +7,33 @@ import (
 )
 
 type Global struct {
-	AllUsers []Users
-	AllPosts []Posts
-	// AllPostsComments []PostComments
-	// AllComments      []Comments
-	Db *sql.DB
+	AllUsers   []Users
+	AllPosts   []Posts
+	AllReports []Reports
+	Db         *sql.DB
 }
 
 func Server() {
 	fmt.Println("Le serveur est lancé : http://localhost:8080")
 
+	mux := http.NewServeMux()
+
+	LoadConfig()
 	global := &Global{}
 	global.Db = InitDatabase()
 
 	fs := http.FileServer(http.Dir("./static/"))
-	http.Handle("/static/", http.StripPrefix("/static/", fs))
+	mux.Handle("/static/", http.StripPrefix("/static/", fs))
 
 	fscript := http.FileServer(http.Dir("./assets/"))
-	http.Handle("/assets/", http.StripPrefix("/assets/", fscript))
+	mux.Handle("/assets/", http.StripPrefix("/assets/", fscript))
 
 	fp := http.FileServer(http.Dir("./pages/"))
-	http.Handle("/pages/", http.StripPrefix("/pages/", fp))
+	mux.Handle("/pages/", http.StripPrefix("/pages/", fp))
 
-	loadAllRoutes(global)
+	LoadApi(global, mux)
+	LoadPages(mux)
 
-	http.ListenAndServe(":8080", nil)
+	http.ListenAndServe(":8080", mux)
+
 }

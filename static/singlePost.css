@@ -14,18 +14,12 @@ body {
 .globale {
     display: flex;
     flex-direction: column;
-    background-color: var(--beige);
-    min-height: 100vh;
-}
-
-.header {
-    /* border-bottom: 2px solid black; */
-    text-align: center;
-    margin-top: 2%;
+    background-color: var(--brown);
+    min-height: 70vh;
 }
 
 .center {
-    height: 90%;
+    min-height: 70vh;
     display: flex;
     flex-direction: row;
 }
@@ -49,11 +43,12 @@ body {
 }
 
 .post {
-    height: 65%;
+    height: fit-content;
     margin: .5%;
     display: flex;
     flex-direction: column;
-    border: 2px solid var(--yellow);
+    background-color: var(--yellow);
+    border: 2px solid black;
     border-radius: 10px;
 }
 
@@ -72,7 +67,7 @@ body {
 
 .username {
     margin: 3%;
-    color: var(--brown);
+    color: black;
     width: fit-content;
     font-size: 2em;
     font-weight: bold;
@@ -86,7 +81,11 @@ body {
     text-align: right;
     font-size: 1.5em;
     font-weight: bold;
-    color: var(--brown);
+    color: black;
+}
+
+.displayLikesValue, .displayCommentsValue {
+    font-size: 1.5rem;
 }
 
 .displayLikesValue,
@@ -112,25 +111,27 @@ body {
 
 .titleNtags {
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+    flex-direction: column;
+    /* justify-content: space-between; */
     margin-left: 2%;
     margin-right: 2%;
 }
 
 .title,
 .tags {
-    color: var(--brown);
+    color: black;
     font-weight: bold;
 }
 
 .title {
     font-size: 2em;
+    align-self: flex-start;
+
 }
 
 .tags {
     font-size: 1.3em;
-    align-self: flex-end;
+    align-self: flex-start;
 }
 
 .postText {
@@ -138,23 +139,48 @@ body {
     max-height: 68%; */
     margin: 1.5%;
     padding: 10px;
-    border: 2px solid var(--yellow);
-    border-radius: 10px;
-    font-size: larger;
+    color: black;
+    background-color: var(--beige);
+    border: 2px solid black;
+    font-size: 1.5rem;
 }
 
 .adminUserOptions {
     margin-left: auto;
-    margin-right: .5%;
-    margin-bottom: .5%;
+    margin-right: 5%;
+    margin-bottom: 2%;
     text-align: right;
-    color: var(--brown);
+    font-size: 1.5rem;
+    color: black;
     cursor: pointer;
 }
 
+@media screen and (max-width: 920px) {
+    .title {
+        font-size: 3.5vw;
+    }
+
+    .tags {
+        font-size: 3vw;
+    }
+
+    .postText {
+        font-size: 3vw;
+    }
+
+    .displayLikesValue, .displayCommentsValue {
+        font-size: 3vw;
+    }
+
+    .adminUserOptions {
+        font-size: 3vw;
+    }
+}
+
 .writeCom {
-    margin: 10px;
-    border: 2px solid var(--yellow);
+    /* margin: 10px; */
+    border: 2px solid black;
+    background-color: var(--yellow);
     border-radius: 10px;
     display: flex;
     flex-direction: row;
@@ -170,54 +196,66 @@ body {
     max-height: 55px;
 }
 
+.sendCom {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
 .writeCom .cantComment {
     margin: .5%;
     padding: 1%;
     width:100%;
     border: 2px solid var(--yellow);
     border-radius: 10px;
-    color: var(--brown);
+    color: black;
     text-align: center;
     font-size: large;
 }
 
 .commentInput {
-    margin: 1.5%;
+    margin: 1vh 10% 1vh 10%;
+    border: 1px solid black;
+    height: 2.5vh;
     width: 80%;
-    background-color: var(--yellow);
+    padding-left: 10px;
+    background-color: var(--beige);
 }
 
 .subitComment {
-    margin: 1.5%;
-    width: 10%;
-    background-color: var(--yellow);
-    border: 2px solid var(--yellow);
-    border-radius: 10px;
+    width: 15vh;
+    height: 3vh;
+    margin-right: 10%;
+    margin-bottom: 1vh;
+    align-self: flex-end;
+    font-weight: 700;
+    background-color: var(--beige);
 }
 
-.comments {
-    margin: 10px;
-    border: 2px solid var(--yellow);
-    border-radius: 10px;
-    /* min-height: 25%;
-    max-height: fit-content; */
+.subitComment:hover {
+    box-shadow: 0 1px 2px rgba(0,0,0,0.07), 
+                0 2px 4px rgba(0,0,0,0.07), 
+                0 4px 8px rgba(0,0,0,0.07), 
+                0 8px 16px rgba(0,0,0,0.07),
+                0 16px 32px rgba(0,0,0,0.07), 
+                0 32px 64px rgba(0,0,0,0.07);
 }
 
 .noComYet {
     margin: .5%;
     padding: 1%;
-    border: 2px solid var(--yellow);
+    border: 2px solid black;
     border-radius: 10px;
-    color: var(--brown);
+    background-color: var(--beige);
+    color: black;
     text-align: center;
     font-size: large;
 }
 
 .oneComment {
-    margin: .5%;
     padding: 1%;
-    border: 2px solid var(--yellow);
-    border-radius: 10px;
+    border: 2px solid black;
+    background-color: var(--yellow);
     display: flex;
     flex-direction: row;
 }
@@ -233,7 +271,7 @@ body {
 
 .oneComment .username {
     margin: 2%;
-    color: var(--brown);
+    color: black;
     width: fit-content;
     font-size: 1.5em;
     font-weight: bold;
@@ -241,7 +279,7 @@ body {
 
 .commentText {
     margin: .5%;
-    color: var(--brown);
+    color: black;
     width: fit-content;
     align-items: center;
     font-size: large;
@@ -256,7 +294,7 @@ body {
 }
 
 .icons .like {
-    color: var(--brown);
+    color: black;
     cursor: pointer;
 }
 
@@ -277,12 +315,12 @@ body {
 }
 
 .icons .com {
-    color: var(--brown);
+    color: black;
     cursor: pointer;
 }
 
 .icons .trashcanEdit {
-    color: var(--brown);
+    color: black;
     cursor: pointer;
 }
 
@@ -290,13 +328,6 @@ body {
     /* border-left: 2px solid black; */
     margin-right: 15%;
 }
-
-.footer {
-    /* border-top: 2px solid black; */
-    text-align: center;
-    margin-bottom: 2%;
-}
-
 
 /* css pour la pop up d'alerte lors d'une entrée invalide pour un commentaire */
 
@@ -313,7 +344,8 @@ body {
 }
 
 #alertBox {
-    width: 30%;
+    padding: 2vh;
+    width: 40%;
     height: fit-content;
     border: 1px solid #fff;
     background-color: #fff;
@@ -334,8 +366,8 @@ body {
 }
 
 #alertBox p {
-    height: 50px;
-    padding: 30px 0 40px 0;
+    height: fit-content;
+    padding: 20px 0 20px 0;
     text-align: center;
     vertical-align: middle;
 }
