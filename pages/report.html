@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <link rel="stylesheet" href="../static/report.css">
+    <link rel="stylesheet" href="../static/headFoot.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css" integrity="sha512-xA6Hp6oezhjd6LiLZynuukm80f8BoZ3OpcEYaqKoCV3HKQDrYjDE1Gu8ocxgxoXmwmSzM4iqPvCsOkQNiu41GA==" crossorigin="anonymous" referrerpolicy="no-referrer"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report</title>
+</head>
+
+<body>
+    {{template "header"}}
+    <div class="globale">  
+        <div class="center">
+            <div class="leftSpace"></div>
+            <div class="displayReport">
+                <div class="report">
+                    <div class="userInfo">
+                        <div class="PP" id="userPP"> </div>
+                        <div class="containerUR">
+                            <div class="username" id="userName"> </div>
+                            <div class="rank" id="rank"> </div>
+                        </div> 
+                        <div class="displayCommentsValue" id="com"> <i onclick="getPostIDForCom(-1)" class="fa fa-comments" aria-hidden="true"></i></div>
+                    </div>
+                    <div class="title" id="reportTitle"> </div>
+                    <div class="reportText" id="reportContent">
+
+                    </div>
+                </div>
+                <div class="writeCom">
+                    <div class="PP"></div>
+                    <input type="text" name="answer" class="answerInput" placeholder="Écrivez votre réponse" id="answerInput">
+                    <button class="subitAnswer" id="subAn" onclick="validTextInput()"> Répondre </button>
+                </div>
+                <div class="answer" id="answer">
+                </div>
+            </div>
+            <div class="rightSpace"></div>
+        </div>
+    </div>
+
+    {{template "footer"}}
+</body>
+
+<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+<script src="../assets/js/headFoot.js"></script>
+<script src="../assets/js/reports.js"></script>
+</html>

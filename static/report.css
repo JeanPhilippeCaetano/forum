@@ -1,0 +1,156 @@
+:root {
+    --blue: #10497e;
+    --beige: #faf0ca;
+    --yellow: #f4d35e;
+    --orange: #ee964b;
+    --brown: #8a1b05;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.globale {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--beige);
+    min-height: 100vh;
+}
+
+.center {
+    height: 90%;
+    display: flex;
+    flex-direction: row;
+}
+
+.leftSpace {
+    margin-left: 15%;
+}
+
+.displayReport {
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+}
+
+.PP {
+    border: 2px var(--blue) solid;
+    border-radius: 100%;
+    background-color: var(--blue);
+    background-size: cover;
+}
+
+.report {
+    height: 65%;
+    margin: .5%;
+    display: flex;
+    flex-direction: column;
+    border: 2px solid var(--yellow);
+    border-radius: 10px;
+}
+
+.userInfo {
+    display: flex;
+    flex-direction: row;
+}
+
+.userInfo .PP {
+    margin: 1.75%;
+    min-height: 70px;
+    max-height: 70px;
+    min-width: 70px;
+    max-width: 70px;
+}
+
+.username {
+    margin: 3%;
+    color: var(--brown);
+    width: fit-content;
+    font-size: 2em;
+    font-weight: bold;
+}
+
+.postInfo {
+    margin-top: 3%;
+    margin-left: auto;
+    margin-right: 3%;
+    width: fit-content;
+    text-align: right;
+    font-size: 1.5em;
+    font-weight: bold;
+    color: var(--brown);
+}
+
+.title,
+.tags {
+    color: var(--brown);
+    font-weight: bold;
+}
+
+.title {
+    font-size: 2em;
+}
+
+
+.reportText {
+    margin: 1.5%;
+    padding: 10px;
+    border: 2px solid var(--yellow);
+    border-radius: 10px;
+    font-size: larger;
+}
+
+.adminUserOptions {
+    margin-left: auto;
+    margin-right: .5%;
+    margin-bottom: .5%;
+    text-align: right;
+    color: var(--brown);
+    cursor: pointer;
+}
+
+.writeCom {
+    margin: 10px;
+    border: 2px solid var(--yellow);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: row;
+}
+
+.commentInput {
+    margin: 1.5%;
+    width: 80%;
+    background-color: var(--yellow);
+}
+
+.subitComment {
+    margin: 1.5%;
+    width: 10%;
+    background-color: var(--yellow);
+    border: 2px solid var(--yellow);
+    border-radius: 10px;
+}
+
+.comments {
+    margin: 10px;
+    border: 2px solid var(--yellow);
+    border-radius: 10px;
+    /* min-height: 25%;
+    max-height: fit-content; */
+}
+
+.noComYet {
+    margin: .5%;
+    padding: 1%;
+    border: 2px solid var(--yellow);
+    border-radius: 10px;
+    color: var(--brown);
+    text-align: center;
+    font-size: large;
+}
+
+
+.rightSpace {
+    margin-right: 15%;
+}
