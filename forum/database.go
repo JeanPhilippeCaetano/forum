@@ -54,7 +54,7 @@ func InitDatabase() *sql.DB {
 		Biography TEXT NOT NULL,
     	Image TEXT NOT NULL,
 		PostLikes TEXT NOT NULL,
-		Date DATE NOT NULL
+		Date TEXT NOT NULL
 	);
 	
 	CREATE TABLE IF NOT EXISTS posts
@@ -66,7 +66,7 @@ func InitDatabase() *sql.DB {
 		Content TEXT NOT NULL,
 		Tags TEXT,
 		Likes INTEGER NOT NULL,
-		Date DATE NOT NULL,
+		Date TEXT NOT NULL,
 		FOREIGN KEY(SenderID) REFERENCES users(UserID),
 		FOREIGN KEY(ParentID) REFERENCES posts(PostID)
 	);
@@ -78,7 +78,7 @@ func InitDatabase() *sql.DB {
 		ParentID INTEGER,
 		PostID INTEGER,
 		Reason TEXT NOT NULL,
-		Date DATE NOT NULL,
+		Date TEXT NOT NULL,
 		FOREIGN KEY(SenderID) REFERENCES users(UserID),
 		FOREIGN KEY(PostID) REFERENCES posts(PostID),
 		FOREIGN KEY(ParentID) REFERENCES reports(ReportID)

@@ -302,15 +302,23 @@ const pushCom = (objCom, index) => {
     PPDiv.style.backgroundImage = `url("` + objCom.Image + `")`
     comDiv.appendChild(PPDiv)
 
-    let psuedoDiv = document.createElement('div')
-    psuedoDiv.setAttribute('class', 'username')
-    psuedoDiv.innerHTML = objCom.Pseudonyme // ajouter le pseudo de l'utilisateur, fait
-    comDiv.appendChild(psuedoDiv)
+    let containerUserComText = document.createElement('div')
+    containerUserComText.setAttribute('class', 'containerTextCom')
+
+    let pseudoDiv = document.createElement('div')
+    pseudoDiv.setAttribute('class', 'username')
+    pseudoDiv.innerHTML = objCom.Pseudonyme // ajouter le pseudo de l'utilisateur, fait
+        // comDiv.appendChild(psuedoDiv)
+    containerUserComText.appendChild(pseudoDiv)
 
     let textDiv = document.createElement('div')
     textDiv.setAttribute('class', 'commentText')
     textDiv.innerHTML = objCom.Content // changer le input.value avec le content de la base de donnée, fait
-    comDiv.appendChild(textDiv)
+        // comDiv.appendChild(textDiv)
+    containerUserComText.appendChild(textDiv)
+    comDiv.appendChild(containerUserComText)
+
+
 
     let iconDiv = document.createElement('div')
     iconDiv.setAttribute('class', 'icons')
@@ -319,9 +327,15 @@ const pushCom = (objCom, index) => {
     likeDiv.setAttribute('class', 'like')
     likeDiv.setAttribute('data-like', true)
     likeDiv.setAttribute('id', 'likeCom' + objCom.PostID) // id avec la base de donnée, fait
-    likeDiv.innerHTML = objCom.Likes + ` <i class="far fa-heart"></i><i onclick="likePost('likeCom` + objCom.PostID + `', ` + index + `)"" class="fa fa-heart"></i>`
-    iconDiv.appendChild(likeDiv)
 
+    const tabPostLikes = objectUsernameConnected.PostLikes.split(",")
+    if (!(tabPostLikes.length == 1 && tabPostLikes[0] == "") && tabPostLikes.includes(objCom.PostID + "")) {
+        likeDiv.innerHTML = objCom.Likes + ` <i class="fa fa-heart"></i><i onclick="likePost('likeCom` + objCom.PostID + `', ` + index + `)" class="fas fa-heart-broken"></i>`
+        likeDiv.removeAttribute("data-like")
+    } else {
+        likeDiv.innerHTML = objCom.Likes + ` <i class="far fa-heart"></i><i onclick="likePost('likeCom` + objCom.PostID + `', ` + index + `)"" class="fa fa-heart"></i>`
+    }
+    iconDiv.appendChild(likeDiv)
     let answerDiv = document.createElement('div')
     answerDiv.setAttribute('class', 'com')
     answerDiv.innerHTML = 0 + ` <i onclick="getPostIDForCom(` + index + `)" class="fa fa-comments" aria-hidden="true"></i>` // nbs de com avec la base de donnée, fait
@@ -337,7 +351,10 @@ const pushCom = (objCom, index) => {
     iconDiv.appendChild(trashcanEditDiv)
     comDiv.appendChild(iconDiv)
     commentsDiv.appendChild(comDiv)
-    addComPost()
+
+    if (objCom.ParentID == objectPost.PostID)
+
+        addComPost()
 }
 
 const addComPost = () => {
@@ -378,7 +395,11 @@ const deletePost = (comID) => {
             return res.json()
         })
         .then(data => {
-            location.href = "/posts"
+            if (comID == objectPost.PostID) {
+                location.href = "/posts"
+            } else {
+                location.href = "/singlepost?id=" + objectPost.PostID
+            }
         })
         .catch(err => {
             console.log(err)
@@ -493,6 +514,10 @@ const loadPage = () => {
         .then(async(data) => {
             try {
                 const userData = await getUser(data.SenderID)
+                if (data.ParentID != 0) {
+                    location.href = "/posts"
+                    return
+                }
                 objectUser.Image = userData.Image
                 objectUser.Pseudonyme = userData.Pseudonyme
                 objectPost.Content = data.Content
@@ -504,9 +529,14 @@ const loadPage = () => {
                 objectPost.Tags = data.Tags
                 objectPost.Title = data.Title
             } catch (err) {
-                console.log(err);
+                console.log(err)
             }
             await displayPostInfo()
+        })
+        .catch(err => {
+            if (err.err == "Ce post n'existe pas") {
+                location.href = "/posts"
+            }
         })
     return promise
 }
@@ -517,7 +547,7 @@ const displayPostInfo = () => {
     postTitleDIv.innerText = objectPost.Title
     postTagDIv.innerText = objectPost.Tags
     const displayLikeDiv = document.querySelector('.displayLikesValue')
-        // postLikesDiv.innerHTML = objectPost.Likes + heartsIconP1 + '-1' + heartsIconP2
+    postLikesDiv.innerHTML = objectPost.Likes + heartsIconP1 + '-1' + heartsIconP2
     postContentDiv.innerHTML = objectPost.Content
     postComDiv.innerHTML = arrayComments.length + commentIcon
     allPostsID.push(objectPost.PostID)
@@ -550,12 +580,10 @@ const displayPostInfo = () => {
             })
             .then(data => {
                 const tabPostLikes = data.PostLikes.split(",")
-                console.log(tabPostLikes)
                 if (!(tabPostLikes.length == 1 && tabPostLikes[0] == "") && tabPostLikes.includes(objectPost.PostID + "")) {
                     postLikesDiv.innerHTML = objectPost.Likes + ` <i class="fa fa-heart"></i><i onclick="likePost('like',-1)" class="fas fa-heart-broken"></i>`
                     displayLikeDiv.removeAttribute('data-like')
                 } else {
-                    console.log("tesfdbd")
                     postLikesDiv.innerHTML = objectPost.Likes + ` <i class="far fa-heart"></i><i onclick="likePost('like',` + '-1' + `)" class="fa fa-heart"></i>`
                 }
                 ppAddCom.style.backgroundImage = `url("` + data.Image + `")`
@@ -645,7 +673,6 @@ const updateLikedPostUser = (obj, delOrAdd) => {
 
 }
 
-
 const updateLikesData = (obj, delOrAdd) => {
     const promise = fetch("/modifypost", {
             method: "POST",
@@ -697,7 +724,11 @@ const displayComments = () => {
                         element.Image = userData.Image
                         arrayComments.push(element)
                         allPostsID.push(element.PostID)
-                        await pushCom(element, data.indexOf(element) - 1)
+                        if (element.ParentID == objectPost.PostID) {
+                            await pushCom(element, data.indexOf(element) - 1)
+                        } else {
+                            pushSubCom(element, data.indexOf(element) - 1)
+                        }
                     }
                 }
             } catch (err) {

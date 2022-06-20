@@ -30,7 +30,6 @@ const getUrl = () => {
             } else {
                 postsData[element[0]] = element[1]
             }
-
         }
     })
 }
@@ -195,10 +194,11 @@ const addPostDiv = (id, title, username, image, content, likes, nbComments) => {
     innerPost.appendChild(icons)
 
     section.appendChild(innerPost)
-    section.addEventListener('click', function() {
-        location.href = '/singlepost?id=' + id
-    }, false);
-
+    if (title != "Aucun résultat") {
+        section.addEventListener('click', function() {
+            location.href = '/singlepost?id=' + id
+        }, false);
+    }
     document.querySelector(".all-posts").appendChild(section)
 
 }

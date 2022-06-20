@@ -20,38 +20,46 @@
 
 <body>
     {{template "header"}}
-    <section id="profile">
-        <div class="imgContent">
-            <div class="imgDiv">
-            </div>
-            <i class="fas fa-camera"></i>
-        </div>
-        <div class="conteneur">
-            <div class="nameUsers">
-                <div class="nameChange">
-                    <input id="inputName">
-                    <button id="newUsersName" onclick="changeUsername()">Valider</button>
+    <div class="content">
+        <section id="profile">
+            <div class="imgContent">
+                <div class="imgDiv">
                 </div>
-                <i class="fas fa-times" onclick="goNewUrl()" style="cursor: pointer; color: #faf0ca;"></i>
+                <i class="fas fa-camera"></i>
             </div>
-            <div class="biography">
-                <textarea id="areaBiography">Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere eveniet doloribus reprehenderit natus, beatae, id sequi aperiam, eius ex deleniti debitis error totam necessitatibus commodi vel saepe! Reiciendis, suscipit deleniti?</textarea>
-                <button id="newBio" onclick="changeBiography()">Valider</button>
+            <div class="conteneur">
+                <div id="erreurName">
+                </div>
+                <div class="nameUsers">
+                    <div class="nameChange">
+                        <input id="inputName">
+                        <button id="newUsersName" onclick="changeUsername()">Valider</button>
+                    </div>
+                    <i class="fas fa-times" onclick="goNewUrl()" style="cursor: pointer; color: #faf0ca;"></i>
+                </div>
+                <div class="biography">
+                    <textarea id="areaBiography">Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere eveniet doloribus reprehenderit natus, beatae, id sequi aperiam, eius ex deleniti debitis error totam necessitatibus commodi vel saepe! Reiciendis, suscipit deleniti?</textarea>
+                    <button id="newBio" onclick="changeBiography()">Valider</button>
+                </div>
             </div>
+        </section>
+        <div id="erreurMdp">
         </div>
-    </section>
-    <section id="changeMdp">
-        <input id="oldMdp" type="text" class="inputText" placeholder="Ancien mot de passe">
-        <input id="newMdp" type="text" class="inputText" placeholder="Nouveau mot de passe">
-        <input id="confirmNewMdp" type="text" class="inputText" placeholder="confirmer mot de passe">
-        <button class="buttonValide" onclick="changePassword()">Valider</button>
-    </section>
-    <section id="changeEmail">
-        <input id="oldEmail" type="text" class="inputText" placeholder="Ancienne adresse email">
-        <input id="newEmail" type="text" class="inputText" placeholder="Nouvelle adresse email">
-        <input id="confirmNewEmail" type="text" class="inputText" placeholder="confirmer adresse email">
-        <button class="buttonValide" onclick="changeEmail()">Valider</button>
-    </section>
+        <section id="changeMdp">
+            <input id="oldMdp" type="text" class="inputText" placeholder="Ancien mot de passe">
+            <input id="newMdp" type="text" class="inputText" placeholder="Nouveau mot de passe">
+            <input id="confirmNewMdp" type="text" class="inputText" placeholder="confirmer mot de passe">
+            <button class="buttonValide" onclick="changePassword()">Valider</button>
+        </section>
+        <div id="erreurEmail">
+        </div>
+        <section id="changeEmail">
+            <input id="oldEmail" type="text" class="inputText" placeholder="Ancienne adresse email">
+            <input id="newEmail" type="text" class="inputText" placeholder="Nouvelle adresse email">
+            <input id="confirmNewEmail" type="text" class="inputText" placeholder="confirmer adresse email">
+            <button class="buttonValide" onclick="changeEmail()">Valider</button>
+        </section>
+    </div>
     {{template "footer"}}
 </body>
 <script type="text/javascript" src="/assets/js/updateProfil.js"></script>

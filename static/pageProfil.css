@@ -62,6 +62,17 @@ body {
     color: #FAF0CA;
 }
 
+.icon {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 10%;
+}
+
+.rank {
+    color: #FAF0CA;
+}
+
 .biography {
     margin-top: 5%;
     width: 70%;

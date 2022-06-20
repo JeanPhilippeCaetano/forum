@@ -111,9 +111,15 @@ func DeletePost(w http.ResponseWriter, r *http.Request, global *Global) {
 
 func GetPost(w http.ResponseWriter, r *http.Request, global *Global) {
 	var PostBody PostParams
+	var EmptyPost Posts
 	bd, _ := ioutil.ReadAll(r.Body)
 	json.Unmarshal(bd, &PostBody)
 	post := DisplayOnePost(GetDataFromTableWithID(Posts{}, global.Db, "posts", PostBody.Postid))
+	fmt.Println(post)
+	if post == EmptyPost {
+		http.Error(w, `{"err":"Ce post n'existe pas"}`, http.StatusForbidden)
+		return
+	}
 	body, _ := json.MarshalIndent(post, "", "")
 	w.Write(body)
 }

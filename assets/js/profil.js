@@ -217,6 +217,7 @@ const getInfos = (tri) => {
     const pseudo = document.querySelector(".nameUsers h1")
     const imgDiv = document.querySelector(".imgDiv")
     const biography = document.querySelector(".biography p")
+    const rank = document.querySelector(".rank")
     const usernameConnected = getCookie("pseudo")
     const query = new URLSearchParams(window.location.search)
     if (usernameConnected != "" && usernameConnected == query.get("pseudo") && !tri) {
@@ -262,6 +263,14 @@ const getInfos = (tri) => {
                 pseudo.innerHTML = data.Pseudonyme
                 imgDiv.style.backgroundImage = "url(" + data.Image + ")"
                 biography.innerHTML = data.Biography
+                rank.innerHTML = data.Rank
+                if (data.Rank == "Administrateur") {
+                    rank.style.color = "red"
+                } else if (data.Rank == "Modérateur") {
+                    rank.style.color = "#10497e"
+                } else if (data.Rank == "Utilisateur") {
+                    rank.style.color = "#f4d35e"
+                }
             } else {
                 location.href = "/"
             }

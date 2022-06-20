@@ -112,13 +112,13 @@ const changePassword = () => {
                         return data
                     })
                     .catch(err => {
-                        console.log(err.err)
+                        document.querySelector("#erreurMdp").textContent = err.err
                     })
             } else {
-                console.log("Nouveau mdp & confirm new mdp pas égaux")
+                document.querySelector("#erreurMdp").textContent = "Le nouvel mot de passe et le mot de passe de confirmation ne sont pas pareils"
             }
         } else {
-            console.log("Ancien mot de passe faux")
+            document.querySelector("#erreurMdp").textContent = "L'ancien mot de passe renseigné n'est pas bon"
         }
     }
 }
@@ -159,16 +159,16 @@ const changeEmail = () => {
                             return data
                         })
                         .catch(err => {
-                            console.log(err.err)
+                            document.querySelector("#erreurEmail").textContent = err.err
                         })
                 } else {
-                    console.log("Mauvais format d'email")
+                    document.querySelector("#erreurEmail").textContent = "Mauvais format d'email"
                 }
             } else {
-                console.log("Nouveau email & confirm new email pas égaux")
+                document.querySelector("#erreurEmail").textContent = "Le nouvel email et l'email de confirmation ne sont pas pareils"
             }
         } else {
-            console.log("Ancien email faux")
+            document.querySelector("#erreurEmail").textContent = "L'ancien email renseigné n'est pas bon"
         }
     }
 }
@@ -238,7 +238,7 @@ const changeUsername = () => {
                 return data
             })
             .catch(err => {
-                console.log(err.err)
+                document.querySelector("#erreurName").textContent = err.err
             })
     }
 }

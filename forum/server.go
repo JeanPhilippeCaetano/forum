@@ -3,6 +3,7 @@ package forum
 import (
 	"database/sql"
 	"fmt"
+	"forum/forum/config"
 	"net/http"
 )
 
@@ -18,6 +19,7 @@ func Server() {
 
 	mux := http.NewServeMux()
 
+	config.LoadConfig()
 	global := &Global{}
 	global.Db = InitDatabase()
 
