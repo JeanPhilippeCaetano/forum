@@ -83,7 +83,8 @@ body {
     color: black;
 }
 
-.displayLikesValue, .displayCommentsValue {
+.displayLikesValue,
+.displayCommentsValue {
     font-size: 1.5rem;
 }
 
@@ -125,7 +126,6 @@ body {
 .title {
     font-size: 2em;
     align-self: flex-start;
-
 }
 
 .tags {
@@ -181,6 +181,7 @@ body {
 .writeCom .cantComment {
     margin: .5%;
     padding: 1%;
+    width: 100%;
     border: 2px solid var(--yellow);
     border-radius: 10px;
     color: black;
@@ -208,12 +209,7 @@ body {
 }
 
 .subitComment:hover {
-    box-shadow: 0 1px 2px rgba(0,0,0,0.07), 
-                0 2px 4px rgba(0,0,0,0.07), 
-                0 4px 8px rgba(0,0,0,0.07), 
-                0 8px 16px rgba(0,0,0,0.07),
-                0 16px 32px rgba(0,0,0,0.07), 
-                0 32px 64px rgba(0,0,0,0.07);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.07), 0 4px 8px rgba(0, 0, 0, 0.07), 0 8px 16px rgba(0, 0, 0, 0.07), 0 16px 32px rgba(0, 0, 0, 0.07), 0 32px 64px rgba(0, 0, 0, 0.07);
 }
 
 .noComYet {
@@ -233,7 +229,8 @@ body {
     width: 100%;
 }
 
-.oneComment, .subCom {
+.oneComment,
+.subCom {
     padding: 1%;
     border: 2px solid black;
     background-color: var(--yellow);
@@ -241,7 +238,8 @@ body {
     flex-direction: row;
 }
 
-.oneComment .PP, .subCom .PP {
+.oneComment .PP,
+.subCom .PP {
     margin-top: .5%;
     margin-left: 1%;
     min-height: 55px;
@@ -250,7 +248,8 @@ body {
     max-width: 55px;
 }
 
-.oneComment .username, .subCom .username {
+.oneComment .username,
+.subCom .username {
     margin: 2%;
     color: black;
     width: fit-content;
@@ -316,31 +315,32 @@ body {
     .title {
         font-size: 3.5vw;
     }
-
     .tags {
         font-size: 3vw;
     }
-
     .postText {
         font-size: 3vw;
     }
-
-    .displayLikesValue, .displayCommentsValue {
+    .displayLikesValue,
+    .displayCommentsValue {
         font-size: 3vw;
     }
-
     .adminUserOptions {
         font-size: 3vw;
     }
-
     .username {
         font-size: 4vw !important;
     }
-
     .commentText {
         font-size: 3vw;
     }
 }
+
+.lien {
+    font-weight: 600;
+    width: 100%;
+}
+
 
 /* css pour la pop up d'alerte lors d'une entrée invalide pour un commentaire */
 

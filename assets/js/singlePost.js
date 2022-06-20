@@ -197,7 +197,6 @@ const noComYet = () => {
 
 const likePost = (idDiv, index) => {
     let displayLike = document.getElementById(idDiv)
-    console.log(index)
     let likesNbr = choosePost(index)
     let delOrAdd;
     const username = getCookie("pseudo")
@@ -223,7 +222,6 @@ const choosePost = (index) => {
     if (index == -1) {
         return objectPost.Likes
     } else {
-        console.log("arrayComments", arrayComments)
         return arrayComments[index].Likes
     }
 }
@@ -310,6 +308,15 @@ const pushCom = (objCom, index, nbrComments) => {
     let containerUserComText = document.createElement('div')
     containerUserComText.setAttribute('class', 'containerTextCom')
 
+
+    if (objCom.ParentID != allPostsID[0]) {
+        comDiv.style.marginLeft = 2+'%'
+        let lierA = document.createElement('div')
+        lierA.setAttribute('class', 'lien')
+        lierA.innerHTML = `En réponse à: ` + arrayComments[allPostsID.indexOf(objCom.ParentID)-1].Pseudonyme + ', ' + arrayComments[allPostsID.indexOf(objCom.ParentID)-1].Content.substring(0,80)
+       containerUserComText.appendChild(lierA)
+    }
+    
     let pseudoDiv = document.createElement('div')
     pseudoDiv.setAttribute('class', 'username')
     pseudoDiv.innerHTML = objCom.Pseudonyme // ajouter le pseudo de l'utilisateur, fait
@@ -754,17 +761,18 @@ const displayComments = () => {
         })
         .then(async(data) => {
             try {
+                let index = 0
                 for (const element of data) {
+                    console.log(allPostsID, arrayComments)
                     const userData = await getUser(element.SenderID)
-                    let index = 0
                     if (allPostsID.includes(element.ParentID)) {
                         element.Pseudonyme = userData.Pseudonyme
                         element.Image = userData.Image
                         arrayComments.push(element)
                         allPostsID.push(element.PostID)
-                        index++
                         const nbrComments = await getComments([element.PostID])
-                        await pushCom(element, index - 1, nbrComments.length - 1)
+                        await pushCom(element, index, nbrComments.length - 1)
+                        index++
                     }
                 }
             } catch (err) {
