@@ -1,4 +1,4 @@
-package config
+package forum
 
 import (
 	"golang.org/x/oauth2"

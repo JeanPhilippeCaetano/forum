@@ -65,7 +65,7 @@ func AddCom(w http.ResponseWriter, r *http.Request, global *Global) {
 	user, _ := GetUser(global.Db, "users", session.Values["username"].(string))
 	body, _ := ioutil.ReadAll(r.Body)
 	json.Unmarshal(body, &Post)
-	result, err := InsertData(Posts{}, global.Db, "posts", user.UserID, Post.ParentID, Post.Title, Post.Content, Post.Tags, 0, time.Now().Format("2006.01.02 15:04:05"))
+	result, err := InsertData(Posts{}, global.Db, "posts", user.UserID, Post.ParentID, Post.Title, Post.Content, Post.Tags, 0, time.Now().Format("02-Jan-2006 15:04:05"))
 	if err != nil {
 		http.Error(w, `{"err":"`+err.Error()+"\"}", http.StatusBadRequest)
 		return

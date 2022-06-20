@@ -1,4 +1,4 @@
-package controller
+package forum
 
 import (
 	"context"
@@ -6,19 +6,26 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-
-	"forum/forum/config"
+	"strconv"
+	"time"
 )
 
 type FacebookAccount struct {
-	Id    int
-	Name  string
-	Email string
-	Image map[string]FbImage
+	Id      int
+	Name    string
+	Email   string
+	Picture FbPicture
+}
+
+type FbPicture struct {
+	Data FbImage
 }
 
 type FbImage struct {
-	Url string
+	Height        int
+	Is_silhouette bool
+	Url           string
+	Width         int
 }
 
 func GoogleCallback(w http.ResponseWriter, r *http.Request) {
@@ -43,7 +50,7 @@ func GoogleCallback(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Exchange Auth Code for Tokens
-	token, err := config.AppConfig.GoogleLoginConfig.Exchange(
+	token, err := AppConfig.GoogleLoginConfig.Exchange(
 		context.Background(), code)
 
 	// ERROR : Auth Code Exchange Failed
@@ -53,7 +60,7 @@ func GoogleCallback(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Fetch User Data from google server
-	response, err := http.Get(config.OauthGoogleUrlAPI + token.AccessToken)
+	response, err := http.Get(OauthGoogleUrlAPI + token.AccessToken)
 
 	// ERROR : Unable to get user data from google
 	if err != nil {
@@ -73,16 +80,14 @@ func GoogleCallback(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, string(contents))
 }
 
-func FbCallback(w http.ResponseWriter, r *http.Request) {
-	// check if method is correct
+func FbCallback(w http.ResponseWriter, r *http.Request, global *Global) {
+	session, _ := store.Get(r, "cookie-name")
 	var fbAccount FacebookAccount
 
 	if r.Method != "GET" {
 		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
-
-	// get oauth state from cookie for this user
 	oauthState, _ := r.Cookie("oauthstate")
 	state := r.FormValue("state")
 	code := r.FormValue("code")
@@ -96,7 +101,7 @@ func FbCallback(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Exchange Auth Code for Tokens
-	token, err := config.AppConfig.FacebookLoginConfig.Exchange(
+	token, err := AppConfig.FacebookLoginConfig.Exchange(
 		context.Background(), code)
 
 	// ERROR : Auth Code Exchange Failed
@@ -106,7 +111,7 @@ func FbCallback(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Fetch User Data from facebook server
-	response, err := http.Get(config.OauthFacebookUrlAPI + token.AccessToken)
+	response, err := http.Get(OauthFacebookUrlAPI + token.AccessToken)
 
 	// ERROR : Unable to get user data from facebook
 	if err != nil {
@@ -122,9 +127,21 @@ func FbCallback(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// fmt.Fprintln(w, string(contents))
 	// send back response to browser
 	json.Unmarshal(contents, &fbAccount)
 	fmt.Println(fbAccount)
+	InsertData(Users{}, global.Db, "users", fbAccount.Name, "Utilisateur", fbAccount.Email, strconv.Itoa(fbAccount.Id), "", fbAccount.Picture.Data.Url, "", time.Now().Format("2006.01.02 15:04:05"))
+	session.Values["authenticated"] = true
+	session.Values["username"] = fbAccount.Name
+	c := http.Cookie{
+		Name:   "pseudo",
+		Value:  fbAccount.Name,
+		MaxAge: 2147483647}
+	http.SetCookie(w, &c)
+	session.Save(r, w)
+	w.Write([]byte("{\"pseudo\": \"" + fbAccount.Name + "\"}"))
+	http.Redirect(w, r, "/profil?pseudo="+fbAccount.Name, http.StatusFound)
 }
 
 func GitHubCallback(w http.ResponseWriter, r *http.Request) {
@@ -148,7 +165,7 @@ func GitHubCallback(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// Exchange Auth Code for Tokens
-	token, err := config.AppConfig.GithubLoginConfig.Exchange(
+	token, err := AppConfig.GithubLoginConfig.Exchange(
 		context.Background(), code)
 
 	//ERROR : Auth Code Exchange Failed

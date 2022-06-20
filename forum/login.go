@@ -1,10 +1,7 @@
-package controller
+package forum
 
 import (
 	"net/http"
-
-	"forum/forum/config"
-	"forum/forum/utils"
 )
 
 func GoogleLogin(w http.ResponseWriter, r *http.Request) {
@@ -14,14 +11,14 @@ func GoogleLogin(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Create oauthState cookie
-	oauthState := utils.GenerateStateOauthCookie(w)
+	oauthState := GenerateStateOauthCookie(w)
 	/*
 		AuthCodeURL receive state that is a token to protect the user
 		from CSRF attacks. You must always provide a non-empty string
 		and validate that it matches the the state query parameter
 		on your redirect callback.
 	*/
-	u := config.AppConfig.GoogleLoginConfig.AuthCodeURL(oauthState)
+	u := AppConfig.GoogleLoginConfig.AuthCodeURL(oauthState)
 	http.Redirect(w, r, u, http.StatusTemporaryRedirect)
 }
 
@@ -32,7 +29,7 @@ func FbLogin(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Create oauthState cookie
-	oauthState := utils.GenerateStateOauthCookie(w)
+	oauthState := GenerateStateOauthCookie(w)
 
 	/*
 		AuthCodeURL receive state that is a token to protect the user
@@ -40,7 +37,7 @@ func FbLogin(w http.ResponseWriter, r *http.Request) {
 		and validate that it matches the the state query parameter
 		on your redirect callback.
 	*/
-	u := config.AppConfig.FacebookLoginConfig.AuthCodeURL(oauthState)
+	u := AppConfig.FacebookLoginConfig.AuthCodeURL(oauthState)
 	http.Redirect(w, r, u, http.StatusTemporaryRedirect)
 }
 
@@ -51,7 +48,7 @@ func GitHubLogin(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Create oauthState cookie
-	oauthState := utils.GenerateStateOauthCookie(w)
+	oauthState := GenerateStateOauthCookie(w)
 
 	/*
 		AuthCodeURL receive state that is a token to protect the user
@@ -59,6 +56,6 @@ func GitHubLogin(w http.ResponseWriter, r *http.Request) {
 		and validate that it matches the the state query parameter
 		on your redirect callback.
 	*/
-	u := config.AppConfig.GithubLoginConfig.AuthCodeURL(oauthState)
+	u := AppConfig.GithubLoginConfig.AuthCodeURL(oauthState)
 	http.Redirect(w, r, u, http.StatusTemporaryRedirect)
 }

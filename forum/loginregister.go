@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
+	"time"
 
 	"github.com/gorilla/sessions"
 )
@@ -17,7 +18,6 @@ type RegParams struct {
 	Pseudo   string
 	Email    string
 	Password string
-	Date     string
 }
 
 type LogParams struct {
@@ -48,7 +48,7 @@ func Register(w http.ResponseWriter, r *http.Request, global *Global) {
 	session, _ := store.Get(r, "cookie-name")
 	body, _ := ioutil.ReadAll(r.Body)
 	json.Unmarshal(body, &account)
-	_, err := InsertData(Users{}, global.Db, "users", account.Pseudo, "Utilisateur", account.Email, account.Password, "", "../assets/images/defaultProfil.jpg", "", account.Date)
+	_, err := InsertData(Users{}, global.Db, "users", account.Pseudo, "Utilisateur", account.Email, account.Password, "", "../assets/images/defaultProfil.jpg", "", time.Now().Format("02-Jan-2006 15:04:05"))
 	if err != nil {
 		if err.Error() == "UNIQUE constraint failed: users.Email" {
 			http.Error(w, `{"err": "Mail déjà utilisé"}`, http.StatusBadRequest)
@@ -56,8 +56,8 @@ func Register(w http.ResponseWriter, r *http.Request, global *Global) {
 		} else if err.Error() == "UNIQUE constraint failed: users.Pseudonyme" {
 			http.Error(w, `{"err": "Pseudo déjà utilisé"}`, http.StatusBadRequest)
 			return
-		} else if err.Error() == "CHECK constraint failed: length(Pseudonyme) <= 16" {
-			http.Error(w, `{"err": "Le pseudonyme ne doit pas dépasser 16 caractères"}`, http.StatusBadRequest)
+		} else if err.Error() == "CHECK constraint failed: length(Pseudonyme) <= 20" {
+			http.Error(w, `{"err": "Le pseudonyme ne doit pas dépasser 20 caractères"}`, http.StatusBadRequest)
 			return
 		} else if err.Error() == "CHECK constraint failed: length(Password) <= 16" {
 			http.Error(w, `{"err": "Le mot de passe ne doit pas dépasser 16 caractères"}`, http.StatusBadRequest)
@@ -126,8 +126,8 @@ func ModifyUser(w http.ResponseWriter, r *http.Request, global *Global) {
 		} else if err.Error() == "UNIQUE constraint failed: users.Pseudonyme" {
 			http.Error(w, `{"err": "Pseudo déjà utilisé"}`, http.StatusBadRequest)
 			return
-		} else if err.Error() == "CHECK constraint failed: length(Pseudonyme) <= 16" {
-			http.Error(w, `{"err": "Le pseudonyme ne doit pas dépasser 16 caractères"}`, http.StatusBadRequest)
+		} else if err.Error() == "CHECK constraint failed: length(Pseudonyme) <= 20" {
+			http.Error(w, `{"err": "Le pseudonyme ne doit pas dépasser 20 caractères"}`, http.StatusBadRequest)
 			return
 		} else if err.Error() == "CHECK constraint failed: length(Password) <= 16" {
 			http.Error(w, `{"err": "Le mot de passe ne doit pas dépasser 16 caractères"}`, http.StatusBadRequest)

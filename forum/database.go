@@ -47,7 +47,7 @@ func InitDatabase() *sql.DB {
 	CREATE TABLE IF NOT EXISTS users
 	(
 		UserID INTEGER PRIMARY KEY AUTOINCREMENT,
-    	Pseudonyme TEXT NOT NULL UNIQUE CHECK(length(Pseudonyme) <= 16),
+    	Pseudonyme TEXT NOT NULL UNIQUE CHECK(length(Pseudonyme) <= 24),
 		Rank TEXT NOT NULL,
     	Email TEXT NOT NULL UNIQUE,
     	Password TEXT NOT NULL CHECK(length(Password) <= 16),

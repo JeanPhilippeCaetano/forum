@@ -1,4 +1,4 @@
-package utils
+package forum
 
 import (
 	"crypto/rand"
