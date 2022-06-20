@@ -342,7 +342,7 @@ body {
 
 /* media */
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 850px) {
     .redirect {
         height: 100vh;
     }
