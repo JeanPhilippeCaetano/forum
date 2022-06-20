@@ -15,17 +15,11 @@ body {
     display: flex;
     flex-direction: column;
     background-color: var(--brown);
-    min-height: 100vh;
-}
-
-.header {
-    /* border-bottom: 2px solid black; */
-    text-align: center;
-    margin-top: 2%;
+    min-height: 70vh;
 }
 
 .center {
-    height: 90%;
+    min-height: 70vh;
     display: flex;
     flex-direction: row;
 }
@@ -49,7 +43,7 @@ body {
 }
 
 .post {
-    height: 65%;
+    height: fit-content;
     margin: .5%;
     display: flex;
     flex-direction: column;
@@ -184,7 +178,7 @@ body {
 }
 
 .writeCom {
-    margin: 10px;
+    /* margin: 10px; */
     border: 2px solid black;
     background-color: var(--yellow);
     border-radius: 10px;
@@ -202,6 +196,12 @@ body {
     max-height: 55px;
 }
 
+.sendCom {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
 .writeCom .cantComment {
     margin: .5%;
     padding: 1%;
@@ -213,141 +213,31 @@ body {
 }
 
 .commentInput {
-    margin: 1.5%;
+    margin: 1vh 10% 1vh 10%;
+    border: 1px solid black;
+    height: 2.5vh;
     width: 80%;
+    padding-left: 10px;
     background-color: var(--beige);
 }
 
 .subitComment {
-    margin: 1.5%;
-    width: 5vh;
-    font-weight: larger;
+    width: 15vh;
+    height: 3vh;
+    margin-right: 10%;
+    margin-bottom: 1vh;
+    align-self: flex-end;
+    font-weight: 700;
     background-color: var(--beige);
-    border-radius: 10px;
 }
 
-.buttons {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    justify-content: center;
-    text-align: center;
-    width: 100%;
-}
-.container {
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 1em;
-    text-align: center;
-}
-@media (min-width: 600px) {
-    .container {
-        flex-direction: row;
-        justify-content: space-between;
-   }
-}
-h1 {
-    color: white;
-    font-size: 1.25em;
-    font-weight: 900;
-    margin: 0 0 2em;
-}
-@media (min-width: 450px) {
-    h1 {
-        font-size: 1.75em;
-   }
-}
-@media (min-width: 760px) {
-    h1 {
-        font-size: 3.25em;
-   }
-}
-@media (min-width: 900px) {
-    h1 {
-        font-size: 5.25em;
-        margin: 0 0 1em;
-   }
-}
-p {
-    color: white;
-    font-size: 12px;
-}
-@media (min-width: 600px) {
-    p {
-        left: 50%;
-        position: absolute;
-        transform: translate(-50%, 0);
-        top: 90%;
-   }
-}
-@media (max-height: 500px) {
-    p {
-        left: 0;
-        position: relative;
-        top: 0;
-        transform: translate(0, 0);
-   }
-}
-p a {
-    background: rgba(255, 255, 255, 0);
-    border-bottom: 1px solid;
-    color: black;
-    line-height: 1.4;
-    padding: 0.25em;
-    text-decoration: none;
-}
-p a:hover {
-    background: rgb(0, 0, 0);
-    color: red;
-}
-.btn {
-    color: black;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: 900;
-    line-height: 45px;
-    border: 1px solid black;
-    margin: 0 0 2em;
-    max-width: 160px;
-    position: relative;
-    text-decoration: none;
-    text-transform: uppercase;
-    width: 100%;
-}
-@media (min-width: 600px) {
-    .btn {
-        margin: 0 1em 2em;
-   }
-}
-
-.btn:hover {
-    text-decoration: none;
-    border: none;
-}
-
-.btn-5 {
-    border: 0 solid;
-    box-shadow: inset 0 0 20px rgba(255, 255, 255, 0);
-    outline: 1px solid;
-    outline-color: rgba(0, 0, 0, 0.5);
-    transition: all 1250ms cubic-bezier(0.19, 1, 0.22, 1);
-}
-.btn-5:hover {
-    border: 1px solid;
-    box-shadow: inset 0 0 20px rgba(255, 255, 255, .5), 0 0 20px rgba(255, 255, 255, .2);
-    outline-color: rgba(255, 255, 255, 0);
-    outline-offset: 15px;
-    text-shadow: 1px 1px 2px var(--brown);
-}
-
-.comments {
-    margin: 10px;
-    border: 2px solid black;
-    border-radius: 10px;
-    /* min-height: 25%;
-    max-height: fit-content; */
+.subitComment:hover {
+    box-shadow: 0 1px 2px rgba(0,0,0,0.07), 
+                0 2px 4px rgba(0,0,0,0.07), 
+                0 4px 8px rgba(0,0,0,0.07), 
+                0 8px 16px rgba(0,0,0,0.07),
+                0 16px 32px rgba(0,0,0,0.07), 
+                0 32px 64px rgba(0,0,0,0.07);
 }
 
 .noComYet {
@@ -355,17 +245,16 @@ p a:hover {
     padding: 1%;
     border: 2px solid black;
     border-radius: 10px;
+    background-color: var(--beige);
     color: black;
     text-align: center;
     font-size: large;
 }
 
 .oneComment {
-    margin: .5%;
     padding: 1%;
     border: 2px solid black;
     background-color: var(--yellow);
-    border-radius: 10px;
     display: flex;
     flex-direction: row;
 }
@@ -439,13 +328,6 @@ p a:hover {
     margin-right: 15%;
 }
 
-.footer {
-    /* border-top: 2px solid black; */
-    text-align: center;
-    margin-bottom: 2%;
-}
-
-
 /* css pour la pop up d'alerte lors d'une entrée invalide pour un commentaire */
 
 #modalContainer {
@@ -461,7 +343,8 @@ p a:hover {
 }
 
 #alertBox {
-    width: 30%;
+    padding: 2vh;
+    width: 40%;
     height: fit-content;
     border: 1px solid #fff;
     background-color: #fff;
@@ -482,8 +365,8 @@ p a:hover {
 }
 
 #alertBox p {
-    height: 50px;
-    padding: 30px 0 40px 0;
+    height: fit-content;
+    padding: 20px 0 20px 0;
     text-align: center;
     vertical-align: middle;
 }
