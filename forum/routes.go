@@ -100,13 +100,17 @@ func LoadApi(global *Global, mux *http.ServeMux) {
 	// AUTHENTIFICATION API (Google, Facebook, Github)
 
 	mux.HandleFunc("/google_login", GoogleLogin)
-	mux.HandleFunc("/google_callback", GoogleCallback)
+	mux.HandleFunc("/google_callback", func(w http.ResponseWriter, r *http.Request) {
+		GoogleCallback(w, r, global)
+	})
 	mux.HandleFunc("/fb_login", FbLogin)
 	mux.HandleFunc("/fb_callback", func(w http.ResponseWriter, r *http.Request) {
 		FbCallback(w, r, global)
 	})
 	mux.HandleFunc("/github_login", GitHubLogin)
-	mux.HandleFunc("/github_callback", GitHubCallback)
+	mux.HandleFunc("/github_callback", func(w http.ResponseWriter, r *http.Request) {
+		GitHubCallback(w, r, global)
+	})
 
 	// POSTS & COMMENTS
 

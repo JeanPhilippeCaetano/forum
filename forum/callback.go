@@ -6,12 +6,28 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"strconv"
 	"time"
 )
 
+type GoogleAccount struct {
+	Id             string
+	Email          string
+	Verified_email bool
+	Name           string
+	Given_name     string
+	Family_name    string
+	Picture        string
+	Locale         string
+}
+
+type GithubAccount struct {
+	Login      string
+	Id         int
+	Avatar_url string
+}
+
 type FacebookAccount struct {
-	Id      int
+	Id      string
 	Name    string
 	Email   string
 	Picture FbPicture
@@ -28,7 +44,7 @@ type FbImage struct {
 	Width         int
 }
 
-func GoogleCallback(w http.ResponseWriter, r *http.Request) {
+func GoogleCallback(w http.ResponseWriter, r *http.Request, global *Global) {
 	// check if method is correct
 
 	if r.Method != "GET" {
@@ -75,15 +91,25 @@ func GoogleCallback(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "failed read response: %s", err.Error())
 		return
 	}
+	session, _ := store.Get(r, "cookie-name")
+	var ggAccount GoogleAccount
 
-	// send back response to browser
-	fmt.Fprintln(w, string(contents))
+	json.Unmarshal(contents, &ggAccount)
+	InsertData(Users{}, global.Db, "users", ggAccount.Name, "Utilisateur", ggAccount.Email, "", "", ggAccount.Picture, "", time.Now().Format("02-Jan-2006 15:04:05"))
+	session.Values["authenticated"] = true
+	session.Values["username"] = ggAccount.Name
+	c := http.Cookie{
+		Name:   "pseudo",
+		Value:  ggAccount.Name,
+		MaxAge: 2147483647}
+	http.SetCookie(w, &c)
+	session.Save(r, w)
+	http.Redirect(w, r, "/profil?pseudo="+ggAccount.Name, http.StatusFound)
 }
 
 func FbCallback(w http.ResponseWriter, r *http.Request, global *Global) {
 	session, _ := store.Get(r, "cookie-name")
 	var fbAccount FacebookAccount
-
 	if r.Method != "GET" {
 		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
 		return
@@ -93,33 +119,27 @@ func FbCallback(w http.ResponseWriter, r *http.Request, global *Global) {
 	code := r.FormValue("code")
 	w.Header().Add("content-type", "application/json")
 
-	// ERROR : Invalid OAuth State
 	if state != oauthState.Value {
 		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
 		fmt.Fprintf(w, "invalid oauth facebook state")
 		return
 	}
 
-	// Exchange Auth Code for Tokens
 	token, err := AppConfig.FacebookLoginConfig.Exchange(
 		context.Background(), code)
 
-	// ERROR : Auth Code Exchange Failed
 	if err != nil {
 		fmt.Fprintf(w, "failed code exchange: %s", err.Error())
 		return
 	}
 
-	// Fetch User Data from facebook server
 	response, err := http.Get(OauthFacebookUrlAPI + token.AccessToken)
 
-	// ERROR : Unable to get user data from facebook
 	if err != nil {
 		fmt.Fprintf(w, "failed getting user info: %s", err.Error())
 		return
 	}
 
-	// Parse user data JSON Object
 	defer response.Body.Close()
 	contents, err := ioutil.ReadAll(response.Body)
 	if err != nil {
@@ -127,11 +147,8 @@ func FbCallback(w http.ResponseWriter, r *http.Request, global *Global) {
 		return
 	}
 
-	// fmt.Fprintln(w, string(contents))
-	// send back response to browser
 	json.Unmarshal(contents, &fbAccount)
-	fmt.Println(fbAccount)
-	InsertData(Users{}, global.Db, "users", fbAccount.Name, "Utilisateur", fbAccount.Email, strconv.Itoa(fbAccount.Id), "", fbAccount.Picture.Data.Url, "", time.Now().Format("2006.01.02 15:04:05"))
+	InsertData(Users{}, global.Db, "users", fbAccount.Name, "Utilisateur", fbAccount.Email, "", "", fbAccount.Picture.Data.Url, "", time.Now().Format("02-Jan-2006 15:04:05"))
 	session.Values["authenticated"] = true
 	session.Values["username"] = fbAccount.Name
 	c := http.Cookie{
@@ -140,11 +157,10 @@ func FbCallback(w http.ResponseWriter, r *http.Request, global *Global) {
 		MaxAge: 2147483647}
 	http.SetCookie(w, &c)
 	session.Save(r, w)
-	w.Write([]byte("{\"pseudo\": \"" + fbAccount.Name + "\"}"))
 	http.Redirect(w, r, "/profil?pseudo="+fbAccount.Name, http.StatusFound)
 }
 
-func GitHubCallback(w http.ResponseWriter, r *http.Request) {
+func GitHubCallback(w http.ResponseWriter, r *http.Request, global *Global) {
 	// check if method is correct
 	if r.Method != "GET" {
 		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
@@ -201,6 +217,18 @@ func GitHubCallback(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// send back response to browser
-	fmt.Fprintln(w, string(contents))
+	session, _ := store.Get(r, "cookie-name")
+	var gthubAccount GithubAccount
+
+	json.Unmarshal(contents, &gthubAccount)
+	InsertData(Users{}, global.Db, "users", gthubAccount.Login, "Utilisateur", "", "", "", gthubAccount.Avatar_url, "", time.Now().Format("02-Jan-2006 15:04:05"))
+	session.Values["authenticated"] = true
+	session.Values["username"] = gthubAccount.Login
+	c := http.Cookie{
+		Name:   "pseudo",
+		Value:  gthubAccount.Login,
+		MaxAge: 2147483647}
+	http.SetCookie(w, &c)
+	session.Save(r, w)
+	http.Redirect(w, r, "/profil?pseudo="+gthubAccount.Login, http.StatusFound)
 }
