@@ -222,6 +222,7 @@ const choosePost = (index) => {
     if (index == -1) {
         return objectPost.Likes
     } else {
+        console.log(index,arrayComments[index], arrayComments[index-1])
         return arrayComments[index].Likes
     }
 }
@@ -693,6 +694,7 @@ const displayComments = () => {
                         element.Image = userData.Image
                         arrayComments.push(element)
                         allPostsID.push(element.PostID)
+                        console.log(arrayComments.length)
                         await pushCom(element, data.indexOf(element) - 1)
                     }
                 }
