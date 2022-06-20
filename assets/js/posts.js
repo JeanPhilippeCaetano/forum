@@ -30,7 +30,6 @@ const getUrl = () => {
             } else {
                 postsData[element[0]] = element[1]
             }
-
         }
     })
 }

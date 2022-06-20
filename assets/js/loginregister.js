@@ -50,6 +50,7 @@ const checkEmptyInputsSignIn = () => {
 const onRegisterClick = () => {
     const errorlog = document.querySelector(".signupBx .formBx .error_message p")
     const regDate = new Date(Date.now()).toUTCString();
+    const submitBtn = document.querySelector("#signinBtn")
     fetch("/register", {
             method: "POST",
             headers: {
@@ -74,12 +75,13 @@ const onRegisterClick = () => {
         })
         .catch(err => {
             errorlog.innerHTML = err.err
+            submitBtn.disabled = true
         })
 }
 
 const onLoginClick = () => {
     const errorlog = document.querySelector(".signinBx .formBx .error_message p")
-    console.log(errorlog)
+    const submitBtn = document.querySelector("#signinBtn")
     fetch("/login", {
             method: "POST",
             headers: {
@@ -101,5 +103,6 @@ const onLoginClick = () => {
         })
         .catch(err => {
             errorlog.innerHTML = err.err
+            submitBtn.disabled = true
         })
 }

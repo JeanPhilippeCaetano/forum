@@ -319,9 +319,15 @@ const pushCom = (objCom, index) => {
     likeDiv.setAttribute('class', 'like')
     likeDiv.setAttribute('data-like', true)
     likeDiv.setAttribute('id', 'likeCom' + objCom.PostID) // id avec la base de donnée, fait
-    likeDiv.innerHTML = objCom.Likes + ` <i class="far fa-heart"></i><i onclick="likePost('likeCom` + objCom.PostID + `', ` + index + `)"" class="fa fa-heart"></i>`
-    iconDiv.appendChild(likeDiv)
 
+    const tabPostLikes = objectUsernameConnected.PostLikes.split(",")
+    if (!(tabPostLikes.length == 1 && tabPostLikes[0] == "") && tabPostLikes.includes(objCom.PostID + "")) {
+        likeDiv.innerHTML = objCom.Likes + ` <i class="fa fa-heart"></i><i onclick="likePost('likeCom` + objCom.PostID + `', ` + index + `)" class="fas fa-heart-broken"></i>`
+        likeDiv.removeAttribute("data-like")
+    } else {
+        likeDiv.innerHTML = objCom.Likes + ` <i class="far fa-heart"></i><i onclick="likePost('likeCom` + objCom.PostID + `', ` + index + `)"" class="fa fa-heart"></i>`
+    }
+    iconDiv.appendChild(likeDiv)
     let answerDiv = document.createElement('div')
     answerDiv.setAttribute('class', 'com')
     answerDiv.innerHTML = 0 + ` <i onclick="getPostIDForCom(` + index + `)" class="fa fa-comments" aria-hidden="true"></i>` // nbs de com avec la base de donnée, fait
@@ -517,7 +523,7 @@ const displayPostInfo = () => {
     postTitleDIv.innerText = objectPost.Title
     postTagDIv.innerText = objectPost.Tags
     const displayLikeDiv = document.querySelector('.displayLikesValue')
-        // postLikesDiv.innerHTML = objectPost.Likes + heartsIconP1 + '-1' + heartsIconP2
+    postLikesDiv.innerHTML = objectPost.Likes + heartsIconP1 + '-1' + heartsIconP2
     postContentDiv.innerHTML = objectPost.Content
     postComDiv.innerHTML = arrayComments.length + commentIcon
     allPostsID.push(objectPost.PostID)
@@ -550,12 +556,10 @@ const displayPostInfo = () => {
             })
             .then(data => {
                 const tabPostLikes = data.PostLikes.split(",")
-                console.log(tabPostLikes)
                 if (!(tabPostLikes.length == 1 && tabPostLikes[0] == "") && tabPostLikes.includes(objectPost.PostID + "")) {
                     postLikesDiv.innerHTML = objectPost.Likes + ` <i class="fa fa-heart"></i><i onclick="likePost('like',-1)" class="fas fa-heart-broken"></i>`
                     displayLikeDiv.removeAttribute('data-like')
                 } else {
-                    console.log("tesfdbd")
                     postLikesDiv.innerHTML = objectPost.Likes + ` <i class="far fa-heart"></i><i onclick="likePost('like',` + '-1' + `)" class="fa fa-heart"></i>`
                 }
                 ppAddCom.style.backgroundImage = `url("` + data.Image + `")`
