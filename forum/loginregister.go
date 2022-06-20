@@ -66,6 +66,13 @@ func Register(w http.ResponseWriter, r *http.Request, global *Global) {
 	}
 	session.Values["authenticated"] = true
 	session.Values["username"] = account.Pseudo
+	cookie := http.Cookie{
+		Name:   "oauthstate",
+		Value:  "",
+		MaxAge: 0,
+	}
+
+	http.SetCookie(w, &cookie)
 	c := http.Cookie{
 		Name:   "pseudo",
 		Value:  account.Pseudo,

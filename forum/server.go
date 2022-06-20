@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"net/http"
+	"os"
 )
 
 type Global struct {
@@ -34,6 +35,10 @@ func Server() {
 	LoadApi(global, mux)
 	LoadPages(mux)
 
-	http.ListenAndServe(":8080", mux)
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+	http.ListenAndServe(":"+port, mux)
 
 }
