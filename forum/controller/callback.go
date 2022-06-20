@@ -2,6 +2,7 @@ package controller
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -9,8 +10,20 @@ import (
 	"forum/forum/config"
 )
 
+type FacebookAccount struct {
+	Id    int
+	Name  string
+	Email string
+	Image map[string]FbImage
+}
+
+type FbImage struct {
+	Url string
+}
+
 func GoogleCallback(w http.ResponseWriter, r *http.Request) {
 	// check if method is correct
+
 	if r.Method != "GET" {
 		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
 		return
@@ -62,6 +75,8 @@ func GoogleCallback(w http.ResponseWriter, r *http.Request) {
 
 func FbCallback(w http.ResponseWriter, r *http.Request) {
 	// check if method is correct
+	var fbAccount FacebookAccount
+
 	if r.Method != "GET" {
 		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
 		return
@@ -108,7 +123,8 @@ func FbCallback(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// send back response to browser
-	fmt.Fprintln(w, string(contents))
+	json.Unmarshal(contents, &fbAccount)
+	fmt.Println(fbAccount)
 }
 
 func GitHubCallback(w http.ResponseWriter, r *http.Request) {
