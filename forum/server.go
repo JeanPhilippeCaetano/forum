@@ -33,6 +33,6 @@ func Server() {
 	LoadApi(global, mux)
 	LoadPages(mux)
 
-	http.ListenAndServe(":8080", mux)
+	http.ListenAndServe(":8081", mux)
 
 }
