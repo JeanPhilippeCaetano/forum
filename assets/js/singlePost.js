@@ -297,10 +297,16 @@ const pushCom = (objCom, index) => {
     comDiv.setAttribute('class', 'oneComment')
     comDiv.setAttribute('data-postid', objCom.PostID) // id avec la base de donnée, fait
 
+    let upperSection = document.createElement("div")
+    upperSection.setAttribute('class', 'upperSection')
+
+    let lowerSection = document.createElement("div")
+    lowerSection.setAttribute('class', 'lowerSection')
+
     let PPDiv = document.createElement('div')
     PPDiv.setAttribute('class', 'PP') // ajouter l'image du profil utilisateur, fait
     PPDiv.style.backgroundImage = `url("` + objCom.Image + `")`
-    comDiv.appendChild(PPDiv)
+    upperSection.appendChild(PPDiv)
 
     let containerUserComText = document.createElement('div')
     containerUserComText.setAttribute('class', 'containerTextCom')
@@ -316,9 +322,10 @@ const pushCom = (objCom, index) => {
     textDiv.innerHTML = objCom.Content // changer le input.value avec le content de la base de donnée, fait
     // comDiv.appendChild(textDiv)
     containerUserComText.appendChild(textDiv)
-    comDiv.appendChild(containerUserComText)
+    upperSection.appendChild(containerUserComText)
 
     
+
 
     let iconDiv = document.createElement('div')
     iconDiv.setAttribute('class', 'icons')
@@ -343,10 +350,9 @@ const pushCom = (objCom, index) => {
         trashcanEditDiv.innerHTML = `<i onclick="deletePost(this.dataset.comid)" class="fas fa-trash-alt" data-comid="${objCom.PostID}"></i>`
     }
     iconDiv.appendChild(trashcanEditDiv)
-    comDiv.appendChild(iconDiv)
+    upperSection.appendChild(iconDiv)
+    comDiv.appendChild(upperSection)
     commentsDiv.appendChild(comDiv)
-
-    if (objCom.ParentID == objectPost.PostID)
 
     addComPost()
 }

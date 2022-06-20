@@ -44,7 +44,6 @@ body {
 
 .post {
     height: fit-content;
-    margin: .5%;
     display: flex;
     flex-direction: column;
     background-color: var(--yellow);
@@ -155,33 +154,10 @@ body {
     cursor: pointer;
 }
 
-@media screen and (max-width: 920px) {
-    .title {
-        font-size: 3.5vw;
-    }
-
-    .tags {
-        font-size: 3vw;
-    }
-
-    .postText {
-        font-size: 3vw;
-    }
-
-    .displayLikesValue, .displayCommentsValue {
-        font-size: 3vw;
-    }
-
-    .adminUserOptions {
-        font-size: 3vw;
-    }
-}
-
 .writeCom {
     /* margin: 10px; */
     border: 2px solid black;
-    background-color: var(--yellow);
-    border-radius: 10px;
+    background-color: var(--blue);
     display: flex;
     flex-direction: row;
 }
@@ -251,7 +227,13 @@ body {
     font-size: large;
 }
 
-.oneComment {
+.upperSection {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.oneComment, .subCom {
     padding: 1%;
     border: 2px solid black;
     background-color: var(--yellow);
@@ -259,7 +241,7 @@ body {
     flex-direction: row;
 }
 
-.oneComment .PP {
+.oneComment .PP, .subCom .PP {
     margin-top: .5%;
     margin-left: 1%;
     min-height: 55px;
@@ -268,7 +250,7 @@ body {
     max-width: 55px;
 }
 
-.oneComment .username {
+.oneComment .username, .subCom .username {
     margin: 2%;
     color: black;
     width: fit-content;
@@ -285,6 +267,7 @@ body {
 }
 
 .icons {
+    min-width: 5%;
     margin-left: auto;
     display: flex;
     flex-direction: column;
@@ -316,6 +299,7 @@ body {
 .icons .com {
     color: black;
     cursor: pointer;
+    width: 100%;
 }
 
 .icons .trashcanEdit {
@@ -326,6 +310,36 @@ body {
 .rightSpace {
     /* border-left: 2px solid black; */
     margin-right: 15%;
+}
+
+@media screen and (max-width: 920px) {
+    .title {
+        font-size: 3.5vw;
+    }
+
+    .tags {
+        font-size: 3vw;
+    }
+
+    .postText {
+        font-size: 3vw;
+    }
+
+    .displayLikesValue, .displayCommentsValue {
+        font-size: 3vw;
+    }
+
+    .adminUserOptions {
+        font-size: 3vw;
+    }
+
+    .username {
+        font-size: 4vw !important;
+    }
+
+    .commentText {
+        font-size: 3vw;
+    }
 }
 
 /* css pour la pop up d'alerte lors d'une entrée invalide pour un commentaire */
