@@ -308,17 +308,17 @@ const pushCom = (objCom, index) => {
     let pseudoDiv = document.createElement('div')
     pseudoDiv.setAttribute('class', 'username')
     pseudoDiv.innerHTML = objCom.Pseudonyme // ajouter le pseudo de l'utilisateur, fait
-    // comDiv.appendChild(psuedoDiv)
+        // comDiv.appendChild(psuedoDiv)
     containerUserComText.appendChild(pseudoDiv)
 
     let textDiv = document.createElement('div')
     textDiv.setAttribute('class', 'commentText')
     textDiv.innerHTML = objCom.Content // changer le input.value avec le content de la base de donnée, fait
-    // comDiv.appendChild(textDiv)
+        // comDiv.appendChild(textDiv)
     containerUserComText.appendChild(textDiv)
     comDiv.appendChild(containerUserComText)
 
-    
+
 
     let iconDiv = document.createElement('div')
     iconDiv.setAttribute('class', 'icons')
@@ -354,7 +354,7 @@ const pushCom = (objCom, index) => {
 
     if (objCom.ParentID == objectPost.PostID)
 
-    addComPost()
+        addComPost()
 }
 
 const addComPost = () => {
@@ -395,7 +395,11 @@ const deletePost = (comID) => {
             return res.json()
         })
         .then(data => {
-            location.href = "/posts"
+            if (comID == objectPost.PostID) {
+                location.href = "/posts"
+            } else {
+                location.href = "/singlepost?id=" + objectPost.PostID
+            }
         })
         .catch(err => {
             console.log(err)
@@ -510,6 +514,10 @@ const loadPage = () => {
         .then(async(data) => {
             try {
                 const userData = await getUser(data.SenderID)
+                if (data.ParentID != 0) {
+                    location.href = "/posts"
+                    return
+                }
                 objectUser.Image = userData.Image
                 objectUser.Pseudonyme = userData.Pseudonyme
                 objectPost.Content = data.Content
@@ -521,9 +529,14 @@ const loadPage = () => {
                 objectPost.Tags = data.Tags
                 objectPost.Title = data.Title
             } catch (err) {
-                console.log(err);
+                console.log(err)
             }
             await displayPostInfo()
+        })
+        .catch(err => {
+            if (err.err == "Ce post n'existe pas") {
+                location.href = "/posts"
+            }
         })
     return promise
 }
@@ -711,10 +724,10 @@ const displayComments = () => {
                         element.Image = userData.Image
                         arrayComments.push(element)
                         allPostsID.push(element.PostID)
-                        if(element.ParentID == objectPost.PostID) {
+                        if (element.ParentID == objectPost.PostID) {
                             await pushCom(element, data.indexOf(element) - 1)
                         } else {
-                            pushSubCom(element, data.indexOf(element) -1)
+                            pushSubCom(element, data.indexOf(element) - 1)
                         }
                     }
                 }

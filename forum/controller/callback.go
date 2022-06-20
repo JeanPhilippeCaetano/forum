@@ -10,7 +10,7 @@ import (
 )
 
 func GoogleCallback(w http.ResponseWriter, r *http.Request) {
-	// check is method is correct
+	// check if method is correct
 	if r.Method != "GET" {
 		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
 		return
@@ -61,7 +61,7 @@ func GoogleCallback(w http.ResponseWriter, r *http.Request) {
 }
 
 func FbCallback(w http.ResponseWriter, r *http.Request) {
-	// check is method is correct
+	// check if method is correct
 	if r.Method != "GET" {
 		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
 		return
@@ -76,7 +76,7 @@ func FbCallback(w http.ResponseWriter, r *http.Request) {
 	// ERROR : Invalid OAuth State
 	if state != oauthState.Value {
 		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
-		fmt.Fprintf(w, "invalid oauth google state")
+		fmt.Fprintf(w, "invalid oauth facebook state")
 		return
 	}
 
@@ -86,14 +86,14 @@ func FbCallback(w http.ResponseWriter, r *http.Request) {
 
 	// ERROR : Auth Code Exchange Failed
 	if err != nil {
-		fmt.Fprintf(w, "falied code exchange: %s", err.Error())
+		fmt.Fprintf(w, "failed code exchange: %s", err.Error())
 		return
 	}
 
 	// Fetch User Data from facebook server
 	response, err := http.Get(config.OauthFacebookUrlAPI + token.AccessToken)
 
-	// ERROR : Unable to get user data from google
+	// ERROR : Unable to get user data from facebook
 	if err != nil {
 		fmt.Fprintf(w, "failed getting user info: %s", err.Error())
 		return
@@ -112,7 +112,7 @@ func FbCallback(w http.ResponseWriter, r *http.Request) {
 }
 
 func GitHubCallback(w http.ResponseWriter, r *http.Request) {
-	// check is method is correct
+	// check if method is correct
 	if r.Method != "GET" {
 		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
 		return
@@ -123,36 +123,46 @@ func GitHubCallback(w http.ResponseWriter, r *http.Request) {
 	state := r.FormValue("state")
 	code := r.FormValue("code")
 	w.Header().Add("content-type", "application/json")
+	w.Header().Add("Accept", "application/json")
 
 	// ERROR : Invalid OAuth State
 	if state != oauthState.Value {
 		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
-		fmt.Fprintf(w, "invalid oauth google state")
+		fmt.Fprintf(w, "invalid oauth github state")
 		return
 	}
-
 	// Exchange Auth Code for Tokens
 	token, err := config.AppConfig.GithubLoginConfig.Exchange(
 		context.Background(), code)
 
-	// ERROR : Auth Code Exchange Failed
+	//ERROR : Auth Code Exchange Failed
 	if err != nil {
-		fmt.Fprintf(w, "falied code exchange: %s", err.Error())
+		fmt.Fprintf(w, "failed code exchange: %s", err.Error())
 		return
 	}
 
-	// Fetch User Data from facebook server
-	response, err := http.Get(config.OauthGithubUrlAPI + token.AccessToken)
+	client := &http.Client{}
 
-	// ERROR : Unable to get user data from google
+	req, err := http.NewRequest("GET", "https://api.github.com/user", nil)
+
+	// ERROR : Unable to get user data from github
+	if err != nil {
+		fmt.Fprintf(w, "failed getting user info: %s", err.Error())
+		return
+	}
+
+	req.Header.Add("Authorization", "token "+token.AccessToken)
+	resp, err := client.Do(req)
+
+	// ERROR : Unable to get user data from github
 	if err != nil {
 		fmt.Fprintf(w, "failed getting user info: %s", err.Error())
 		return
 	}
 
 	// Parse user data JSON Object
-	defer response.Body.Close()
-	contents, err := ioutil.ReadAll(response.Body)
+	defer resp.Body.Close()
+	contents, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		fmt.Fprintf(w, "failed read response: %s", err.Error())
 		return
