@@ -50,7 +50,7 @@ const checkEmptyInputsSignIn = () => {
 const onRegisterClick = () => {
     const errorlog = document.querySelector(".signupBx .formBx .error_message p")
     const regDate = new Date(Date.now()).toUTCString();
-    const submitBtn = document.querySelector("#signinBtn")
+    const submitBtn = document.querySelector("#signupBtn")
     fetch("/register", {
             method: "POST",
             headers: {
