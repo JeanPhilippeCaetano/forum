@@ -146,7 +146,7 @@ const createPost = () => {
 
 
 const addPostDiv = (id, title, username, image, content, likes, nbComments, tags, creationDate) => {
-    const tabTags = tags.replace(/,/g,' - ') 
+    const tabTags = tags.replace(/,/g, ' - ')
     const section = document.createElement("SECTION")
     section.setAttribute("id", "post" + id)
     const innerPost = document.createElement("div")
@@ -207,8 +207,8 @@ const addPostDiv = (id, title, username, image, content, likes, nbComments, tags
     icons.appendChild(commentsIcon)
 
     infoUser.appendChild(imgCtn)
-    // infoUser.appendChild(ctnUsernTitl)
-    // infoUser.appendChild(tagsPost)
+        // infoUser.appendChild(ctnUsernTitl)
+        // infoUser.appendChild(tagsPost)
     infoUser.appendChild(getItRight)
 
     innerPost.appendChild(infoUser)
@@ -352,12 +352,11 @@ const getPosts = (verification) => {
             } else if (postsData.typeFilter == "Dates") {
                 filteredTabTags = filterByDates(filteredTabTags)
             }
-            console.log(filteredTabTags)
             maxPosts = filteredTabTags.length
             if (maxPosts == 0) {
                 postsDiv.innerHTML = ""
                 initPagination(1)
-                addPostDiv(0, "Aucun résultat", "TUC'rack", "../assets/images/Fichier 1.svg", "", 0, 0)
+                addPostDiv(0, "Aucun résultat", "TUC'rack", "../assets/images/Fichier 1.svg", "", 0, 0, "", "")
             }
             if (verification !== undefined) {
                 initPagination(maxPosts)
@@ -494,7 +493,6 @@ const addClasses = (current) => {
 const slides = document.querySelectorAll(".slide");
 
 const initPagination = (nbPages) => {
-    console.log(postsData.page)
     if (nbPages !== undefined) {
         postsData.page = Math.ceil(nbPages / 10)
     }

@@ -232,7 +232,6 @@ const changeUsername = () => {
                 return res.json()
             })
             .then(data => {
-                console.log(data)
                 input = data.Pseudonyme
                 location.href = "/profil?pseudo=" + data.Pseudonyme
                 return data

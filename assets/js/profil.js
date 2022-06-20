@@ -230,7 +230,6 @@ const getInfos = (tri) => {
     } else if (usernameConnected != "") {
         const upgrade = document.querySelector(".nameUsers .fa-graduation-cap")
         const downgrade = document.querySelector(".nameUsers .fa-angle-double-down")
-        console.log(objUsernameConnected, objUser)
         if (objUsernameConnected.Rank == "Administrateur" && usernameConnected != query.get("pseudo") && objUser.Rank != "Modérateur") {
             upgrade.style.display = "block"
             downgrade.style.display = "none"

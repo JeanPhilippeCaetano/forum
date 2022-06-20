@@ -38,7 +38,6 @@ const checkValueFromPage = (index) => {
 }
 
 const addUserDiv = (id, image, username, date, content) => {
-    console.log(id, image, username, date, content)
     const container = document.createElement("a")
     container.setAttribute("id", "user" + id)
     container.className = "user-total"

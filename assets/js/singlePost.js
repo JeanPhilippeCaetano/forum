@@ -310,13 +310,13 @@ const pushCom = (objCom, index, nbrComments) => {
 
 
     if (objCom.ParentID != allPostsID[0]) {
-        comDiv.style.marginLeft = 2+'%'
+        comDiv.style.marginLeft = 2 + '%'
         let lierA = document.createElement('div')
         lierA.setAttribute('class', 'lien')
-        lierA.innerHTML = `En réponse à: ` + arrayComments[allPostsID.indexOf(objCom.ParentID)-1].Pseudonyme + ', ' + arrayComments[allPostsID.indexOf(objCom.ParentID)-1].Content.substring(0,80)
-       containerUserComText.appendChild(lierA)
+        lierA.innerHTML = `En réponse à: ` + arrayComments[allPostsID.indexOf(objCom.ParentID) - 1].Pseudonyme + ', ' + arrayComments[allPostsID.indexOf(objCom.ParentID) - 1].Content.substring(0, 80)
+        containerUserComText.appendChild(lierA)
     }
-    
+
     let pseudoDiv = document.createElement('div')
     pseudoDiv.setAttribute('class', 'username')
     pseudoDiv.innerHTML = objCom.Pseudonyme // ajouter le pseudo de l'utilisateur, fait
@@ -763,7 +763,6 @@ const displayComments = () => {
             try {
                 let index = 0
                 for (const element of data) {
-                    console.log(allPostsID, arrayComments)
                     const userData = await getUser(element.SenderID)
                     if (allPostsID.includes(element.ParentID)) {
                         element.Pseudonyme = userData.Pseudonyme

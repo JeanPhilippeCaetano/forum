@@ -3,7 +3,6 @@ package forum
 import (
 	"database/sql"
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 	"strconv"
@@ -94,8 +93,7 @@ func EditCom(w http.ResponseWriter, r *http.Request, global *Global) {
 	body, _ := ioutil.ReadAll(r.Body)
 	json.Unmarshal(body, &Post)
 	post := DisplayOnePost(GetDataFromTableWithID(Posts{}, global.Db, "posts", Post.Id))
-	result, err := UpdateData(Posts{}, global.Db, "posts", post.PostID, post.SenderID, post.ParentID, post.Title, Post.Content, post.Tags, post.Likes, post.Date)
-	fmt.Println(err)
+	result, _ := UpdateData(Posts{}, global.Db, "posts", post.PostID, post.SenderID, post.ParentID, post.Title, Post.Content, post.Tags, post.Likes, post.Date)
 	postId, _ := result.LastInsertId()
 	w.Write([]byte("{\"postID\": \"" + strconv.FormatInt(postId, 10) + "\"}"))
 }
@@ -104,8 +102,7 @@ func DeletePost(w http.ResponseWriter, r *http.Request, global *Global) {
 	var PostID PostParams
 	bd, _ := ioutil.ReadAll(r.Body)
 	json.Unmarshal(bd, &PostID)
-	_, err := DeleteData(Posts{}, global.Db, "posts", PostID.Postid)
-	fmt.Println(err)
+	DeleteData(Posts{}, global.Db, "posts", PostID.Postid)
 	w.Write([]byte("{\"deleteMsg\": \"Post bien delete !\"}"))
 }
 
@@ -115,7 +112,6 @@ func GetPost(w http.ResponseWriter, r *http.Request, global *Global) {
 	bd, _ := ioutil.ReadAll(r.Body)
 	json.Unmarshal(bd, &PostBody)
 	post := DisplayOnePost(GetDataFromTableWithID(Posts{}, global.Db, "posts", PostBody.Postid))
-	fmt.Println(post)
 	if post == EmptyPost {
 		http.Error(w, `{"err":"Ce post n'existe pas"}`, http.StatusForbidden)
 		return
