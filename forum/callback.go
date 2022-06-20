@@ -46,7 +46,6 @@ type FbImage struct {
 
 func GoogleCallback(w http.ResponseWriter, r *http.Request, global *Global) {
 	// check if method is correct
-
 	if r.Method != "GET" {
 		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
 		return
