@@ -214,6 +214,19 @@ func DisplayOneUser(rows *sql.Rows) Users {
 	return u
 }
 
+func DisplayOneReport(rows *sql.Rows) Reports {
+	var r Reports
+	var parentId sql.NullInt64
+	for rows.Next() {
+		err := rows.Scan(&r.ReportID, &r.SenderID, &parentId, &r.PostID, &r.Reason, &r.Date)
+		if err != nil {
+			log.Panic(err)
+		}
+		r.ParentID = int(parentId.Int64)
+	}
+	return r
+}
+
 func DisplayRows(global *Global, rows *sql.Rows, structure interface{}) *Global {
 	data := reflect.TypeOf(structure).Name()
 	global = resetGlobal(global, data)

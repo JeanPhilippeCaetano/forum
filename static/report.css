@@ -1,0 +1,253 @@
+:root {
+    --blue: #10497e;
+    --beige: #faf0ca;
+    --yellow: #f4d35e;
+    --orange: #ee964b;
+    --brown: #8a1b05;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.globale {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--brown);
+    min-height: 70vh;
+}
+
+.center {
+    min-height: 70vh;
+    display: flex;
+    flex-direction: row;
+}
+
+.leftSpace {
+    margin-left: 15%;
+}
+
+.displayReport {
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+}
+
+.PP {
+    border: 2px var(--blue) solid;
+    border-radius: 100%;
+    background-color: var(--blue);
+    background-size: cover;
+}
+
+.report {
+    height: fit-content;
+    margin: .5%;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--yellow);
+    border: 2px solid black;
+    border-radius: 10px;
+}
+
+.userInfo {
+    display: flex;
+    flex-direction: row;
+}
+
+.userInfo .PP {
+    margin: 1.75%;
+    min-height: 70px;
+    max-height: 70px;
+    min-width: 70px;
+    max-width: 70px;
+}
+
+.containerUR {
+    margin: 2%;
+    color: black;
+    width: fit-content;
+    font-size: 2em;
+    font-weight: bold;
+}
+
+.postInfo {
+    margin-top: 3%;
+    margin-left: auto;
+    margin-right: 3%;
+    width: fit-content;
+    text-align: right;
+    font-size: 1.5em;
+    font-weight: bold;
+    color: black;
+}
+
+.displayCommentsValue {
+    margin-top: 3%;
+    margin-left: auto;
+    margin-right: 3%;
+    width: fit-content;
+    text-align: right;
+    font-size: 1.5em;
+    font-weight: bold;
+    color: black;
+}
+
+.title {
+    margin-left: 2%;
+    color: black;
+    font-weight: bold;
+    font-size: 2em;
+    align-self: flex-start;
+}
+
+.reportText {
+    margin: 1.5%;
+    padding: 10px;
+    color: black;
+    background-color: var(--beige);
+    border: 2px solid black;
+    font-size: 1.5rem;
+}
+
+/* .adminUserOptions {
+    margin-left: auto;
+    margin-right: .5%;
+    margin-bottom: .5%;
+    text-align: right;
+    color: var(--brown);
+    cursor: pointer;
+} */
+
+@media screen and (max-width: 920px) {
+    .title {
+        font-size: 3.5vw;
+    }
+
+    .tags {
+        font-size: 3vw;
+    }
+
+    .postText {
+        font-size: 3vw;
+    }
+
+    .displayLikesValue, .displayCommentsValue {
+        font-size: 3vw;
+    }
+
+    .adminUserOptions {
+        font-size: 3vw;
+    }
+}
+
+.writeCom {
+    border: 2px solid black;
+    background-color: var(--yellow);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: row;
+}
+
+.sendCom {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.answerInput {
+    margin: 1vh 10% 1vh 10%;
+    border: 1px solid black;
+    height: 2.5vh;
+    width: 80%;
+    padding-left: 10px;
+    background-color: var(--beige);;
+}
+
+.subitAnswer {
+    width: 15vh;
+    height: 3vh;
+    margin-right: 10%;
+    margin-bottom: 1vh;
+    align-self: flex-end;
+    font-weight: 700;
+    background-color: var(--beige);
+}
+
+.subitComment:hover {
+    box-shadow: 0 1px 2px rgba(0,0,0,0.07), 
+                0 2px 4px rgba(0,0,0,0.07), 
+                0 4px 8px rgba(0,0,0,0.07), 
+                0 8px 16px rgba(0,0,0,0.07),
+                0 16px 32px rgba(0,0,0,0.07), 
+                0 32px 64px rgba(0,0,0,0.07);
+}
+
+.noComYet {
+    margin: .5%;
+    padding: 1%;
+    border: 2px solid black;
+    border-radius: 10px;
+    background-color: var(--beige);
+    color: black;
+    text-align: center;
+    font-size: large;
+}
+
+.rightSpace {
+    margin-right: 15%;
+}
+
+/* css pour la pop up d'alerte lors d'une entrée invalide pour un commentaire */
+
+#modalContainer {
+    background-color: rgba(0, 0, 0, 0.3);
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    left: 0px;
+    z-index: 1;
+    background-image: url(tp.png);
+}
+
+#alertBox {
+    padding: 2vh;
+    width: 40%;
+    height: fit-content;
+    border: 1px solid #fff;
+    background-color: #fff;
+    top: 15%;
+}
+
+#modalContainer>#alertBox {
+    position: fixed;
+}
+
+#alertBox h1 {
+    margin: 0;
+    font: bold 1em;
+    background-color: var(--orange);
+    border-bottom: 1px solid var(--orange);
+    color: #FFF;
+    padding: 10px 0 10px 5px;
+}
+
+#alertBox p {
+    height: fit-content;
+    padding: 20px 0 20px 0;
+    text-align: center;
+    vertical-align: middle;
+}
+
+#alertBox #closeBtn {
+    display: block;
+    position: relative;
+    margin: 10px auto 10px auto;
+    padding: 7px;
+    width: 70px;
+    text-align: center;
+    color: #FFF;
+    background-color: var(--orange);
+}
