@@ -8,7 +8,6 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=*, initial-scale=1.0">
-
     <link href="../static/loginregister.css" rel="stylesheet">
     <link rel="stylesheet" href="../static/headFoot.css">
 
@@ -42,10 +41,9 @@
                         <input id="passwordlogin" type="password" placeholder="Password" class="forms_field-input" onkeyup="checkEmptyInputsSignIn()" required />
                         <input id="signinBtn" disabled="true" type="button" value="Login" class="forms_buttons-action" style="color: white;" onclick="onLoginClick()" />
                         <div class="all_reseau">
-                            <i class="fab fa-google"></i>
-                            <i class="fab fa-linkedin-in" style="margin-left: 5%;"></i>
-                            <i class="fab fa-github" style="margin-left: 5%;"></i>
-                            <i class="fab fa-twitter" style="margin-left: 5%;"></i>
+                            <a href="/google_login" style="color:black;"><i class="fab fa-google"></i></a>
+                            <a href="/fb_login" style="margin-left: 5%;color:black"><i class="fab fa-facebook"></i></a>
+                            <a href="/github_login" style="margin-left: 5%;color:black"><i class="fab fa-github"></i></a>
                         </div>
                         <p class="signup">
                             Don't have an account ?
@@ -67,10 +65,9 @@
                         <!-- <input type="password" name="" placeholder="Confirm Password" /> -->
                         <input id="signupBtn" type="button" value="Sign Up" class="forms_buttons-action" disabled="true" style="color: white;" onclick="onRegisterClick()" />
                         <div class="all_reseau">
-                            <i class="fab fa-google"></i>
-                            <i class="fab fa-linkedin-in" style="margin-left: 5%;"></i>
-                            <i class="fab fa-github" style="margin-left: 5%;"></i>
-                            <i class="fab fa-twitter" style="margin-left: 5%;"></i>
+                            <a href="/google_login" style="color:black;"><i class="fab fa-google"></i></a>
+                            <a href="/fb_login" style="margin-left: 5%; color:black;"><i class="fab fa-facebook"></i></a>
+                            <a href="/github_login" style="margin-left: 5%; color:black;"><i class="fab fa-github"></i></a>
                         </div>
                         <p class="signup">
                             Already have an account ?
@@ -86,9 +83,6 @@
             </div>
     </section>
     {{template "footer"}}
-
-
-    <!----------Designed By Pradeep Singh Tomar------------>
 
 </body>
 <script src="../assets/js/loginregister.js"></script>

@@ -3,8 +3,35 @@ let postsData = {
     postsPerPage: 10,
     page: 1,
     tagsChoosed: "",
-    ascOrDesc : "descending",
-    typeFilter : "Dates"
+    ascOrDesc: "descending",
+    typeFilter: "Dates"
+}
+
+const getUrl = () => {
+    const queryString = window.location.search
+    const params = Object.fromEntries(new URLSearchParams(queryString))
+    const url = new URL(window.location);
+    const options = ['tagsChoosed', 'ascOrDesc', 'typeFilter']
+    const allTags = ["javascript", "html/css", "golang", "java", "python", "mobile", "appli/logiciel"]
+    Object.entries(params).forEach(element => {
+        if (options.includes(element[0])) {
+            if (element[0] == "ascOrDesc" && element[1] != "ascending" && element[1] != "descending") {
+                postsData[element[0]] = "descending"
+                url.searchParams.set([element[0]], postsData[element[0]])
+                window.history.replaceState({}, '', url)
+            } else if (element[0] == "typeFilter" && element[1] != "Dates" && element[1] != "Likes" && element[1] != "Comments") {
+                postsData[element[0]] = "Dates"
+                url.searchParams.set([element[0]], postsData[element[0]])
+                window.history.replaceState({}, '', url)
+            } else if (element[0] == "tagsChoosed" && !allTags.includes(element[1])) {
+                postsData[element[0]] = ""
+                url.searchParams.set([element[0]], postsData[element[0]])
+                window.history.replaceState({}, '', url)
+            } else {
+                postsData[element[0]] = element[1]
+            }
+        }
+    })
 }
 
 const getTags = () => {
@@ -16,21 +43,27 @@ const getTags = () => {
         return elem.value
     })
     postsData.tagsChoosed = tagsValues
-    getPosts()
+    const url = new URL(window.location);
+    url.searchParams.set("tagsChoosed", `${tagsValues}`)
+    window.history.replaceState({}, '', url)
 }
 
 const changeSort = (value) => {
     const sortDiv = [...document.querySelectorAll(".sort")]
+    const url = new URL(window.location);
     if (value.classList.contains("fa-sort-amount-down-alt")) {
-        sortDiv[0].classList.add("sorted")        
+        sortDiv[0].classList.add("sorted")
         sortDiv[1].classList.remove("sorted")
         postsData.ascOrDesc = "ascending"
+        url.searchParams.set("ascOrDesc", "ascending")
     } else {
-        sortDiv[0].classList.remove("sorted")        
+        sortDiv[0].classList.remove("sorted")
         sortDiv[1].classList.add("sorted")
         postsData.ascOrDesc = "descending"
+        url.searchParams.set("ascOrDesc", "descending")
     }
-    getPosts()
+    window.history.replaceState({}, '', url)
+    getPosts("changePage")
 }
 
 const addChoosed = (value) => {
@@ -41,6 +74,7 @@ const addChoosed = (value) => {
         }
     })
     getTags()
+    getPosts("changePage")
 }
 
 const addTagsPost = (value) => {
@@ -122,12 +156,22 @@ const addPostDiv = (id, title, username, image, content, likes, nbComments) => {
     imgCtn.className = "img-ctn"
     const img = document.createElement("img")
     img.setAttribute("src", image)
+
+    const ctnUsernTitl = document.createElement("div")
+    ctnUsernTitl.className = "ctnUT"
+
     const usernameDiv = document.createElement("div")
     usernameDiv.className = "username"
     usernameDiv.innerText = username
     const titleDiv = document.createElement("div")
     titleDiv.className = "title"
     titleDiv.innerText = title
+    ctnUsernTitl.appendChild(usernameDiv)
+    ctnUsernTitl.appendChild(titleDiv)
+
+    const tagsPost = document.createElement("div")
+    tagsPost.className = "tagsPost"
+
 
     const contentDiv = document.createElement("div")
     contentDiv.className = "text-ctn"
@@ -152,18 +196,19 @@ const addPostDiv = (id, title, username, image, content, likes, nbComments) => {
     icons.appendChild(commentsIcon)
 
     infoUser.appendChild(imgCtn)
-    infoUser.appendChild(usernameDiv)
-    infoUser.appendChild(titleDiv)
+    infoUser.appendChild(ctnUsernTitl)
+    
 
     innerPost.appendChild(infoUser)
     innerPost.appendChild(contentDiv)
     innerPost.appendChild(icons)
 
     section.appendChild(innerPost)
-    section.addEventListener('click', function() {
-        location.href = '/singlepost?id=' + id
-    }, false);
-
+    if (title != "Aucun résultat") {
+        section.addEventListener('click', function() {
+            location.href = '/singlepost?id=' + id
+        }, false);
+    }
     document.querySelector(".all-posts").appendChild(section)
 
 }
@@ -222,15 +267,6 @@ const getComments = (tabID) => {
     return promise
 }
 
-// const filterByLikes = (element, sorted) => {
-//     const likes = document.getElementsByName("likes")
-//     likes[0].checked ? sorted = "ascending" : sorted = "descending"
-//     sortedTab = element.sort((a,b)=>a.Likes-b.Likes)
-//     if(valueOfFilter == "descending") {
-//         sortedTab = sortedTab.reverse()
-//     }
-
-// }
 const checkValue = (value, userData, element) => {
     if (userData.Pseudonyme.toLowerCase().includes(value.toLowerCase()) ||
         element.Content.toLowerCase().includes(value.toLowerCase()) ||
@@ -281,42 +317,43 @@ const getPosts = (verification) => {
             return res.json()
         })
         .then(async(data) => {
+            getUrl()
             let resultsTab = [];
             for (const element of data) {
                 try {
                     const userData = await getUser(element.SenderID)
                     const nbComments = await getComments([element.PostID])
                     if (checkValue(searchValue, userData, element) && element.ParentID == 0) {
-                        // if (verification !== undefined) {
-                        //     initPagination(maxPosts)
-                        // }
-                        // maxPosts += 1
                         resultsTab.push([element, userData, nbComments])
                     }
                 } catch (err) {
                     console.log(err);
                 }
             }
-            console.log(resultsTab)
             let filteredTabTags = resultsTab.filter(post => {
                 return filterByTag(postsData.tagsChoosed, post[0])
             })
-            if(postsData.typeFilter == "Likes") {
+            if (postsData.typeFilter == "Likes") {
                 filteredTabTags = filterByLikes(filteredTabTags)
             } else if (postsData.typeFilter == "Comments") {
                 filteredTabTags = filterByComments(filteredTabTags)
             } else if (postsData.typeFilter == "Dates") {
                 filteredTabTags = filterByDates(filteredTabTags)
             }
+            console.log(filteredTabTags)
             maxPosts = filteredTabTags.length
-
+            if (maxPosts == 0) {
+                postsDiv.innerHTML = ""
+                initPagination(1)
+                addPostDiv(0, "Aucun résultat", "TUC'rack", "../assets/images/Fichier 1.svg", "", 0, 0)
+            }
             if (verification !== undefined) {
                 initPagination(maxPosts)
             }
 
             filteredTabTags.forEach((element, index) => {
                 if (checkValueFromPage(index)) {
-                    addPostDiv(element[0].PostID, element[0].Title, element[1].Pseudonyme, element[1].Image, element[0].Content.substring(0, 500), element[0].Likes, element[2].length)
+                    addPostDiv(element[0].PostID, element[0].Title, element[1].Pseudonyme, element[1].Image, element[0].Content.substring(0, 500), element[0].Likes, element[2].length - 1)
                 }
             })
         })
@@ -330,17 +367,22 @@ const getPosts = (verification) => {
 
 const filtersBy = () => {
     const choice = [...document.querySelectorAll(".choice")]
+    const url = new URL(window.location);
     choice.forEach(elem => {
         if (elem.checked) {
             if (elem.classList.contains("likes-filter")) {
                 postsData.typeFilter = "Likes"
+                url.searchParams.set("typeFilter", "Likes")
             } else if (elem.classList.contains("comments-filter")) {
                 postsData.typeFilter = "Comments"
+                url.searchParams.set("typeFilter", "Comments")
             } else {
                 postsData.typeFilter = "Dates"
+                url.searchParams.set("typeFilter", "Dates")
             }
         }
     })
+    window.history.replaceState({}, '', url)
     getPosts("e")
 }
 
@@ -348,7 +390,7 @@ const filtersBy = () => {
 
 const filterByTag = (tab, element) => {
     let includesTag = false
-    if(tab.length == 0) {
+    if (tab.length == 0) {
         return true
     } else {
         for (let i = 0; i < tab.length; i++) {
@@ -363,24 +405,24 @@ const filterByTag = (tab, element) => {
 }
 
 const filterByLikes = (tab) => {
-    sortedTab = tab.sort((a,b)=>a[0].Likes-b[0].Likes)
-    if(postsData.ascOrDesc == "descending") {
+    sortedTab = tab.sort((a, b) => a[0].Likes - b[0].Likes)
+    if (postsData.ascOrDesc == "descending") {
         sortedTab = sortedTab.reverse()
     }
     return sortedTab
 }
 
 const filterByComments = (tab) => {
-    sortedTab = tab.sort((a,b) => a[2].length - b[2].length)
-    if(postsData.ascOrDesc == "descending") {
+    sortedTab = tab.sort((a, b) => (a[2].length - 1) - (b[2].length - 1))
+    if (postsData.ascOrDesc == "descending") {
         sortedTab = sortedTab.reverse()
     }
     return sortedTab
 }
 
 const filterByDates = (tab) => {
-    sortedTab = tab.sort((a,b) => new Date(a[0].Date) - new Date(b[0].Date))
-    if(postsData.ascOrDesc == "descending") {
+    sortedTab = tab.sort((a, b) => new Date(a[0].Date) - new Date(b[0].Date))
+    if (postsData.ascOrDesc == "descending") {
         sortedTab = sortedTab.reverse()
     }
     return sortedTab
@@ -395,7 +437,7 @@ const changeSearchValue = () => {
         window.history.replaceState({}, '', url)
         getPosts("change")
     }
-/* End searchbar */
+    /* End searchbar */
 
 /* Create post text zone */
 

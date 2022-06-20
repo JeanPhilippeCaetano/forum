@@ -11,13 +11,15 @@ const getCookies = function(name) {
 };
 
 const createProfilDiv = (username, image) => {
-    const profilDiv = document.querySelector("#profil")
-    profilDiv.innerHTML = ""
-    const imgDiv = document.createElement("div")
-    imgDiv.className = "profilHeadPP"
-    imgDiv.style.backgroundImage = "url(" + image + ")"
-    profilDiv.appendChild(imgDiv)
-    profilDiv.href = "/profil?pseudo=" + username
+    const profilDiv = [...document.querySelectorAll(".profil")]
+    profilDiv.forEach(element => {
+        element.innerHTML = ""
+        const imgDiv = document.createElement("div")
+        imgDiv.className = "profilHeadPP"
+        imgDiv.style.backgroundImage = "url(" + image + ")"
+        element.appendChild(imgDiv)
+        element.href = "/profil?pseudo=" + username
+    })
 }
 
 const changeHeader = () => {
@@ -25,6 +27,7 @@ const changeHeader = () => {
     if (!username) {
         return
     }
+    console.log(username)
     fetch("/getinfos", {
             method: "POST",
             headers: {
@@ -42,7 +45,7 @@ const changeHeader = () => {
         })
         .then(data => {
             console.log(data)
-            console.log(data.Pseudonyme, data.Image)
+                // console.log(data.Pseudonyme, data.Image)
             createProfilDiv(username, data.Image)
         })
         .catch(err => {
