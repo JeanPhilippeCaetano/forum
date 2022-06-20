@@ -36,6 +36,10 @@ body {
     text-decoration: none;
 }
 
+.choiceContent {
+    height: fit-content
+}
+
 .nameUsers {
     display: flex;
     flex-direction: row;
