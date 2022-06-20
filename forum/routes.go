@@ -139,6 +139,12 @@ func LoadApi(global *Global, mux *http.ServeMux) {
 	mux.HandleFunc("/getreports", func(w http.ResponseWriter, r *http.Request) {
 		GetReports(w, r, global)
 	})
+	mux.HandleFunc("/addreport", func(w http.ResponseWriter, r *http.Request) {
+		AddReport(w, r, global)
+	})
+	mux.HandleFunc("/addanswer", func(w http.ResponseWriter, r *http.Request) {
+		AddAnswer(w, r, global)
+	})
 
 	// AUTHENTIFICATION & MODIFICATION PROFILE
 
