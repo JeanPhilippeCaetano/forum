@@ -197,7 +197,6 @@ const noComYet = () => {
 
 const likePost = (idDiv, index) => {
     let displayLike = document.getElementById(idDiv)
-    console.log(index)
     let likesNbr = choosePost(index)
     let delOrAdd;
     const username = getCookie("pseudo")
@@ -223,7 +222,6 @@ const choosePost = (index) => {
     if (index == -1) {
         return objectPost.Likes
     } else {
-        console.log("arrayComments", arrayComments)
         return arrayComments[index].Likes
     }
 }
@@ -297,7 +295,6 @@ const pushCom = (objCom, index, nbrComments) => {
 
     let comDiv = document.createElement('div')
     comDiv.setAttribute('class', 'oneComment')
-    comDiv.setAttribute('id', objCom.PostID)
     comDiv.setAttribute('data-postid', objCom.PostID) // id avec la base de donnée, fait
 
     let PPDiv = document.createElement('div')
@@ -308,6 +305,15 @@ const pushCom = (objCom, index, nbrComments) => {
     let containerUserComText = document.createElement('div')
     containerUserComText.setAttribute('class', 'containerTextCom')
 
+
+    if (objCom.ParentID != allPostsID[0]) {
+        comDiv.style.marginLeft = 2+'%'
+        let lierA = document.createElement('div')
+        lierA.setAttribute('class', 'lien')
+        lierA.innerHTML = `En réponse à: ` + arrayComments[allPostsID.indexOf(objCom.ParentID)-1].Pseudonyme + ', ' + arrayComments[allPostsID.indexOf(objCom.ParentID)-1].Content.substring(0,80)
+       containerUserComText.appendChild(lierA)
+    }
+    
     let pseudoDiv = document.createElement('div')
     pseudoDiv.setAttribute('class', 'username')
     pseudoDiv.innerHTML = objCom.Pseudonyme // ajouter le pseudo de l'utilisateur, fait
@@ -355,7 +361,6 @@ const pushCom = (objCom, index, nbrComments) => {
     comDiv.appendChild(iconDiv)
     commentsDiv.appendChild(comDiv)
 
-    console.log(objCom.PostID, objCom.ParentID)
     addComPost()
 }
 
@@ -446,7 +451,6 @@ const revomeComPost = () => {
 }
 
 const getPostIDForCom = (index) => {
-    console.log(arrayComments, index)
     document.getElementById('comInput').focus()
     if (index == -1) {
         parentPostID = objectPost.PostID
@@ -751,11 +755,10 @@ const displayComments = () => {
             return res.json()
         })
         .then(async(data) => {
-            
             try {
                 let index = 0
                 for (const element of data) {
-                    console.log(data, arrayComments)
+                    console.log(allPostsID, arrayComments)
                     const userData = await getUser(element.SenderID)
                     if (allPostsID.includes(element.ParentID)) {
                         element.Pseudonyme = userData.Pseudonyme

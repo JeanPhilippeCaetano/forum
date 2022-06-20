@@ -329,6 +329,11 @@ body {
     margin-right: 15%;
 }
 
+.lien {
+    font-weight: 600;
+    width:100%;
+}
+
 /* css pour la pop up d'alerte lors d'une entrée invalide pour un commentaire */
 
 #modalContainer {
