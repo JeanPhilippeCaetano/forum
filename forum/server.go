@@ -3,8 +3,8 @@ package forum
 import (
 	"database/sql"
 	"fmt"
-	"forum/forum/config"
 	"net/http"
+	"os"
 )
 
 type Global struct {
@@ -19,7 +19,7 @@ func Server() {
 
 	mux := http.NewServeMux()
 
-	config.LoadConfig()
+	LoadConfig()
 	global := &Global{}
 	global.Db = InitDatabase()
 
@@ -35,6 +35,10 @@ func Server() {
 	LoadApi(global, mux)
 	LoadPages(mux)
 
-	http.ListenAndServe(":8080", mux)
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+	http.ListenAndServe(":"+port, mux)
 
 }

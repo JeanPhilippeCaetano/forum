@@ -73,40 +73,22 @@
                             <h2 class="site_name">Nous avons réalisé ce site dans le cadre de notre première année en informatique, qui a pour but de réaliser un forum. Nous avons décidé de réaliser un forum qui se baserai sur le partage de projets/code et ainsi permettre
                                 une entraîde inter-programmeurs(euses).</h2>
                         </div>
-                        <div class="doubleCard">
-                            <div class="row">
-                                <div class="example-2 card">
-                                    <div class="wrapper">
-                                        <div class="data">
-                                            <div class="content">
-                                                <h1 class="title">Partagez votre projet</h1>
-                                                <p class="text">Recevez de l'aide d'une communauté large et impliquée.</p>
-                                                <a href="/posts" class="button">Read more</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                        <div class="redirect">
+                            <div class="box_index1">
+                                <h2 class="text_index">Si vous avez besoin d'aide ou si vous avez envie d'aider vos compatriotes</h2>
+                                <button onclick="window.location.href='/posts'" class="button button--wayra button--border-thick button--text-upper button--size-s">Lancez-vous</button>
                             </div>
-                            <div class="row">
-                                <div class="example-2 card">
-                                    <div class="wrapper">
-                                        <div class="data">
-                                            <div class="content">
-                                                <h1 class="title">Aidez d'autres programmeurs(euses)</h1>
-                                                <p class="text">Aidez sur une multitude de projets diverses et variés </p>
-                                                <a href="/users" class="button">Read more</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="box_index2">
+                                <h2 class="text_index">Envie de découvrir vos crack préférés ? Qu'est ce que vous attendez ? Cliquez !</h2>
+                                <button onclick="window.location.href='/contact'" class="button2 button2--wayra button2--border-thick button2--text-upper button2--size-s">Découvrez-nous</button>
                             </div>
                         </div>
                     </div>
+                    {{template "footer"}}
                 </div>
             </div>
         </div>
     </div>
-    {{template "footer"}}
 
 </body>
 <script src="../assets/js/headFoot.js"></script>

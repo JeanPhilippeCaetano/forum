@@ -197,6 +197,7 @@ const noComYet = () => {
 
 const likePost = (idDiv, index) => {
     let displayLike = document.getElementById(idDiv)
+    console.log(index)
     let likesNbr = choosePost(index)
     let delOrAdd;
     const username = getCookie("pseudo")
@@ -222,6 +223,7 @@ const choosePost = (index) => {
     if (index == -1) {
         return objectPost.Likes
     } else {
+        console.log("arrayComments", arrayComments)
         return arrayComments[index].Likes
     }
 }
@@ -290,7 +292,7 @@ const editCom = (comid) => {
     trashcanEdit.innerHTML = `<i onclick="confirmEditPost(${comid})" class="fas fa-check" style="margin-right:10%"></i><i onclick="location.href='/singlepost?id=${objectPost.PostID}'" class="fas fa-times"></i>`
 }
 
-const pushCom = (objCom, index) => {
+const pushCom = (objCom, index, nbrComments) => {
     const username = getCookie("pseudo")
 
     let comDiv = document.createElement('div')
@@ -338,7 +340,7 @@ const pushCom = (objCom, index) => {
     iconDiv.appendChild(likeDiv)
     let answerDiv = document.createElement('div')
     answerDiv.setAttribute('class', 'com')
-    answerDiv.innerHTML = 0 + ` <i onclick="getPostIDForCom(` + index + `)" class="fa fa-comments" aria-hidden="true"></i>` // nbs de com avec la base de donnée, fait
+    answerDiv.innerHTML = nbrComments + ` <i onclick="getPostIDForCom(` + index + `)" class="fa fa-comments" aria-hidden="true"></i>` // nbs de com avec la base de donnée, fait
     iconDiv.appendChild(answerDiv)
 
     let trashcanEditDiv = document.createElement('div') // afficher cette div que si le commentaire nous appartient
@@ -352,10 +354,38 @@ const pushCom = (objCom, index) => {
     comDiv.appendChild(iconDiv)
     commentsDiv.appendChild(comDiv)
 
-    if (objCom.ParentID == objectPost.PostID)
 
-        addComPost()
+    addComPost()
 }
+
+const getComments = (tabID) => {
+    let allPostsID = tabID
+    const promise = fetch("/getposts", {
+            method: "POST",
+            headers: {
+                "content-type": "application/json"
+            },
+        })
+        .then(async(res) => {
+            if (!res.ok) {
+                throw await res.json()
+            }
+            return res.json()
+        })
+        .then(data => {
+            data.forEach(element => {
+                if (allPostsID.includes(element.ParentID)) {
+                    allPostsID.push(element.PostID)
+                }
+            })
+            return allPostsID
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    return promise
+}
+
 
 const addComPost = () => {
     const displayComs = document.getElementById('com')
@@ -370,6 +400,7 @@ const deletePost = (comID) => {
             if (commentDivs[i].getAttribute('id') == comID) {
                 commentDivs[i].remove()
                 revomeComPost()
+                deletePost(parseInt(commentDivs[i].getAttribute("data-postid")))
             }
         }
     } else {
@@ -418,7 +449,7 @@ const getPostIDForCom = (index) => {
     if (index == -1) {
         parentPostID = objectPost.PostID
     } else {
-        parentPostID = arrayComments[index - 1].PostID
+        parentPostID = arrayComments[index].PostID
     }
 
 }
@@ -702,6 +733,8 @@ const updateLikesData = (obj, delOrAdd) => {
     return promise
 }
 
+
+
 const displayComments = () => {
     const promise = fetch("/getposts", {
             method: "POST",
@@ -719,16 +752,15 @@ const displayComments = () => {
             try {
                 for (const element of data) {
                     const userData = await getUser(element.SenderID)
+                    let index = 0
                     if (allPostsID.includes(element.ParentID)) {
                         element.Pseudonyme = userData.Pseudonyme
                         element.Image = userData.Image
                         arrayComments.push(element)
                         allPostsID.push(element.PostID)
-                        if (element.ParentID == objectPost.PostID) {
-                            await pushCom(element, data.indexOf(element) - 1)
-                        } else {
-                            pushSubCom(element, data.indexOf(element) - 1)
-                        }
+                        index++
+                        const nbrComments = await getComments([element.PostID])
+                        await pushCom(element, index - 1, nbrComments.length - 1)
                     }
                 }
             } catch (err) {

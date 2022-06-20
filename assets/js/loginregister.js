@@ -49,7 +49,6 @@ const checkEmptyInputsSignIn = () => {
 
 const onRegisterClick = () => {
     const errorlog = document.querySelector(".signupBx .formBx .error_message p")
-    const regDate = new Date(Date.now()).toUTCString();
     const submitBtn = document.querySelector("#signupBtn")
     fetch("/register", {
             method: "POST",
@@ -60,7 +59,6 @@ const onRegisterClick = () => {
                 pseudo: document.getElementById("pseudoregister").value,
                 email: document.getElementById("emailregister").value,
                 password: document.getElementById("passwordregister").value,
-                date: regDate
             })
 
         })

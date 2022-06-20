@@ -27,6 +27,7 @@ const changeHeader = () => {
     if (!username) {
         return
     }
+    console.log(username)
     fetch("/getinfos", {
             method: "POST",
             headers: {
@@ -44,7 +45,7 @@ const changeHeader = () => {
         })
         .then(data => {
             console.log(data)
-            console.log(data.Pseudonyme, data.Image)
+                // console.log(data.Pseudonyme, data.Image)
             createProfilDiv(username, data.Image)
         })
         .catch(err => {
