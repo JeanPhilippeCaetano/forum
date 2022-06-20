@@ -118,10 +118,7 @@ const getUsers = (verification) => {
                 initPagination(1)
                 addUserDiv(0, "../assets/images/Fichier 1.svg", "Aucun résultat", "", "")
             }
-            const filteredByRank = resultsTab.sort((a, b) => a.Rank - b.Rank && a.Pseudonyme - b.Pseudonyme)
-            filteredByRank.reverse()
-            console.log(filteredByRank)
-            filteredByRank.forEach((element, index) => {
+            resultsTab.forEach((element, index) => {
                 if (checkValueFromPage(index)) {
                     addUserDiv(element.UserID, element.Image, element.Pseudonyme, element.Date, element.Biography)
                 }
