@@ -7,17 +7,15 @@ import (
 )
 
 type Global struct {
-	AllUsers []Users
-	AllPosts []Posts
-	// AllPostsComments []PostComments
-	// AllComments      []Comments
-	Db *sql.DB
+	AllUsers   []Users
+	AllPosts   []Posts
+	AllReports []Reports
+	Db         *sql.DB
 }
 
 func Server() {
 	fmt.Println("Le serveur est lancé : http://localhost:8080")
 
-	// create a router
 	mux := http.NewServeMux()
 
 	global := &Global{}
@@ -32,9 +30,9 @@ func Server() {
 	fp := http.FileServer(http.Dir("./pages/"))
 	mux.Handle("/pages/", http.StripPrefix("/pages/", fp))
 
-	loadAllRoutes(global, mux)
+	LoadApi(global, mux)
+	LoadPages(mux)
 
-	// run server
 	http.ListenAndServe(":8080", mux)
 
 }

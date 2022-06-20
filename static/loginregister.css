@@ -10,11 +10,17 @@
         display: inline-block;
 }
 
-#signupBtn #signinBtn{
-        background-color: #677eff;
+#signupBtn{
+        background-color: #8A1B05;
 }
 #signinBtn{
-        background-color: #677eff;
+        background-color: #10497e;
+}
+
+.all_reseau{
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
 }
 
 section {

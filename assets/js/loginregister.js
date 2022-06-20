@@ -1,7 +1,7 @@
 const toggleForm = () => {
     const container = document.querySelector('.container');
     container.classList.toggle('active');
-  };
+};
 /**
  * Variables
  */
@@ -49,6 +49,7 @@ const checkEmptyInputsSignIn = () => {
 
 const onRegisterClick = () => {
     const errorlog = document.querySelector(".signupBx .formBx .error_message p")
+    const regDate = new Date(Date.now()).toUTCString();
     fetch("/register", {
             method: "POST",
             headers: {
@@ -57,7 +58,8 @@ const onRegisterClick = () => {
             body: JSON.stringify({
                 pseudo: document.getElementById("pseudoregister").value,
                 email: document.getElementById("emailregister").value,
-                password: document.getElementById("passwordregister").value
+                password: document.getElementById("passwordregister").value,
+                date: regDate
             })
 
         })
