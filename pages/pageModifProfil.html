@@ -20,6 +20,7 @@
 
 <body>
     {{template "header"}}
+    <div class="content">
     <section id="profile">
         <div class="imgContent">
             <div class="imgDiv">
@@ -27,6 +28,9 @@
             <i class="fas fa-camera"></i>
         </div>
         <div class="conteneur">
+            <div id="erreurName">
+                Message erreur
+            </div>
             <div class="nameUsers">
                 <div class="nameChange">
                     <input id="inputName">
@@ -40,18 +44,25 @@
             </div>
         </div>
     </section>
+    <div id="erreurMdp">
+        Message erreur
+    </div>
     <section id="changeMdp">
         <input id="oldMdp" type="text" class="inputText" placeholder="Ancien mot de passe">
         <input id="newMdp" type="text" class="inputText" placeholder="Nouveau mot de passe">
         <input id="confirmNewMdp" type="text" class="inputText" placeholder="confirmer mot de passe">
         <button class="buttonValide" onclick="changePassword()">Valider</button>
     </section>
+    <div id="erreurEmail">
+        Message erreur
+    </div>
     <section id="changeEmail">
         <input id="oldEmail" type="text" class="inputText" placeholder="Ancienne adresse email">
         <input id="newEmail" type="text" class="inputText" placeholder="Nouvelle adresse email">
         <input id="confirmNewEmail" type="text" class="inputText" placeholder="confirmer adresse email">
         <button class="buttonValide" onclick="changeEmail()">Valider</button>
     </section>
+</div>
     {{template "footer"}}
 </body>
 <script type="text/javascript" src="/assets/js/updateProfil.js"></script>
