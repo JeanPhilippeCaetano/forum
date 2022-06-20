@@ -23,7 +23,7 @@
 
 <body>
     {{template "header"}}
-    <div class="globale">  
+    <div class="globale">
         <!-- <div class="header"> Header by Emile </div>  -->
         <div class="center">
             <div class="leftSpace"></div>
@@ -51,8 +51,10 @@
                 <div class="writeCom">
                     <div class="PP"></div>
                     <!-- ajouter la pp du user -->
-                    <input type="text" name="comment" class="commentInput" placeholder="Écrivez votre réponse" id="comInput">
-                    <button class="subitComment" id="subCom" onclick="validTextInput()"> Répondre </button>
+                    <div class="sendCom">
+                        <input type="text" name="comment" class="commentInput" placeholder="Écrivez votre réponse" id="comInput">
+                        <button class="subitComment" id="subCom" onclick="validTextInput()">Envoyer</button>
+                    </div>
                 </div>
                 <div class="comments" id="divCom">
                     <!-- <div class="oneComment">
@@ -97,6 +99,10 @@
         <!-- <div class="footer"> Footer by Emile </div> -->
     </div>
     {{template "footer"}}
+<<<<<<< HEAD
+=======
+
+>>>>>>> fac4dbdbecff01f8333713e84e75a1c4aef2bb16
 
 </body>
 <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>

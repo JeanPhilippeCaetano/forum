@@ -302,15 +302,23 @@ const pushCom = (objCom, index) => {
     PPDiv.style.backgroundImage = `url("` + objCom.Image + `")`
     comDiv.appendChild(PPDiv)
 
-    let psuedoDiv = document.createElement('div')
-    psuedoDiv.setAttribute('class', 'username')
-    psuedoDiv.innerHTML = objCom.Pseudonyme // ajouter le pseudo de l'utilisateur, fait
-    comDiv.appendChild(psuedoDiv)
+    let containerUserComText = document.createElement('div')
+    containerUserComText.setAttribute('class', 'containerTextCom')
+
+    let pseudoDiv = document.createElement('div')
+    pseudoDiv.setAttribute('class', 'username')
+    pseudoDiv.innerHTML = objCom.Pseudonyme // ajouter le pseudo de l'utilisateur, fait
+    // comDiv.appendChild(psuedoDiv)
+    containerUserComText.appendChild(pseudoDiv)
 
     let textDiv = document.createElement('div')
     textDiv.setAttribute('class', 'commentText')
     textDiv.innerHTML = objCom.Content // changer le input.value avec le content de la base de donnée, fait
-    comDiv.appendChild(textDiv)
+    // comDiv.appendChild(textDiv)
+    containerUserComText.appendChild(textDiv)
+    comDiv.appendChild(containerUserComText)
+
+    
 
     let iconDiv = document.createElement('div')
     iconDiv.setAttribute('class', 'icons')
@@ -337,6 +345,9 @@ const pushCom = (objCom, index) => {
     iconDiv.appendChild(trashcanEditDiv)
     comDiv.appendChild(iconDiv)
     commentsDiv.appendChild(comDiv)
+
+    if (objCom.ParentID == objectPost.PostID)
+
     addComPost()
 }
 
@@ -645,7 +656,6 @@ const updateLikedPostUser = (obj, delOrAdd) => {
 
 }
 
-
 const updateLikesData = (obj, delOrAdd) => {
     const promise = fetch("/modifypost", {
             method: "POST",
@@ -697,7 +707,11 @@ const displayComments = () => {
                         element.Image = userData.Image
                         arrayComments.push(element)
                         allPostsID.push(element.PostID)
-                        await pushCom(element, data.indexOf(element) - 1)
+                        if(element.ParentID == objectPost.PostID) {
+                            await pushCom(element, data.indexOf(element) - 1)
+                        } else {
+                            pushSubCom(element, data.indexOf(element) -1)
+                        }
                     }
                 }
             } catch (err) {
