@@ -37,7 +37,12 @@ body {
 }
 
 .choiceContent {
-    height: fit-content
+    height: 70vh;
+    overflow-y: scroll;
+}
+
+.choiceContent::-webkit-scrollbar {
+    display: none;
 }
 
 .nameUsers {

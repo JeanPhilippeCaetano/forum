@@ -144,7 +144,9 @@ const createPost = () => {
 
 /* Get All Posts */
 
-const addPostDiv = (id, title, username, image, content, likes, nbComments) => {
+
+const addPostDiv = (id, title, username, image, content, likes, nbComments, tags, creationDate) => {
+    const tabTags = tags.replace(/,/g,' - ') 
     const section = document.createElement("SECTION")
     section.setAttribute("id", "post" + id)
     const innerPost = document.createElement("div")
@@ -156,6 +158,9 @@ const addPostDiv = (id, title, username, image, content, likes, nbComments) => {
     imgCtn.className = "img-ctn"
     const img = document.createElement("img")
     img.setAttribute("src", image)
+
+    const getItRight = document.createElement("div")
+    getItRight.className = "pushRight"
 
     const ctnUsernTitl = document.createElement("div")
     ctnUsernTitl.className = "ctnUT"
@@ -171,7 +176,9 @@ const addPostDiv = (id, title, username, image, content, likes, nbComments) => {
 
     const tagsPost = document.createElement("div")
     tagsPost.className = "tagsPost"
-
+    tagsPost.innerText = tabTags
+    getItRight.appendChild(ctnUsernTitl)
+    getItRight.appendChild(tagsPost)
 
     const contentDiv = document.createElement("div")
     contentDiv.className = "text-ctn"
@@ -179,6 +186,9 @@ const addPostDiv = (id, title, username, image, content, likes, nbComments) => {
 
     const icons = document.createElement("div")
     icons.className = "icons-post"
+    const dateDiv = document.createElement("div")
+    dateDiv.className = "dateDiv"
+    dateDiv.innerText = creationDate
     const likeIcon = document.createElement("i")
     likeIcon.className = "comment-posts fa fa-heart"
     const commentsIcon = document.createElement("i")
@@ -188,6 +198,7 @@ const addPostDiv = (id, title, username, image, content, likes, nbComments) => {
 
     const likesDiv = document.createElement("div")
     likesDiv.innerHTML = likes
+    icons.appendChild(dateDiv)
     icons.appendChild(likesDiv)
     icons.appendChild(likeIcon)
     const commentsDiv = document.createElement("div")
@@ -196,8 +207,9 @@ const addPostDiv = (id, title, username, image, content, likes, nbComments) => {
     icons.appendChild(commentsIcon)
 
     infoUser.appendChild(imgCtn)
-    infoUser.appendChild(ctnUsernTitl)
-    
+    // infoUser.appendChild(ctnUsernTitl)
+    // infoUser.appendChild(tagsPost)
+    infoUser.appendChild(getItRight)
 
     innerPost.appendChild(infoUser)
     innerPost.appendChild(contentDiv)
@@ -353,7 +365,7 @@ const getPosts = (verification) => {
 
             filteredTabTags.forEach((element, index) => {
                 if (checkValueFromPage(index)) {
-                    addPostDiv(element[0].PostID, element[0].Title, element[1].Pseudonyme, element[1].Image, element[0].Content.substring(0, 500), element[0].Likes, element[2].length - 1)
+                    addPostDiv(element[0].PostID, element[0].Title, element[1].Pseudonyme, element[1].Image, element[0].Content.substring(0, 500), element[0].Likes, element[2].length - 1, element[0].Tags, element[0].Date)
                 }
             })
         })

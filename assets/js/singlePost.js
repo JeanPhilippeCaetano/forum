@@ -302,9 +302,6 @@ const pushCom = (objCom, index, nbrComments) => {
     let upperSection = document.createElement("div")
     upperSection.setAttribute('class', 'upperSection')
 
-    let lowerSection = document.createElement("div")
-    lowerSection.setAttribute('class', 'lowerSection')
-
     let PPDiv = document.createElement('div')
     PPDiv.setAttribute('class', 'PP') // ajouter l'image du profil utilisateur, fait
     PPDiv.style.backgroundImage = `url("` + objCom.Image + `")`
