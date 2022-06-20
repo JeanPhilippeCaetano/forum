@@ -18,5 +18,5 @@ L'équipe de TUC'rack est constituée de 5 personnes:
 * Jean-Philippe notre crack du Backend et de la BDD. https://github.com/JeanPhilippeCaetano
 * Émile notre crack du Frontend. https://github.com/Spikesito
 * Amaury notre crack de la bière. https://github.com/amaurylnt
-* Quentin notre crack de la sieste. 
+* Quentin notre crack de la sieste. https://github.com/Gleadn
 * James notre crack des chèvres. https://github.com/vezinjames
