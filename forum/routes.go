@@ -131,6 +131,15 @@ func LoadApi(global *Global, mux *http.ServeMux) {
 		EditCom(w, r, global)
 	})
 
+	// REPORTS
+
+	mux.HandleFunc("/getreport", func(w http.ResponseWriter, r *http.Request) {
+		GetReport(w, r, global)
+	})
+	mux.HandleFunc("/getreports", func(w http.ResponseWriter, r *http.Request) {
+		GetReports(w, r, global)
+	})
+
 	// AUTHENTIFICATION & MODIFICATION PROFILE
 
 	mux.HandleFunc("/getusers", func(w http.ResponseWriter, r *http.Request) {

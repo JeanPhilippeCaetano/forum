@@ -14,12 +14,12 @@ body {
 .globale {
     display: flex;
     flex-direction: column;
-    background-color: var(--beige);
-    min-height: 100vh;
+    background-color: var(--brown);
+    min-height: 70vh;
 }
 
 .center {
-    height: 90%;
+    min-height: 70vh;
     display: flex;
     flex-direction: row;
 }
@@ -42,11 +42,12 @@ body {
 }
 
 .report {
-    height: 65%;
+    height: fit-content;
     margin: .5%;
     display: flex;
     flex-direction: column;
-    border: 2px solid var(--yellow);
+    background-color: var(--yellow);
+    border: 2px solid black;
     border-radius: 10px;
 }
 
@@ -63,9 +64,9 @@ body {
     max-width: 70px;
 }
 
-.username {
-    margin: 3%;
-    color: var(--brown);
+.containerUR {
+    margin: 2%;
+    color: black;
     width: fit-content;
     font-size: 2em;
     font-weight: bold;
@@ -79,78 +80,174 @@ body {
     text-align: right;
     font-size: 1.5em;
     font-weight: bold;
-    color: var(--brown);
+    color: black;
 }
 
-.title,
-.tags {
-    color: var(--brown);
+.displayCommentsValue {
+    margin-top: 3%;
+    margin-left: auto;
+    margin-right: 3%;
+    width: fit-content;
+    text-align: right;
+    font-size: 1.5em;
     font-weight: bold;
+    color: black;
 }
 
 .title {
+    margin-left: 2%;
+    color: black;
+    font-weight: bold;
     font-size: 2em;
+    align-self: flex-start;
 }
-
 
 .reportText {
     margin: 1.5%;
     padding: 10px;
-    border: 2px solid var(--yellow);
-    border-radius: 10px;
-    font-size: larger;
+    color: black;
+    background-color: var(--beige);
+    border: 2px solid black;
+    font-size: 1.5rem;
 }
 
-.adminUserOptions {
+/* .adminUserOptions {
     margin-left: auto;
     margin-right: .5%;
     margin-bottom: .5%;
     text-align: right;
     color: var(--brown);
     cursor: pointer;
+} */
+
+@media screen and (max-width: 920px) {
+    .title {
+        font-size: 3.5vw;
+    }
+
+    .tags {
+        font-size: 3vw;
+    }
+
+    .postText {
+        font-size: 3vw;
+    }
+
+    .displayLikesValue, .displayCommentsValue {
+        font-size: 3vw;
+    }
+
+    .adminUserOptions {
+        font-size: 3vw;
+    }
 }
 
 .writeCom {
-    margin: 10px;
-    border: 2px solid var(--yellow);
+    border: 2px solid black;
+    background-color: var(--yellow);
     border-radius: 10px;
     display: flex;
     flex-direction: row;
 }
 
-.commentInput {
-    margin: 1.5%;
+.sendCom {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.answerInput {
+    margin: 1vh 10% 1vh 10%;
+    border: 1px solid black;
+    height: 2.5vh;
     width: 80%;
-    background-color: var(--yellow);
+    padding-left: 10px;
+    background-color: var(--beige);;
 }
 
-.subitComment {
-    margin: 1.5%;
-    width: 10%;
-    background-color: var(--yellow);
-    border: 2px solid var(--yellow);
-    border-radius: 10px;
+.subitAnswer {
+    width: 15vh;
+    height: 3vh;
+    margin-right: 10%;
+    margin-bottom: 1vh;
+    align-self: flex-end;
+    font-weight: 700;
+    background-color: var(--beige);
 }
 
-.comments {
-    margin: 10px;
-    border: 2px solid var(--yellow);
-    border-radius: 10px;
-    /* min-height: 25%;
-    max-height: fit-content; */
+.subitComment:hover {
+    box-shadow: 0 1px 2px rgba(0,0,0,0.07), 
+                0 2px 4px rgba(0,0,0,0.07), 
+                0 4px 8px rgba(0,0,0,0.07), 
+                0 8px 16px rgba(0,0,0,0.07),
+                0 16px 32px rgba(0,0,0,0.07), 
+                0 32px 64px rgba(0,0,0,0.07);
 }
 
 .noComYet {
     margin: .5%;
     padding: 1%;
-    border: 2px solid var(--yellow);
+    border: 2px solid black;
     border-radius: 10px;
-    color: var(--brown);
+    background-color: var(--beige);
+    color: black;
     text-align: center;
     font-size: large;
 }
 
-
 .rightSpace {
     margin-right: 15%;
+}
+
+/* css pour la pop up d'alerte lors d'une entrée invalide pour un commentaire */
+
+#modalContainer {
+    background-color: rgba(0, 0, 0, 0.3);
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    left: 0px;
+    z-index: 1;
+    background-image: url(tp.png);
+}
+
+#alertBox {
+    padding: 2vh;
+    width: 40%;
+    height: fit-content;
+    border: 1px solid #fff;
+    background-color: #fff;
+    top: 15%;
+}
+
+#modalContainer>#alertBox {
+    position: fixed;
+}
+
+#alertBox h1 {
+    margin: 0;
+    font: bold 1em;
+    background-color: var(--orange);
+    border-bottom: 1px solid var(--orange);
+    color: #FFF;
+    padding: 10px 0 10px 5px;
+}
+
+#alertBox p {
+    height: fit-content;
+    padding: 20px 0 20px 0;
+    text-align: center;
+    vertical-align: middle;
+}
+
+#alertBox #closeBtn {
+    display: block;
+    position: relative;
+    margin: 10px auto 10px auto;
+    padding: 7px;
+    width: 70px;
+    text-align: center;
+    color: #FFF;
+    background-color: var(--orange);
 }
