@@ -26,4 +26,6 @@ L'équipe de TUC'rack est constituée de 5 personnes:
 * Drive (avec tutoriels, cahier des charges, charte graphique) : https://drive.google.com/drive/folders/1KGHMytx0hQST9ob1GvkyXIKKXVrKghYu?usp=sharing
 * Maquette Adobe XD : https://xd.adobe.com/view/8a35ee30-043c-4414-ae80-21a2f6820f58-df66/
 * Diagramme SQL :
+
+
  ![QuickDBD-DB_blueprint_1](https://user-images.githubusercontent.com/92150404/174759818-9ba44750-7b8a-40df-86f9-d27de433083d.png)
