@@ -20,3 +20,9 @@ L'équipe de TUC'rack est constituée de 5 personnes:
 * Amaury notre crack de la bière. https://github.com/amaurylnt
 * Quentin notre crack de la sieste. https://github.com/Gleadn
 * James notre crack des chèvres. https://github.com/vezinjames
+
+## Ressources
+
+* Drive (avec tutoriels, cahier des charges, charte graphique) : https://drive.google.com/drive/folders/1KGHMytx0hQST9ob1GvkyXIKKXVrKghYu?usp=sharing
+* Maquette Adobe XD : https://xd.adobe.com/view/8a35ee30-043c-4414-ae80-21a2f6820f58-df66/
+* Diagramme SQL : ![QuickDBD-DB_blueprint_1](https://user-images.githubusercontent.com/92150404/174759818-9ba44750-7b8a-40df-86f9-d27de433083d.png)
