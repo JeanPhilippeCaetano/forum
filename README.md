@@ -3,6 +3,12 @@
 TUC'rack est un forum pour développeurs, dans lequel il est simple de se retrouver. 
 Il vous permettra de demander de l'aide aux internautes de la plateforme et de trouver ce que vous cherchez.
 
+## Fonctionnalités
+   - Page d'accueil
+   - Messagerie (message, réponse à un message, like d'un message, filtres (langage de programmation, logiciel, ...))
+   - Page login / register
+   - Page profil avec affichage des messages likés, posts effectués, ...
+
 ## Comment utiliser TUC'rack ?
 
 Lors de votre arrivée sur le site, vous serez sur la page d'Accueil, vous pourrez accéder à la quasi totalité du site, néanmoins si vous voulez intéragir avec la communauté vous aurez besoin de vous identifier en vous inscrivant ou en vous connectant à l'aide de Google, Facebook ou encore GitHub.
@@ -15,11 +21,11 @@ Malheureusement TUC'rack n'est pas Open Source, vous ne pourrez pas l'utiliser �
 
 L'équipe de TUC'rack est constituée de 5 personnes:
 
-* Jean-Philippe notre crack du Backend et de la BDD. https://github.com/JeanPhilippeCaetano
-* Émile notre crack du Frontend. https://github.com/Spikesito
-* Amaury notre crack de la bière. https://github.com/amaurylnt
-* Quentin notre crack de la sieste. https://github.com/Gleadn
-* James notre crack des chèvres. https://github.com/vezinjames
+* [Jean-Philippe CAETANO](https://github.com/JeanPhilippeCaetano) développeur Backend et gestion de la BDD. 
+* [Émile SEGURET](https://github.com/Spikesito) développeur Frontend/Backend. 
+* [Amaury LYONNET](https://github.com/amaurylnt) développeur Frontend. https://github.com/amaurylnt
+* [Quentin FAYOLLE](https://github.com/Gleadn) développeur Frontend. 
+* [James VEZIN](https://github.com/vezinjames) développeur Frontend. https://github.com/vezinjames
 
 ## Ressources
 
